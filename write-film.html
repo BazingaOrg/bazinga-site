@@ -1,0 +1,1024 @@
+---
+layout: default
+title: Upload Film
+permalink: /write-film/
+---
+
+<div class="write-photo-container write-film-container" data-page="write-film">
+  <header class="write-photo-header write-film-header">
+    <h2 class="normal-heading">整理一卷胶片</h2>
+    <p class="desc">挑一张扫描件，把关于这卷的记忆补全：相机、胶卷、地点、故事……这些信息会自动写入胶片数据里，也能直接发布。</p>
+    <p class="subtle-banner" id="film-permission-banner" hidden></p>
+  </header>
+
+  <section class="photo-section upload-pane film-section" aria-label="选择胶片照片">
+    <h3 class="section-title monospace">选择图片</h3>
+    <label class="upload-dropzone" for="film-upload">
+      <input type="file" id="film-upload" accept="image/*" hidden>
+      <span class="upload-primary">点击或拖动到这里</span>
+      <span class="upload-secondary">支持常见图片格式；会自动生成 ID、文件名和比例</span>
+    </label>
+    <div class="image-preview-card" id="film-preview-card" hidden>
+      <img id="film-preview" class="image-preview" alt="">
+      <div class="image-meta film-meta" id="film-meta"></div>
+    </div>
+    <div class="insights-card" id="auto-insights" hidden>
+      <div class="insights-header">
+        <span class="monospace">自动解析</span>
+        <button type="button" id="apply-insights" class="ghost-button ghost-button--sm" hidden>一键填入</button>
+      </div>
+      <ul id="insights-list"></ul>
+    </div>
+  </section>
+
+  <section class="photo-section film-section" id="film-form-section" aria-label="胶片信息" hidden>
+    <h3 class="section-title monospace">胶片信息</h3>
+    <form id="film-form" class="photo-form film-form" novalidate>
+      <div class="form-field">
+        <div class="field-title">
+          <label for="film-alt" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Alt 文本</label>
+        </div>
+        <input type="text" id="film-alt" class="photo-input" placeholder="一句话描述画面内容，方便无障碍阅读" required>
+        <span class="field-feedback" id="alt-feedback" aria-live="polite"></span>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <div class="field-title">
+            <label for="film-camera" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>相机</label>
+          </div>
+          <input type="text" id="film-camera" class="photo-input" placeholder="例如：Leica M6" required>
+          <span class="field-feedback" id="camera-feedback" aria-live="polite"></span>
+        </div>
+        <div class="form-field">
+          <div class="field-title">
+            <label for="film-stock" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>胶卷</label>
+          </div>
+          <input type="text" id="film-stock" class="photo-input" placeholder="例如：Kodak Portra 400" required>
+          <span class="field-feedback" id="film-feedback" aria-live="polite"></span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <div class="field-title">
+            <label for="film-lens" class="field-label monospace">镜头</label>
+          </div>
+          <input type="text" id="film-lens" class="photo-input" placeholder="例如：Summicron 35mm f/2">
+        </div>
+        <div class="form-field">
+          <div class="field-title">
+            <label for="film-exposure" class="field-label monospace">曝光参数</label>
+          </div>
+          <input type="text" id="film-exposure" class="photo-input" placeholder="例如：f/2 · 1/125s">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <div class="field-title">
+            <label for="film-roll" class="field-label monospace">卷号/批次</label>
+          </div>
+          <input type="text" id="film-roll" class="photo-input" placeholder="例如：Roll #12 或 Batch 2024-05">
+        </div>
+        <div class="form-field">
+          <div class="field-title">
+            <label for="film-lab" class="field-label monospace">冲洗/扫描</label>
+          </div>
+          <input type="text" id="film-lab" class="photo-input" placeholder="例如：Local Lab / Noritsu Scan">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <div class="field-title">
+            <label for="film-location" class="field-label monospace">地点</label>
+          </div>
+          <input type="text" id="film-location" class="photo-input" placeholder="在哪儿拍的，可留空">
+        </div>
+        <div class="form-field">
+          <div class="field-title">
+            <label for="film-variants" class="field-label monospace">额外图片 URL</label>
+          </div>
+          <input type="text" id="film-variants" class="photo-input monospace" placeholder="可选：逗号分隔 thumbnail/public 等完整 URL">
+          <span class="field-hint">留空则只使用上传的原图；如有 CDN 版本可在此补齐。</span>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <div class="field-title">
+          <label for="film-caption" class="field-label monospace">图注</label>
+        </div>
+        <textarea id="film-caption" class="photo-input" placeholder="想讲的故事、补充信息，支持 Markdown"></textarea>
+      </div>
+    </form>
+  </section>
+
+  <section class="photo-section film-section" id="film-preview-section" aria-label="预览" hidden>
+    <h3 class="section-title monospace">预览</h3>
+    <div class="preview-frame">
+      <figure class="figure-landscape" id="film-preview-figure">
+        <a href="#" class="image-link" id="film-preview-link">
+          <img id="film-preview-image" alt="" loading="lazy" decoding="async">
+        </a>
+        <figcaption>
+          <div class="desc photo-metadata">
+            <div id="film-preview-date">{{ "now" | date: "%Y/%m/%d (%a)" }}</div>
+            <div id="film-preview-location" hidden></div>
+            <open-heart class="text-open-heart" href="#" emoji="❤️">
+              <span class="on">已收藏。</span><span class="off">喜欢吗？</span>
+            </open-heart>
+          </div>
+          <div class="caption-container" id="film-caption-container" hidden>
+            <div class="caption-content" id="film-preview-caption"></div>
+          </div>
+          <details class="monospace smol" id="film-preview-details" hidden>
+            <summary>Camera details</summary>
+            <span id="film-preview-detail-text"></span>
+          </details>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="photo-section film-section" id="film-output-section" aria-label="生成配置" hidden>
+    <h3 class="section-title monospace">生成配置与发布</h3>
+    <div class="publish-card" id="film-publish-card">
+      <div class="access-field">
+        <label for="film-access-key" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>访问密钥</label>
+        <input type="password" id="film-access-key" class="photo-input" placeholder="输入约定好的密钥才能发布">
+      </div>
+      <div class="publish-actions">
+        <button type="button" id="film-publish-btn" class="publish-button" disabled>
+          <span class="btn-text">直接发布</span>
+          <span class="btn-loading" hidden>正在上传…</span>
+        </button>
+        <p class="publish-feedback" id="film-publish-status" hidden></p>
+      </div>
+    </div>
+
+    <div class="divider" role="presentation"><span>或</span></div>
+
+    <div class="json-output-card">
+      <pre id="film-json-output" class="json-output"></pre>
+      <button type="button" id="film-copy-json" class="copy-button">复制 JSON</button>
+    </div>
+
+    <div class="instructions">
+      <h4 class="monospace">手动发布步骤</h4>
+      <ol>
+        <li>复制上面的 JSON 配置，粘贴到 <code>_data/film.json</code> 最前面</li>
+        <li>把图片重命名为：<code id="film-suggested-filename">film.jpg</code></li>
+        <li>把图片放到 <code>images/film/</code> 目录（如有 thumbnail/public CDN 可补充到 variants 中）</li>
+        <li>提交并推送改动，等待部署完成</li>
+      </ol>
+      <p class="field-hint">提示：访问密钥正确时，会自动上传图片并更新 JSON。</p>
+    </div>
+  </section>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  const fileInput = document.getElementById('film-upload');
+  const previewCard = document.getElementById('film-preview-card');
+  const previewImage = document.getElementById('film-preview');
+  const imageMeta = document.getElementById('film-meta');
+  const insightsCard = document.getElementById('auto-insights');
+  const insightsList = document.getElementById('insights-list');
+  const applyInsightsBtn = document.getElementById('apply-insights');
+
+  const formSection = document.getElementById('film-form-section');
+  const previewSection = document.getElementById('film-preview-section');
+  const outputSection = document.getElementById('film-output-section');
+
+  const filmForm = document.getElementById('film-form');
+  const altInput = document.getElementById('film-alt');
+  const cameraInput = document.getElementById('film-camera');
+  const filmInput = document.getElementById('film-stock');
+  const lensInput = document.getElementById('film-lens');
+  const exposureInput = document.getElementById('film-exposure');
+  const rollInput = document.getElementById('film-roll');
+  const labInput = document.getElementById('film-lab');
+  const locationInput = document.getElementById('film-location');
+  const variantsInput = document.getElementById('film-variants');
+  const captionInput = document.getElementById('film-caption');
+
+  const previewFigure = document.getElementById('film-preview-figure');
+  const previewImg = document.getElementById('film-preview-image');
+  const previewLink = document.getElementById('film-preview-link');
+  const previewDate = document.getElementById('film-preview-date');
+  const previewLocation = document.getElementById('film-preview-location');
+  const previewCaptionContainer = document.getElementById('film-caption-container');
+  const previewCaption = document.getElementById('film-preview-caption');
+  const previewDetails = document.getElementById('film-preview-details');
+  const previewDetailText = document.getElementById('film-preview-detail-text');
+
+  const publishBtn = document.getElementById('film-publish-btn');
+  const publishStatus = document.getElementById('film-publish-status');
+  const accessKeyInput = document.getElementById('film-access-key');
+  const copyJsonBtn = document.getElementById('film-copy-json');
+  const jsonOutput = document.getElementById('film-json-output');
+  const suggestedFilename = document.getElementById('film-suggested-filename');
+
+  const permissionBanner = document.getElementById('film-permission-banner');
+
+  const autoFilled = new Map();
+  let filmData = null;
+  let selectedFile = null;
+  let insightData = {};
+
+  init();
+
+  function init() {
+    checkUserPermission();
+    attachEvents();
+    restoreAccessKey();
+  }
+
+  function checkUserPermission() {
+    const isOwnerActivated = localStorage.getItem('show-film-entry') === 'true' || localStorage.getItem('show-write-entry') === 'true';
+    const directAccess = !document.referrer || !document.referrer.includes(window.location.origin);
+
+    if (!isOwnerActivated && directAccess) {
+      permissionBanner.hidden = false;
+      permissionBanner.textContent = '这个入口通常只对站长开放，随便看看也无妨，真正发布需要密钥。';
+    }
+  }
+
+  function attachEvents() {
+    fileInput.addEventListener('change', handleFileSelect);
+
+    [altInput, cameraInput, filmInput, lensInput, exposureInput, rollInput, labInput, locationInput, variantsInput, captionInput].forEach(input => {
+      input.addEventListener('input', () => {
+        autoFilled.delete(input.id);
+        input.removeAttribute('data-autofill');
+        updatePreview();
+        updatePublishState();
+      });
+    });
+
+    accessKeyInput.addEventListener('input', updatePublishState);
+
+    publishBtn.addEventListener('click', async () => {
+      if (!filmData || !selectedFile) {
+        showPublishStatus('图片还没准备好。', 'error');
+        return;
+      }
+
+      if (!validateRequired()) {
+        showPublishStatus('请先补全必填信息。', 'error');
+        return;
+      }
+
+      const accessKey = accessKeyInput.value.trim();
+      if (!accessKey) {
+        showPublishStatus('请输入访问密钥。', 'error');
+        return;
+      }
+
+      await publishFilm(accessKey);
+    });
+
+    copyJsonBtn.addEventListener('click', handleCopyJson);
+
+    applyInsightsBtn.addEventListener('click', () => {
+      applyInsightData(true);
+      applyInsightsBtn.hidden = true;
+    });
+  }
+
+  function restoreAccessKey() {
+    const saved = localStorage.getItem('film-access-key');
+    if (!saved) return;
+
+    try {
+      accessKeyInput.value = atob(saved);
+    } catch (error) {
+      localStorage.removeItem('film-access-key');
+    }
+  }
+
+  async function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    autoFilled.clear();
+    selectedFile = file;
+
+    try {
+      const uuid = generateUUID();
+      const timestamp = new Date().toISOString();
+      const imageInfo = await getImageInfo(file);
+      const filename = deriveFilename(file, uuid);
+
+      filmData = {
+        id: uuid,
+        uploaded: timestamp,
+        variants: [`/images/film/${filename}`],
+        meta: {
+          ratio: imageInfo.ratio,
+          alt: '',
+          camera: '',
+          film: ''
+        },
+        filename,
+        originalName: file.name || filename,
+        originalSize: file.size,
+        dimensions: {
+          width: imageInfo.width,
+          height: imageInfo.height
+        }
+      };
+
+      renderPreviewCard(file, imageInfo, uuid, filename);
+      suggestedFilename.textContent = filename;
+      toggleSections(true);
+
+      insightData = await gatherInsights(file, imageInfo);
+      renderInsights(insightData);
+      updatePreview();
+    } catch (error) {
+      console.error('无法解析图片:', error);
+      showPublishStatus('读取图片信息时出错，请换一张试试。', 'error');
+    }
+  }
+
+  function renderPreviewCard(file, imageInfo, uuid, filename) {
+    const reader = new FileReader();
+    reader.onload = event => {
+      previewCard.hidden = false;
+      previewImage.src = event.target.result;
+      previewImage.alt = file.name;
+
+      imageMeta.innerHTML = `
+        <div class="meta-row"><span>原文件</span><span>${escapeHtml(filmData.originalName)}</span></div>
+        <div class="meta-row"><span>体积</span><span>${formatFileSize(file.size)}</span></div>
+        <div class="meta-row"><span>尺寸</span><span>${imageInfo.width} × ${imageInfo.height}</span></div>
+        <div class="meta-row"><span>比例</span><span>${imageInfo.ratio}</span></div>
+        <div class="meta-row meta-row--uuid"><span>UUID</span><span>${uuid}</span></div>
+        <div class="meta-row meta-row--filename"><span>建议文件名</span><span>${escapeHtml(filename)}</span></div>
+      `;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function gatherInsights(file, imageInfo) {
+    const insights = {};
+    const sources = new Set();
+
+    try {
+      const exifData = await readExifData(file);
+      if (exifData && Object.keys(exifData).length > 0) {
+        Object.assign(insights, exifData);
+        if (exifData.src) sources.add(exifData.src);
+      }
+    } catch (error) {
+      console.warn('EXIF 解析失败:', error);
+    }
+
+    const nameHints = parseFromFileName(file.name);
+    Object.entries(nameHints).forEach(([key, value]) => {
+      if (key === 'src') {
+        if (value) sources.add(value);
+        return;
+      }
+      if (!value) return;
+
+      if (key === 'camera' || key === 'film') {
+        insights[key] = value;
+        return;
+      }
+
+      if (!insights[key]) {
+        insights[key] = value;
+      }
+    });
+
+    if (!insights.ratio) {
+      insights.ratio = imageInfo.ratio;
+    }
+
+    if (sources.size > 0) {
+      insights.src = Array.from(sources).join('+');
+    }
+
+    return insights;
+  }
+
+  function renderInsights(insights) {
+    insightsList.innerHTML = '';
+    applyInsightsBtn.hidden = true;
+
+    const entries = Object.entries(insights).filter(([key, value]) => Boolean(value) && key !== 'src');
+
+    if (entries.length === 0) {
+      insightsCard.hidden = true;
+      return;
+    }
+
+    insightsCard.hidden = false;
+
+    entries.forEach(([key, value]) => {
+      const label = insightLabel(key);
+      if (!label) return;
+
+      const item = document.createElement('li');
+      item.innerHTML = `<span class="insight-key">${label}</span><span class="insight-value">${escapeHtml(String(value))}</span>`;
+      insightsList.appendChild(item);
+    });
+
+    applyInsightsBtn.hidden = false;
+  }
+
+  function applyInsightData(force = false) {
+    if (!insightData) return;
+
+    const mapping = [
+      [cameraInput, insightData.camera],
+      [filmInput, insightData.film],
+      [lensInput, insightData.lens],
+      [exposureInput, insightData.exposure],
+      [rollInput, insightData.roll],
+      [labInput, insightData.lab],
+      [locationInput, insightData.location]
+    ];
+
+    let applied = false;
+
+    mapping.forEach(([input, value]) => {
+      if (!value) return;
+      const trimmed = String(value).trim();
+      if (!trimmed) return;
+      if (!input.value || force || autoFilled.has(input.id)) {
+        input.value = trimmed;
+        input.dataset.autofill = insightData.src || 'auto';
+        autoFilled.set(input.id, true);
+        applied = true;
+      }
+    });
+
+    if (insightData.caption && (!captionInput.value || force)) {
+      captionInput.value = insightData.caption.trim();
+      captionInput.dataset.autofill = insightData.src || 'auto';
+      autoFilled.set(captionInput.id, true);
+      applied = true;
+    }
+
+    if (applied) {
+      updatePreview();
+      updatePublishState();
+    }
+  }
+
+  function insightLabel(key) {
+    switch (key) {
+      case 'camera': return '相机';
+      case 'film': return '胶卷';
+      case 'lens': return '镜头';
+      case 'exposure': return '曝光';
+      case 'location': return '地点';
+      case 'roll': return '卷号';
+      case 'lab': return '冲洗/扫描';
+      case 'caption': return '图注';
+      default: return '';
+    }
+  }
+
+  function updatePreview() {
+    if (!filmData || !selectedFile) return;
+
+    filmData.meta.alt = altInput.value.trim();
+    filmData.meta.camera = cameraInput.value.trim();
+    filmData.meta.film = filmInput.value.trim();
+
+    filmData.meta.lens = lensInput.value.trim() || undefined;
+    filmData.meta.exposure = exposureInput.value.trim() || undefined;
+    filmData.meta.roll = rollInput.value.trim() || undefined;
+    filmData.meta.lab = labInput.value.trim() || undefined;
+    filmData.meta.location = locationInput.value.trim() || undefined;
+    filmData.meta.caption = captionInput.value.trim() || undefined;
+
+    const extraVariants = parseVariants(variantsInput.value);
+    filmData.variants = [`/images/film/${filmData.filename}`];
+    if (extraVariants.length > 0) {
+      filmData.variants = filmData.variants.concat(extraVariants);
+    }
+
+    previewImg.src = previewImage.src;
+    previewImg.alt = filmData.meta.alt;
+    previewLink.href = filmData.variants[0];
+
+    previewFigure.className = filmData.meta.ratio > 1 ? 'figure-landscape' : 'figure-portrait';
+
+    const now = new Date();
+    const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    previewDate.textContent = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} (${weekdays[now.getDay()]})`;
+
+    if (filmData.meta.location) {
+      previewLocation.textContent = `@ ${filmData.meta.location}`;
+      previewLocation.hidden = false;
+    } else {
+      previewLocation.hidden = true;
+    }
+
+    if (filmData.meta.caption) {
+      previewCaption.textContent = filmData.meta.caption;
+      previewCaptionContainer.hidden = false;
+    } else {
+      previewCaptionContainer.hidden = true;
+    }
+
+    const detailParts = [];
+    if (filmData.meta.camera) detailParts.push(filmData.meta.camera);
+    if (filmData.meta.lens) detailParts.push(filmData.meta.lens);
+    if (filmData.meta.film) detailParts.push(filmData.meta.film);
+    if (filmData.meta.exposure) detailParts.push(filmData.meta.exposure);
+    if (filmData.meta.roll) detailParts.push(filmData.meta.roll);
+    if (filmData.meta.lab) detailParts.push(filmData.meta.lab);
+
+    if (detailParts.length > 0) {
+      previewDetailText.textContent = detailParts.join(' · ');
+      previewDetails.hidden = false;
+    } else {
+      previewDetails.hidden = true;
+    }
+
+    renderOutputJson();
+    togglePreviewOutputs();
+    updatePublishState();
+  }
+
+  function renderOutputJson() {
+    if (!filmData) return;
+
+    const output = {
+      id: filmData.id,
+      uploaded: filmData.uploaded,
+      variants: filmData.variants,
+      meta: {
+        ratio: filmData.meta.ratio,
+        alt: filmData.meta.alt,
+        camera: filmData.meta.camera,
+        film: filmData.meta.film
+      }
+    };
+
+    ['caption', 'location', 'lens', 'exposure', 'roll', 'lab'].forEach(key => {
+      if (filmData.meta[key]) {
+        output.meta[key] = filmData.meta[key];
+      }
+    });
+
+    jsonOutput.textContent = JSON.stringify(output, null, 2);
+  }
+
+  function toggleSections(hasData) {
+    formSection.hidden = !hasData;
+    if (!hasData) {
+      previewSection.hidden = true;
+      outputSection.hidden = true;
+    }
+  }
+
+  function togglePreviewOutputs() {
+    const ready = validateRequired();
+    previewSection.hidden = !ready;
+    outputSection.hidden = !ready;
+  }
+
+  function validateRequired() {
+    return Boolean(filmData && filmData.meta && filmData.meta.alt && filmData.meta.camera && filmData.meta.film);
+  }
+
+  function updatePublishState() {
+    publishBtn.disabled = !canPublish();
+  }
+
+  function canPublish() {
+    return Boolean(validateRequired() && selectedFile && accessKeyInput.value.trim().length > 0);
+  }
+
+  async function publishFilm(accessKey) {
+    try {
+      setPublishLoading(true);
+      showPublishStatus('正在准备上传…', 'info');
+
+      const payload = await buildUploadPayload();
+      const response = await fetch('/api/upload-film', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Access-Key': accessKey
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || `HTTP ${response.status}`);
+      }
+
+      const result = await response.json();
+      if (result?.success) {
+        localStorage.setItem('film-access-key', btoa(accessKey));
+        showPublishStatus('发布完成，新的胶片照片已经排队生成。', 'success');
+        setTimeout(() => {
+          if (confirm('胶片已经上传，重新开始吗？')) {
+            window.location.reload();
+          }
+        }, 2000);
+      } else {
+        throw new Error(result?.error || '服务端没有返回成功标记');
+      }
+    } catch (error) {
+      console.error('上传失败:', error);
+      showPublishStatus(`上传失败：${error.message}`, 'error');
+    } finally {
+      setPublishLoading(false);
+    }
+  }
+
+  async function buildUploadPayload() {
+    if (!selectedFile || !filmData) throw new Error('缺少必要的上传数据');
+
+    const base64Data = await toBase64(selectedFile);
+
+    const payload = {
+      imageData: base64Data,
+      filename: filmData.filename,
+      filmData: {
+        id: filmData.id,
+        uploaded: filmData.uploaded,
+        variants: filmData.variants,
+        meta: {
+          ratio: filmData.meta.ratio,
+          alt: filmData.meta.alt,
+          camera: filmData.meta.camera,
+          film: filmData.meta.film
+        }
+      }
+    };
+
+    ['caption', 'location', 'lens', 'exposure', 'roll', 'lab'].forEach(key => {
+      if (filmData.meta[key]) {
+        payload.filmData.meta[key] = filmData.meta[key];
+      }
+    });
+
+    return payload;
+  }
+
+  function setPublishLoading(state) {
+    publishBtn.disabled = state || !canPublish();
+    publishBtn.querySelector('.btn-text').hidden = state;
+    publishBtn.querySelector('.btn-loading').hidden = !state;
+  }
+
+  function showPublishStatus(message, tone) {
+    publishStatus.textContent = message;
+    publishStatus.dataset.tone = tone;
+    publishStatus.hidden = false;
+
+    if (tone === 'success') {
+      setTimeout(() => {
+        publishStatus.hidden = true;
+      }, 6000);
+    }
+  }
+
+  function handleCopyJson() {
+    navigator.clipboard.writeText(jsonOutput.textContent).then(() => {
+      const original = copyJsonBtn.textContent;
+      copyJsonBtn.textContent = '已复制';
+      copyJsonBtn.classList.add('copied');
+      setTimeout(() => {
+        copyJsonBtn.textContent = original;
+        copyJsonBtn.classList.remove('copied');
+      }, 1800);
+    });
+  }
+
+  function parseVariants(value) {
+    if (!value) return [];
+    return value.split(',')
+      .map(item => item.trim())
+      .filter(Boolean);
+  }
+
+  function deriveFilename(file, uuid) {
+    const ext = extractExtension(file?.name) || 'jpg';
+    return `${uuid}.${ext}`;
+  }
+
+  function extractExtension(name = '') {
+    const match = name.match(/\.([a-zA-Z0-9]{2,5})$/);
+    return match ? match[1].toLowerCase() : '';
+  }
+
+  function toBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = event => resolve(event.target.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, char => {
+      const random = Math.random() * 16 | 0;
+      const value = char === 'x' ? random : (random & 0x3 | 0x8);
+      return value.toString(16);
+    });
+  }
+
+  function getImageInfo(file) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const ratio = Number((img.width / img.height).toFixed(2));
+        resolve({
+          ratio,
+          width: img.width,
+          height: img.height
+        });
+      };
+      img.onerror = reject;
+      img.src = URL.createObjectURL(file);
+    });
+  }
+
+  async function readExifData(file) {
+    const arrayBuffer = await file.arrayBuffer();
+    const dataView = new DataView(arrayBuffer);
+
+    if (dataView.getUint16(0, false) !== 0xFFD8) {
+      return {};
+    }
+
+    let offset = 2;
+    const length = dataView.byteLength;
+
+    while (offset < length) {
+      if (dataView.getUint8(offset) !== 0xFF) break;
+      const marker = dataView.getUint8(offset + 1);
+      const size = dataView.getUint16(offset + 2, false);
+      if (marker === 0xE1) {
+        const exifHeader = getString(dataView, offset + 4, 4);
+        if (exifHeader === 'Exif') {
+          return parseExifSegment(dataView, offset + 10);
+        }
+      }
+      offset += 2 + size;
+    }
+
+    return {};
+  }
+
+  function getString(dataView, start, length) {
+    let out = '';
+    for (let i = 0; i < length; i++) {
+      const charCode = dataView.getUint8(start + i);
+      if (charCode === 0) break;
+      out += String.fromCharCode(charCode);
+    }
+    return out;
+  }
+
+  function parseExifSegment(dataView, start) {
+    const byteOrder = getString(dataView, start, 2);
+    const littleEndian = byteOrder === 'II';
+    const firstIFDOffset = dataView.getUint32(start + 4, littleEndian);
+    const baseOffset = start;
+
+    const tags = {};
+    const ifd0 = readIFD(dataView, baseOffset + firstIFDOffset, littleEndian, baseOffset);
+    Object.assign(tags, ifd0.values);
+
+    if (ifd0.nextIFD) {
+      const ifd1 = readIFD(dataView, baseOffset + ifd0.nextIFD, littleEndian, baseOffset);
+      Object.assign(tags, ifd1.values);
+    }
+
+    if (ifd0.values.ExifIFDPointer) {
+      const exifIFD = readIFD(dataView, baseOffset + ifd0.values.ExifIFDPointer, littleEndian, baseOffset);
+      Object.assign(tags, exifIFD.values);
+    }
+
+    const result = {};
+    const make = tags.Make ? String(tags.Make).trim() : '';
+    const model = tags.Model ? String(tags.Model).trim() : '';
+    const combined = [make, model].filter(Boolean).join(' ').replace(/\s{2,}/g, ' ');
+    const lowerCombined = combined.toLowerCase();
+    const scannerKeywords = ['scanner', 'scan', 'epson', 'noritsu', 'frontier', 'sp-3000', 'sp3000', 'qss', 'imacon', 'flextight', 'coolscan', 'plustek', 'v600', 'v700', 'v750', 'v800', 'v850'];
+
+    if (combined) {
+      const isScanner = scannerKeywords.some(keyword => lowerCombined.includes(keyword));
+      if (isScanner) {
+        result.lab = combined;
+      } else {
+        result.camera = combined;
+      }
+    }
+
+    if (tags.LensModel) {
+      result.lens = tags.LensModel;
+    }
+
+    if (tags.ExposureTime || tags.FNumber) {
+      result.exposure = formatExposure(tags.ExposureTime, tags.FNumber);
+    }
+
+    if (tags.ISOSpeedRatings) {
+      result.roll = `ISO ${tags.ISOSpeedRatings}`;
+    }
+
+    if (tags.Software) {
+      const software = String(tags.Software).trim();
+      if (software) {
+        result.lab = result.lab ? `${result.lab} · ${software}` : software;
+      }
+    }
+
+    result.src = 'exif';
+    return result;
+  }
+
+  function readIFD(dataView, offset, littleEndian, baseOffset) {
+    try {
+      const entries = dataView.getUint16(offset, littleEndian);
+      const values = {};
+      for (let i = 0; i < entries; i++) {
+        const entryOffset = offset + 2 + (i * 12);
+        const tag = dataView.getUint16(entryOffset, littleEndian);
+        const type = dataView.getUint16(entryOffset + 2, littleEndian);
+        const count = dataView.getUint32(entryOffset + 4, littleEndian);
+        let valueOffset = dataView.getUint32(entryOffset + 8, littleEndian);
+
+        const valueLength = getTypeLength(type) * count;
+        if (valueLength <= 4) {
+          valueOffset = entryOffset + 8;
+        } else {
+          valueOffset = baseOffset + valueOffset;
+        }
+
+        const value = readTagValue(dataView, type, count, valueOffset, littleEndian);
+        assignTag(values, tag, value);
+      }
+      const nextIFDOffset = dataView.getUint32(offset + 2 + (entries * 12), littleEndian);
+      return { values, nextIFD: nextIFDOffset };
+    } catch (error) {
+      console.warn('IFD 解析异常:', error);
+      return { values: {}, nextIFD: 0 };
+    }
+  }
+
+  function getTypeLength(type) {
+    switch (type) {
+      case 1:
+      case 2:
+      case 7:
+        return 1;
+      case 3:
+        return 2;
+      case 4:
+      case 9:
+        return 4;
+      case 5:
+      case 10:
+        return 8;
+      default:
+        return 0;
+    }
+  }
+
+  function readTagValue(dataView, type, count, offset, littleEndian) {
+    switch (type) {
+      case 2: { // ASCII
+        return getString(dataView, offset, count).trim();
+      }
+      case 3: { // SHORT
+        if (count === 1) return dataView.getUint16(offset, littleEndian);
+        return Array.from({ length: count }, (_, index) => dataView.getUint16(offset + index * 2, littleEndian));
+      }
+      case 4: { // LONG
+        if (count === 1) return dataView.getUint32(offset, littleEndian);
+        return Array.from({ length: count }, (_, index) => dataView.getUint32(offset + index * 4, littleEndian));
+      }
+      case 5: { // RATIONAL
+        if (count === 1) return readRational(dataView, offset, littleEndian);
+        return Array.from({ length: count }, (_, index) => readRational(dataView, offset + index * 8, littleEndian));
+      }
+      case 10: { // SRATIONAL
+        if (count === 1) return readSRational(dataView, offset, littleEndian);
+        return Array.from({ length: count }, (_, index) => readSRational(dataView, offset + index * 8, littleEndian));
+      }
+      default:
+        return null;
+    }
+  }
+
+  function readRational(dataView, offset, littleEndian) {
+    const numerator = dataView.getUint32(offset, littleEndian);
+    const denominator = dataView.getUint32(offset + 4, littleEndian);
+    if (!denominator) return 0;
+    return Number((numerator / denominator).toFixed(4));
+  }
+
+  function readSRational(dataView, offset, littleEndian) {
+    const numerator = dataView.getInt32(offset, littleEndian);
+    const denominator = dataView.getInt32(offset + 4, littleEndian);
+    if (!denominator) return 0;
+    return Number((numerator / denominator).toFixed(4));
+  }
+
+  function assignTag(values, tag, value) {
+    switch (tag) {
+      case 0x010F: values.Make = value; break;
+      case 0x0110: values.Model = value; break;
+      case 0x829A: values.ExposureTime = formatExposureTime(value); break;
+      case 0x829D: values.FNumber = formatFNumber(value); break;
+      case 0x8827: values.ISOSpeedRatings = Array.isArray(value) ? value[0] : value; break;
+      case 0x8769: values.ExifIFDPointer = value; break;
+      case 0x920A: values.FocalLength = value; break;
+      case 0xA405: values.FocalLengthIn35mmFilm = value; break;
+      case 0xA434: values.LensModel = value; break;
+      case 0x0131: values.Software = value; break;
+      default:
+        break;
+    }
+  }
+
+  function formatExposureTime(value) {
+    if (Array.isArray(value)) value = value[0];
+    if (!value) return '';
+    if (value >= 1) {
+      return `${Number(value.toFixed(2))}s`;
+    }
+    const denominator = Math.round(1 / value);
+    return `1/${denominator}s`;
+  }
+
+  function formatFNumber(value) {
+    if (Array.isArray(value)) value = value[0];
+    if (!value) return '';
+    return Number(value.toFixed(1));
+  }
+
+  function formatExposure(exposureTime, fNumber) {
+    const parts = [];
+    if (fNumber) parts.push(`f/${fNumber}`);
+    if (exposureTime) parts.push(exposureTime);
+    return parts.join(' · ');
+  }
+
+  function parseFromFileName(name) {
+    if (!name) return {};
+    const base = name.replace(/\.[^.]+$/, '');
+    const insights = { src: 'filename' };
+
+    const segments = base.split(/--+/).map(segment => segment.trim()).filter(Boolean);
+
+    if (segments.length >= 1) {
+      insights.camera = formatGuess(segments[0]);
+    }
+    if (segments.length >= 2) {
+      insights.film = formatGuess(segments[1]);
+    }
+    if (segments.length >= 3) {
+      insights.location = formatGuess(segments[2]).replace(/_/g, ' ');
+    }
+    if (segments.length >= 4) {
+      insights.caption = segments.slice(3).join(' · ');
+    }
+
+    return insights;
+  }
+
+  function formatGuess(value) {
+    if (!value) return '';
+    return value.replace(/[\-_]+/g, ' ').replace(/\s{2,}/g, ' ').replace(/\b([a-z])/g, char => char.toUpperCase());
+  }
+
+  function formatFileSize(bytes) {
+    if (!bytes) return '0 B';
+    const base = 1024;
+    const units = ['B', 'KB', 'MB', 'GB'];
+    const exponent = Math.min(Math.floor(Math.log(bytes) / Math.log(base)), units.length - 1);
+    return `${(bytes / Math.pow(base, exponent)).toFixed(2)} ${units[exponent]}`;
+  }
+
+  function escapeHtml(value) {
+    const htmlMap = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    };
+    return value.replace(/[&<>"']/g, char => htmlMap[char] || char);
+  }
+})();
+</script>

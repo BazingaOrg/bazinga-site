@@ -1,0 +1,28 @@
+---
+permalink: /blogroll.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+{% capture srcbase %}src="{{site.url}}/{% endcapture %}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>@Bazinga's blogroll</title>
+    <description>Links to other people's great blogs/websites.</description>
+    {% if site.data.blogroll and site.data.blogroll.size > 0 %}
+    {% assign blogs = site.data.blogroll | sort: "added_at"  %}
+    <lastBuildDate>{{ blogs.last.added_at | date_to_rfc822 }}</lastBuildDate>
+    {% endif %}
+    <atom:link href="{{ site.url }}{{ page.permalink }}" rel="self" type="application/rss+xml" />
+    <link>{{ site.url }}{{ page.permalink }}</link>
+    {% if site.data.blogroll and site.data.blogroll.size > 0 %}
+    {% for blog in blogs limit:10 %}
+      <item>
+        <title>{{ blog.title | xml_escape }}</title>
+        <link>{{ blog.url }}</link>
+        <description>{{ blog.description }}</description>
+        <pubDate>{{ blog.added_at | date_to_rfc822 }}</pubDate>
+        <guid isPermaLink="true">{{ blog.url }}</guid>
+      </item>
+    {% endfor %}
+    {% endif %}
+  </channel>
+</rss>

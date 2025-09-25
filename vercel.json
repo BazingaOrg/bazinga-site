@@ -1,0 +1,41 @@
+{
+  "buildCommand": "bundle exec jekyll build",
+  "outputDirectory": "_site",
+  "installCommand": "bundle install",
+  "devCommand": "bundle exec jekyll serve --host 0.0.0.0 --port $PORT",
+  "framework": null,
+  "routes": [
+    {
+      "src": "/feed.xml",
+      "dest": "/feed.xml",
+      "headers": {
+        "Content-Type": "application/rss+xml"
+      }
+    },
+    {
+      "src": "/notes.xml",
+      "dest": "/notes.xml",
+      "headers": {
+        "Content-Type": "application/rss+xml"
+      }
+    },
+    {
+      "src": "/photos.xml",
+      "dest": "/photos.xml",
+      "headers": {
+        "Content-Type": "application/rss+xml"
+      }
+    },
+    {
+      "src": "/stories.xml",
+      "dest": "/stories.xml",
+      "headers": {
+        "Content-Type": "application/rss+xml"
+      }
+    },
+    {
+      "src": "/like",
+      "dest": "/like.html"
+    }
+  ]
+}

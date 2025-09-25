@@ -1,0 +1,40 @@
+---
+permalink: /stories.json
+---
+{%- assign stories = site.data.stories | sort: "uploaded" | where_exp: "story", "story.meta.tags contains 'Life'" | reverse -%}
+{%- assign one_day_ago = site.time | date: "%s" | minus: 86400 -%}
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "Bazinga's stories",
+  "icon": "https://github.com/bazingaOrg.png",
+  "home_page_url": "https://site.bazinga.ink/",
+  "feed_url": "https://site.bazinga.ink/stories.json",
+  "description": "Stories.",
+  "_open_stories": {
+    "version": "0.0.9"
+  },
+  "items": [{% for story in stories limit: 10 %}{% assign story_time = story.uploaded | date: "%s" | plus: 0 %}{% if story_time < one_day_ago %}{% continue %}{% endif %}{% if stories.first != story %},{% endif %}
+    {%- assign tag = story.meta.tags | join: "," | remove: ",Highlight" | split: "," | last -%}
+    {
+      "id": "{{ story.id }}",
+      "date_published": "{{ story.uploaded | date_to_xmlschema }}", {% assign date_expired = story.uploaded | date: "%s" | plus: 86400 | date_to_xmlschema %}
+      "tags": [{% for tag in story.meta.tags %}"{{ tag }}"{% if tag != story.meta.tags.last %}, {% endif %}{% endfor %}],
+      "content_html": "{% if story.playback %}<video src='${story.meta.url}' controls></video>{{ story.meta.title }}{% else %}<img src='{{ story.variants[0] }}' alt='{{ story.meta.alt }}'>{% endif %}",
+      "title": "{{ story.uploaded | date: "%Y/%m/%d" }} {{ tag }}",
+      "summary": "{% if story.meta.caption == "" %}N/A{% else %}{{ story.meta.caption }}{% endif %} ({{ story.meta.alt }})",
+      "authors": [{"name": "Bazinga", "url": "https://site.bazinga.ink"}],{% if story.meta.tags contains "Highlight" %}
+      "url": "{{ site.url }}/stories/{{ story.id }}",
+      {% endif %}"_open_stories": {
+        "mime_type": "{% if story.meta.filetype %}{{ story.meta.filetype }}{% else %}image/jpeg{% endif %}",
+        "url": "{% if story.playback %}{{ story.meta.url }}{% else %}{{ story.variants[0] }}{% endif %}",{% if story.meta.alt %}
+        "alt": "{{ story.meta.alt }}",{% endif %}{% if story.meta.caption %}
+        "caption": "{{ story.meta.caption }}",{% endif %}{% if story.meta.title %}
+        "title": "{{ story.meta.title }}",{% endif %}
+        "date_expired": "{{ date_expired }}",
+        "reactions": {
+          "open_heart_urls": ["https://site.bazinga.ink{% link _pages/like.html %}?id=/stories/{{ story.id }}"]
+        }
+      }
+    }{% endfor %}
+  ]
+}

@@ -1,0 +1,45 @@
+title:            Bazinga
+description:      Bazinga's home page on the World Wide Web.
+url:              https://site.bazinga.ink
+lang:              en-US
+permalink:        /posts/:title
+timezone:         Asia/Shanghai
+sass:
+  sass_dir: assets
+  style: :compressed
+collections:
+  notes:
+    output: true
+  pages:
+    output: true
+    permalink: /:name/
+  stories:
+    output: true
+i18n:
+  en-US:
+    accessibility: Accessibility statement
+    source: View source
+  zh-CN:
+    Travel: 旅行
+    Animals: 动物
+    Taiwan: 台湾
+    Books: 书籍
+    Cook: 厨房
+    Plants: 植物
+    24h: 今天
+    Mails: 邮件
+    Friends: 朋友
+    Oven: 烤箱
+    Self: 本人
+    Polaroid: 拍立得
+    Chat: 对话
+    Meow: 喵咪
+    Hobby: 兴趣
+    accessibility: 无障碍声明
+    source: 查看源码
+include: [".well-known"]
+markdown: CommonMarkGhPages
+commonmark:
+  options: ["UNSAFE", "HARDBREAKS"]
+  extensions: ["strikethrough", "autolink", "table"]
+recent_date: "2025/07/30"

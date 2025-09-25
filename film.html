@@ -1,0 +1,47 @@
+---
+layout: default
+type: photos
+has_open_heart: true
+title: Film
+permalink: /film/
+---
+
+<div class="photos-wrapper" id="photos">
+{% assign photos = site.data.film | sort: "uploaded" | reverse %}
+{% for photo in photos %}
+<figure id="P{{ photo.id }}" class="figure-{% if photo.meta.ratio > 1 %}landscape{% else %}portrait{% endif %}">
+  {% assign image_url = photo.variants[0] %}
+  <a href="{{ image_url }}" class="image-link"
+     data-umami-event="film_full_view"
+     data-umami-event-photo-id="{{ photo.id }}"
+     data-umami-event-location="film_page"
+     data-umami-event-ratio="{% if photo.meta.ratio > 1 %}landscape{% else %}portrait{% endif %}"
+     data-umami-event-camera="{{ photo.meta.camera }}"
+     data-umami-event-film="{{ photo.meta.film }}">
+    <img
+      src="{{ image_url }}"
+      alt="{{ photo.meta.alt }}"
+      title="{{ photo.meta.alt }}"
+      loading="lazy"
+      decoding="async">
+  </a>
+  <figcaption>
+    <div class="desc photo-metadata">
+      <div>{{ photo.uploaded | date: "%Y/%m/%d (%a)" }}</div>
+      {% if photo.meta.location  %}<div>@ {{ photo.meta.location }}</div>{% endif %}
+      <open-heart class="text-open-heart" href="https://site.bazinga.ink/like?id=film-P{{ photo.id }}" emoji="❤️" aria-labelledby="like-prompt">
+        <span class="on">Liked ♥︎.</span><span class="off">Like?</span>
+      </open-heart>
+    </div>
+    {% if photo.meta.caption %}
+    <div class="caption-container">
+      <div class="caption-content">{{ photo.meta.caption | markdownify }}</div>
+      <button class="caption-toggle" style="display: none;">展开</button>
+    </div>
+    {% endif %}
+    <details class="monospace smol"><summary>Camera details</summary>{{ photo.meta.camera }} + {{ photo.meta.film }}</details>
+  </figcaption>
+</figure>
+{% endfor %}
+
+</div>

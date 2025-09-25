@@ -1,0 +1,93 @@
+{%- comment -%}
+GitHub风格年度贡献热力图数据生成器
+根据网站的Posts、Notes、Stories计算每日活跃度，生成JSON数据供前端使用
+{%- endcomment -%}
+
+{%- assign current_year = "now" | date: "%Y" | plus: 0 -%}
+{%- assign timeline_data = "" -%}
+{%- assign year_start = current_year | append: "-01-01" -%}
+
+{%- comment -%}
+活跃度权重设置：
+- Posts: 3分 (重要内容，权重最高)
+- Stories: 2分 (图片故事，中等权重)  
+- Notes: 1分 (日常笔记，基础权重)
+
+颜色等级划分：
+- Level 0: 0分 (无活动)
+- Level 1: 1-2分 (轻度活跃)
+- Level 2: 3-5分 (中度活跃)  
+- Level 3: 6-9分 (高度活跃)
+- Level 4: 10+分 (极度活跃)
+{%- endcomment -%}
+
+{%- for day_offset in (0..364) -%}
+  {%- assign days_since_epoch = year_start | date: "%s" | divided_by: 86400 | plus: day_offset -%}
+  {%- assign check_date = days_since_epoch | times: 86400 | date: "%Y-%m-%d" -%}
+  {%- assign activity_count = 0 -%}
+  
+  {%- comment -%} 统计当日Posts {%- endcomment -%}
+  {%- for post in site.posts -%}
+    {%- assign post_date = post.date | date: "%Y-%m-%d" -%}
+    {%- if post_date == check_date -%}
+      {%- assign activity_count = activity_count | plus: 3 -%}
+    {%- endif -%}
+  {%- endfor -%}
+  
+  {%- comment -%} 统计当日Notes {%- endcomment -%}
+  {%- for note in site.notes -%}
+    {%- assign note_date = note.date | date: "%Y-%m-%d" -%}
+    {%- if note_date == check_date -%}
+      {%- assign activity_count = activity_count | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%}
+  
+  {%- comment -%} 统计当日Stories {%- endcomment -%}
+  {%- for story in site.stories -%}
+    {%- assign story_date = story.date | date: "%Y-%m-%d" -%}
+    {%- if story_date == check_date -%}
+      {%- assign activity_count = activity_count | plus: 2 -%}
+    {%- endif -%}
+  {%- endfor -%}
+  
+  {%- comment -%} 将活跃度转换为GitHub风格的颜色等级 {%- endcomment -%}
+  {%- assign color_level = 0 -%}
+  {%- if activity_count >= 1 -%}
+    {%- assign color_level = 1 -%}
+  {%- endif -%}
+  {%- if activity_count >= 3 -%}
+    {%- assign color_level = 2 -%}
+  {%- endif -%}
+  {%- if activity_count >= 6 -%}
+    {%- assign color_level = 3 -%}
+  {%- endif -%}
+  {%- if activity_count >= 10 -%}
+    {%- assign color_level = 4 -%}
+  {%- endif -%}
+  
+  {%- comment -%} 构造JSON数据 {%- endcomment -%}
+  {%- assign day_data = '{"date":"' | append: check_date | append: '","count":' | append: activity_count | append: ',"level":' | append: color_level | append: '}' -%}
+  
+  {%- if day_offset == 0 -%}
+    {%- assign timeline_data = day_data -%}
+  {%- else -%}
+    {%- assign timeline_data = timeline_data | append: ',' | append: day_data -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<script>
+  // 全局时间轴数据，供年度热力图使用
+  window.timelineData = [{{ timeline_data }}];
+  
+  // 开发环境调试信息
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    console.log('📊 Timeline data loaded:', window.timelineData.length, 'days');
+    
+    const totalContributions = window.timelineData.reduce((sum, day) => sum + day.count, 0);
+    const activeDays = window.timelineData.filter(day => day.count > 0).length;
+    
+    console.log('📈 Total contributions:', totalContributions);
+    console.log('🗓️ Active days:', activeDays);
+    console.log('📅 Sample data:', window.timelineData.slice(0, 5));
+  }
+</script>

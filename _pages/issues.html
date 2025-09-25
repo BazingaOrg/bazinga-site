@@ -1,0 +1,33 @@
+---
+layout: default
+title: GitHub issues I care about
+open_heart: true
+---
+
+<p>
+  <a href="https://www.youtube.com/watch?v=EmLHOGT0v4c">The issues</a> (music video)<br>
+  <a href="/issues.xml">RSS</a>
+</p>
+
+{% if site.data.issues and site.data.issues.size > 0 %}
+<ul class="issues">
+{% for issue in site.data.issues %}
+  <li class="issue" id="issues-{{ forloop.rindex }}">
+    <hr>
+    <div class="general-actions">
+      <a href="#issues-{{ forloop.rindex }}" title="anchor" class="monospace">
+        {{ issue.date | date: "%b %e, %Y" }}
+      </a>
+      <button type="button" class="share-button monospace" data-share-url="{{ issue.url }}" hidden>Share</button>
+    </div>
+    <a href="{{ issue.url }}">{{ issue.title | escape }}</a>
+    {{ issue.note | markdownify }}
+  </li>
+{% endfor %}
+</ul>
+{% else %}
+<div class="empty-state">
+  <p><em>No GitHub issues are currently being tracked.</em></p>
+  <p class="smol">Issues that catch my attention will appear here. Check back later!</p>
+</div>
+{% endif %}

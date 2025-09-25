@@ -1,0 +1,35 @@
+---
+layout: default
+title: Liking via RSS
+---
+
+<p id="status">Processing...</p>
+<script>
+  // 获取页面 ID
+  const id = new URLSearchParams(window.location.search).get('id')
+  const status = document.querySelector('#status')
+  
+  if (!id) {
+    status.textContent = 'Nothing to like.'
+  } else {
+    // 直接调用 API
+    fetch(`/api/likes?id=${encodeURIComponent(id)}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        status.innerHTML = `❤️ Like recorded! (${data.count} total)<br><small>Page: ${id}</small>`
+      } else {
+        status.textContent = 'Error recording like.'
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error)
+      status.textContent = 'Error recording like.'
+    })
+  }
+</script>

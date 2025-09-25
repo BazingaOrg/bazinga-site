@@ -1,0 +1,44 @@
+---
+layout: default
+type: photos
+has_open_heart: true
+title: Photos
+permalink: /photos/
+---
+
+<div class="photos-wrapper" id="photos">
+{% assign photos = site.data.photos | sort: "uploaded" | reverse %}
+{% for photo in photos %}
+<figure id="P{{ photo.id }}" class="figure-{% if photo.meta.ratio > 1 %}landscape{% else %}portrait{% endif %}">
+  {% assign image_url = photo.variants[0] %}
+  <a href="{{ image_url }}" class="image-link"
+     data-umami-event="photo_full_view"
+     data-umami-event-photo-id="{{ photo.id }}"
+     data-umami-event-location="photos_page"
+     data-umami-event-ratio="{% if photo.meta.ratio > 1 %}landscape{% else %}portrait{% endif %}">
+    <img
+      src="{{ image_url }}"
+      alt="{{ photo.meta.alt }}"
+      title="{{ photo.meta.alt }}"
+      loading="lazy"
+      decoding="async">
+  </a>
+  <figcaption>
+    <div class="desc photo-metadata">
+      <div>{{ photo.uploaded | date: "%Y/%m/%d (%a)" }}</div>
+      {% if photo.meta.location  %}<div>@ {{ photo.meta.location }}</div>{% endif %}
+      <open-heart class="text-open-heart" href="https://site.bazinga.ink/like?id=photo-P{{ photo.id }}" emoji="❤️" aria-labelledby="like-prompt">
+        <span class="on">Liked ♥︎.</span><span class="off">Like?</span>
+      </open-heart>
+    </div>
+    {% if photo.meta.caption %}
+    <div class="caption-container">
+      <div class="caption-content">{{ photo.meta.caption | markdownify }}</div>
+      <button class="caption-toggle" style="display: none;">展开</button>
+    </div>
+    {% endif %}
+  </figcaption>
+</figure>
+{% endfor %}
+
+</div>

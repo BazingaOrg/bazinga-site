@@ -1,0 +1,439 @@
+{% assign lang = page.lang | default: page.locale | default: site.lang | default: 'en-US' %}
+{% unless page.lang or page.locale %}
+  {% if page.url contains '/zh-CN/' or page.path contains 'zh-CN' %}
+    {% assign lang = 'zh-CN' %}
+  {% elsif page.url contains '/de-DE/' or page.path contains 'de-DE' %}
+    {% assign lang = 'de-DE' %}
+  {% endif %}
+{% endunless %}
+<!doctype html>
+<html lang="{{ lang }}">
+  <head>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <link rel="alternate" type="application/rss+xml" href="/notes.xml">
+    <link rel="apple-touch-icon" href="{{ '/assets/apple-touch-icon.png?v1' | absolute_url }}">
+    <link rel="icon" href="/assets/apple-touch-icon.png?v1" type="image/png" sizes="500x500">
+    <link rel="icon" href="/assets/fav.svg?v1" type="image/svg+xml" sizes="24x24">
+    <!--link rel="icon" href="/assets/fav.png" type="image/png" sizes="96x96"-->
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan&display=swap" rel="stylesheet">
+    <link href="/assets/new.css" rel="stylesheet" type="text/css">
+    {% if page.collection == "posts" %}
+      <link href="/assets/syntax.css" rel="stylesheet" type="text/css">
+    {% endif %}
+    {% if page.title %}
+      <title>{{ page.title }}{% unless page.root %} @ {{ site.title }}{% endunless %}</title>
+      <meta content="{{ site.title }}" property="og:site_name">
+      <meta content="{{ page.title }}{% unless page.root %} @ {{ site.title }}{% endunless %}" name="twitter:title">
+    {% else %}
+      <title>{{ site.title }}</title>
+      <meta content="{{ site.title }}" property="og:site_name">
+      <meta content="{{ site.title }}" name="twitter:title">
+    {% endif %}
+    {% if page.collection == "posts" or page.collection == "notes" or page.collection == "stories" %}
+      <meta content="article" property="og:type">
+      <meta content="{{ site.url }}{{ page.url }}" property="og:url">
+      <meta content="{{ page.content | strip_html | truncate: 240 }}" name="description">
+      <meta content="{{ page.content | strip_html | truncate: 240 }}" name="og:description">
+      <meta content="{{ page.date | date_to_xmlschema }}" name="og:published_time">
+      <meta content="Bazinga" property="profile:username">
+      <!-- https://developer.apple.com/documentation/technotes/tn3156-create-rich-previews-for-messages#Enable-social-network-link-previews -->
+      <link href="{{ '/activitypub.json' | absolute_url }}" rel="alternate" type="application/activity+json">
+      {% if page.collection == "posts" or page.collection == "notes" %}
+        <meta content="article" property="og:type">
+        <meta name="twitter:card" content="summary_large_image">
+      {% endif %}
+      {% if page.image %}
+        <meta content="{{ page.image | prepend: '/images/' | absolute_url }}" property="og:image">
+        <meta content="{{ page.image | prepend: '/images/' | absolute_url }}" property="twitter:image">
+      {% elsif page.image_text %}
+        <meta content="{{ '/images/banner.png' | absolute_url }}" property="og:image">
+        <meta content="{{ '/images/banner.png' | absolute_url }}" property="twitter:image">
+      {% else %}
+        <meta property="og:image:width" content="200">
+        <meta property="og:image:height" content="200">
+        <meta content="{{ '/assets/logo.png' | absolute_url }}" property="twitter:image">
+        <meta content="{{ '/assets/logo.png' | absolute_url }}" property="og:image">
+      {% endif %}
+      
+    {% else %}
+      <meta content="summary" name="twitter:card">
+      <meta property="og:image:width" content="200">
+      <meta property="og:image:height" content="200">
+      <meta content="{{ '/assets/logo.png' | absolute_url }}" property="twitter:image">
+      <meta content="{{ '/assets/logo.png' | absolute_url }}" property="og:image">
+      <meta content="{{ site.description }}" name="description">
+      <meta content="website" property="og:type">
+    {% endif %}
+  </head>
+  
+  <body class="{% if page.root != true %}post-body{% endif %} col-{{ page.collection }}" data-page-type="{{ page.type }}">
+    <header>
+      {% if page.root != true %}
+        <div class="logo-container">
+          <a href="/{% if page.collection == "notes" %}notes{% endif %}" aria-label="Home" class="back-link"
+             data-umami-event="nav_back"
+             data-umami-event-from-page="{{ page.url }}"
+             data-umami-event-to-section="{% if page.collection == 'notes' %}notes{% else %}home{% endif %}"
+             data-umami-event-page-type="{{ page.collection | default: 'page' }}">&leftarrow;</a>
+          <svg class="logo" viewBox="0 0 196 169" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <title>Bazinga</title>
+            <path d="M8 92.7061H188" stroke="#cccccc" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M53 50.3528H143" stroke="#cccccc" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M83.0002 8H113" stroke="#cccccc" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M53.3782 160.773C64.4534 151.592 86.0271 133.546 97.4226 133.546C112.866 133.546 113.373 160.773 126.168 160.773C138.963 160.773 150.185 155.479 150.185 155.479" stroke="#cccccc" stroke-width="16" stroke-linecap="round"/>
+          </svg>
+          <span class="font">Bazinga</span>
+        </div>
+      {% endif %}
+      {% if page.root == true %}
+        {% include signature.html %}
+      {% endif %}
+      {% if page.collection == "posts" %}<time class="monospace" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %e, %Y" }}</time>{% endif %}
+      {% if page.collection == "notes" or page.collection == "stories" %}<time class="monospace" datetime="{{ page.date }}">{{ page.date | date: "%Y/%m/%d %H:%M" }}</time>{% endif %}
+      
+    </header>
+    <main>
+      {% capture content_and_then_some do %}
+        {% if page.type == "photos" %}
+          <input type="radio" name="layout" value="y-scroll" id="y-scroll">
+          <label for="y-scroll">
+            <svg width="15" height="15" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><title>vertical scroll</title><path d="M55 0a5 5 0 0 1 5 5v31a5 5 0 0 1-5 5H5a5 5 0 0 1-5-5V5a5 5 0 0 1 5-5h50ZM55 47a5 5 0 0 1 5 5v8H0v-8a5 5 0 0 1 5-5h50Z" fill="#D9D9D9"/></svg>
+          </label>
+          <input type="radio" name="layout" value="x-scroll" id="x-scroll">
+          <label for="x-scroll">
+            <svg width="15" height="15" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><title>horizontal scroll</title><path d="M0 5a5 5 0 0 1 5-5h30a5 5 0 0 1 5 5v50a5 5 0 0 1-5 5H5a5 5 0 0 1-5-5V5ZM47 5a5 5 0 0 1 5-5h8v60h-8a5 5 0 0 1-5-5V5Z" fill="#D9D9D9"/></svg>
+          </label>
+          <input type="radio" name="layout" value="grid2fr" id="grid2fr" checked>
+          <label for="grid2fr">
+            <svg width="15" height="15" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><title>grid 2 columns</title><path d="M0 37c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H4c-2 0-4-2-4-4V37zM0 4c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H4c-2 0-4-2-4-4V4zM33 37c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H37c-2 0-4-2-4-4V37zM33 4c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H37c-2 0-4-2-4-4V4z" fill="#D9D9D9"/></svg>
+          </label>
+          <input type="radio" name="layout" value="grid3fr" id="grid3fr">
+          <label for="grid3fr">
+            <svg width="15" height="15" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><title>grid 3 columns</title><path d="M22 4c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4h-8c-2 0-4-2-4-4V4zM0 26c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4H4c-2 0-4-2-4-4v-8zM22 26c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4h-8c-2 0-4-2-4-4v-8zM0 48c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4H4c-2 0-4-2-4-4v-8zM44 26c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4h-8c-2 0-4-2-4-4v-8zM22 48c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4h-8c-2 0-4-2-4-4v-8zM44 48c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4h-8c-2 0-4-2-4-4v-8zM0 4c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4H4c-2 0-4-2-4-4V4zM44 4c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4h-8c-2 0-4-2-4-4V4z" fill="#D9D9D9"/></svg>
+          </label>
+        {% endif %}
+        {{ content }}
+      {% endcapture %}
+
+      {% if page.collection == "posts" or page.collection == "pages" %}
+        <article>
+          {{ content_and_then_some }}
+        </article>
+      {% elsif page.collection == "notes" %}
+        <div class="note-content" lang="{{ page.lang }}">{{ content_and_then_some }}</div>
+        <div class="note-tags">{% for tag in page.tags %}<span class="note-tag" data-tag="{{ tag }}">{{ tag }}</span>{% endfor %}</div>
+      {% else %}
+        {{ content_and_then_some }}
+      {% endif %}
+      {% if page.feature == 1 or page.open_heart %}
+        <hr class="hr">
+        <div class="smol">
+          <div class="monospace">
+            <div id="like-prompt">Like this {% if page.collection == "posts" %}post{% elsif page.collection == "notes" %}note{% else %}page{% endif %}? let me know!</div>
+            &gt;<open-heart class="text-open-heart" href="https://site.bazinga.ink/like?id={{ page.url }}" emoji="❤️" aria-labelledby="like-prompt">
+              <span class="on">Liked.<br>(Thanks!)</span><span class="off">Sure. <kbd>⏎</kbd></span>
+            </open-heart>
+          </div>
+        </div>
+      {% endif %}
+    </main>
+    <footer>
+      {% if page.root != true %}
+        <div class="footer-signature">
+          {% include signature.html %}
+        </div>
+      {% endif %}
+      <hr class="hr">
+      <nav class="monospace" aria-label="About this site">
+        <a href="https://github.com/bazingaOrg/site"
+           data-umami-event="footer_source_click"
+           data-umami-event-section="footer"
+           data-umami-event-lang="{{ lang }}">{{ site.i18n[lang].source }}</a>
+      </nav>
+      <p>
+        <a title="88×31" href="{% link _pages/banners.md %}"
+           data-umami-event="footer_banner_click"
+           data-umami-event-section="footer"
+           data-umami-event-type="banner"
+           data-umami-event-lang="{{ lang }}"><img loading="lazy" src="/images/banner.svg" width="88" height="31" alt="Banner assets. An animated banner with one short line, one medium line, one long line, a symbol resembling the tilde, each being drawn in order."></a>
+        <a href="http://www.rssboard.org/rss-validator/"
+           data-umami-event="footer_validator_click"
+           data-umami-event-section="footer"
+           data-umami-event-type="rss_validator"
+           data-umami-event-lang="{{ lang }}"><img loading="lazy" src="/images/banners/valid-rss-rogers.png" width="88" height="31" alt="Valid RSS feeds available."></a>
+      </p>
+    </footer>
+    
+    <script type="module" src="/assets/site.js"></script>
+
+    {% if jekyll.environment == 'production' %}
+    {% comment %}<!-- 用户旅程分析追踪 - 仅在生产环境启用 -->{% endcomment %}
+    <script type="module" src="/assets/journey-tracking.js"></script>
+    {% comment %}<!-- 内容浏览页面旅程追踪增强 -->{% endcomment %}
+    <script type="module" src="/assets/content-journey-tracking.js"></script>
+    {% comment %}<!-- 内容健康度评分系统 -->{% endcomment %}
+    <script type="module" src="/assets/content-health-scoring.js"></script>
+    {% comment %}<!-- A/B 测试框架 -->{% endcomment %}
+    <script type="module" src="/assets/ab-testing.js"></script>
+    {% comment %}<!-- 服务端追踪集成 -->{% endcomment %}
+    <script type="module" src="/assets/server-tracking.js"></script>
+    {% comment %}<!-- 性能指标追踪 -->{% endcomment %}
+    <script type="module" src="/assets/performance-tracking.js"></script>
+    {% comment %}<!-- 写作页面的表单交互追踪 -->{% endcomment %}
+    {% assign write_pages = "write-note,write-photo,write-film,write-post" | split: "," %}
+    {% assign page_name = page.url | remove: "/" | remove: ".html" %}
+    {% if write_pages contains page_name %}
+    <script type="module" src="/assets/form-tracking.js"></script>
+    {% endif %}
+    {% endif %}
+
+    {% if page.root %}
+    <script type="module" src="/assets/root.js"></script>
+    <script type="module" src="https://unpkg.com/open-stories-element@latest"></script>
+    {% if jekyll.environment == 'production' %}
+    {% comment %}<!-- Stories 浏览行为追踪 -->{% endcomment %}
+    <script type="module" src="/assets/stories-tracking.js"></script>
+    {% endif %}
+    {% endif %}
+    {% if page.feature == 1 or page.open_heart or page.has_open_heart %}
+    <script type="module" src="https://unpkg.com/open-heart-element@latest"></script>
+    <script>
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(async (entry) => {
+          await customElements.whenDefined('open-heart')
+          if (entry.target instanceof OpenHeartElement && entry.isIntersecting) {
+            entry.target.getCount()
+            observer.unobserve(entry.target)
+          }
+        })
+      })
+
+      // Track open-heart interactions with umami
+      document.addEventListener('open-heart:liked', function(event) {
+        const heartElement = event.target;
+        const pageType = '{{ page.collection | default: "page" }}';
+        const pageUrl = window.location.pathname;
+        const pageTitle = '{{ page.title | default: site.title }}';
+        
+        // Track like event with umami
+        if (typeof window.umami !== 'undefined' && window.umami.track) {
+          window.umami.track('like', {
+            content_type: pageType,
+            content_url: pageUrl,
+            content_title: pageTitle,
+            language: '{{ lang }}'
+          });
+        }
+      });
+
+      document.addEventListener('open-heart:unliked', function(event) {
+        const heartElement = event.target;
+        const pageType = '{{ page.collection | default: "page" }}';
+        const pageUrl = window.location.pathname;
+        const pageTitle = '{{ page.title | default: site.title }}';
+        
+        // Track unlike event with umami
+        if (typeof window.umami !== 'undefined' && window.umami.track) {
+          window.umami.track('unlike', {
+            content_type: pageType,
+            content_url: pageUrl,
+            content_title: pageTitle,
+            language: '{{ lang }}'
+          });
+        }
+      });
+
+      for (const oh of document.querySelectorAll('open-heart')) {
+        observer.observe(oh)
+      }
+    </script>
+    {% endif %}
+    {% if page.type == "photos" %}
+      {% comment %}<!-- 照片页面旅程追踪增强 -->{% endcomment %}
+      <script type="module" src="/assets/photo-journey-tracking.js"></script>
+      <script>
+        const photos = document.querySelector('#photos')
+        const xScroll = document.querySelector('#x-scroll')
+
+        // 照片描述折叠功能
+        document.querySelectorAll('.caption-container').forEach(container => {
+          const content = container.querySelector('.caption-content')
+          const toggle = container.querySelector('.caption-toggle')
+          
+          // 检查是否需要折叠（高度超过4.8em约等于3行）
+          if (content.scrollHeight > parseFloat(getComputedStyle(content).fontSize) * 1.6 * 3) {
+            container.classList.add('is-long')
+            toggle.style.display = 'block'
+            
+            toggle.addEventListener('click', () => {
+              const isExpanded = container.classList.contains('expanded')
+              container.classList.toggle('expanded')
+              toggle.textContent = isExpanded ? '展开' : '收起'
+            })
+          }
+        })
+
+        // move scroll area into viewport and user focus (only for x-scroll)
+        document.addEventListener('change', function(event) {
+          const target = event.target
+
+          if (target && target.matches('input[name="layout"]')) {
+            try {
+              if (typeof window.umami === 'function') {
+                window.umami('photos_layout_change', {
+                  layout: target.value,
+                  control_id: target.id,
+                  current_page: window.location.pathname,
+                  language: '{{ lang }}'
+                })
+              } else if (window.umami?.track) {
+                window.umami.track('photos_layout_change', {
+                  layout: target.value,
+                  control_id: target.id,
+                  current_page: window.location.pathname,
+                  language: '{{ lang }}'
+                })
+              }
+            } catch (error) {
+              console.log('Umami tracking error:', error)
+            }
+          }
+
+          if (xScroll && xScroll.checked) {
+            photos.setAttribute('tabindex', '-1')
+            photos.focus({ preventScroll: true })
+
+            photos.addEventListener('blur', function() {
+              photos.blur()
+            }, {once: true})
+          }
+        })
+
+        if (xScroll) {
+          // return focus
+          document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && xScroll.checked && photos.contains(event.target)) {
+              xScroll.focus()
+              window.scrollTo(0, 0)
+            }
+          })
+        }
+      </script>
+    {% endif %}
+    
+    <!-- Umami Analytics with custom events tracking -->
+    <script>
+      // Set umami language data before loading the script
+      (function() {
+        var lang = '{{ lang }}';  // Jekyll will inject the language here
+        
+        // Initialize Umami using the recommended queue pattern
+        window.umami = window.umami || function() {
+          (window.umami.q = window.umami.q || []).push(arguments);
+        };
+        window.umami.track = window.umami.track || function(eventName, data) {
+          window.umami(eventName, data);
+        };
+
+        // Safe tracking function
+        function safeTrack(eventName, data) {
+          try {
+            if (typeof window.umami === 'function') {
+              window.umami(eventName, data);
+            } else if (typeof window.umami !== 'undefined' && window.umami.track) {
+              window.umami.track(eventName, data);
+            }
+          } catch (e) {
+            console.log('Umami tracking error:', e);
+          }
+        }
+
+        // Track page metadata with language info
+        safeTrack('page_meta', { 
+          language: lang,
+          title: '{{ page.title | default: site.title }}',
+          url: window.location.pathname,
+          page_type: '{{ page.collection | default: "page" }}',
+          page_date: '{{ page.date | date_to_xmlschema }}'
+        });
+        
+        // Track language switch clicks
+        document.addEventListener('click', function(event) {
+          if (event.target.closest('a[srclang]')) {
+            const langLink = event.target.closest('a[srclang]');
+            const targetLang = langLink.getAttribute('srclang');
+            const targetUrl = langLink.getAttribute('href');
+            
+            safeTrack('language_switch', {
+              from_language: lang,
+              to_language: targetLang,
+              current_page: window.location.pathname,
+              target_page: targetUrl
+            });
+          }
+        });
+        
+        // Track RSS feed clicks
+        document.addEventListener('click', function(event) {
+          if (event.target.closest('a[href$=".xml"]')) {
+            const rssLink = event.target.closest('a[href$=".xml"]');
+            const rssType = rssLink.getAttribute('href').replace('.xml', '').replace('/', '');
+            
+            safeTrack('rss_click', {
+              rss_type: rssType,
+              current_page: window.location.pathname,
+              language: lang
+            });
+          }
+        });
+        
+        // Track tag clicks on notes
+        document.addEventListener('click', function(event) {
+          if (event.target.closest('.note-tag')) {
+            const tagElement = event.target.closest('.note-tag');
+            const tag = tagElement.getAttribute('data-tag');
+            
+            safeTrack('tag_click', {
+              tag: tag,
+              current_page: window.location.pathname,
+              language: lang
+            });
+          }
+        });
+        
+        // Track photo clicks
+        document.addEventListener('click', function(event) {
+          if (event.target.closest('.image-link')) {
+            const photoLink = event.target.closest('.image-link');
+            const photoId = photoLink.getAttribute('href').match(/#P(.+)/);
+            
+            if (photoId) {
+              safeTrack('photo_click', {
+                photo_id: photoId[1],
+                current_page: window.location.pathname,
+                language: lang
+              });
+            }
+          }
+        });
+        
+        // Track external link clicks
+        document.addEventListener('click', function(event) {
+          if (event.target.closest('a[href^="http"]:not([href*="site.bazinga.ink"])')) {
+            const externalLink = event.target.closest('a[href^="http"]:not([href*="site.bazinga.ink"])');
+            const href = externalLink.getAttribute('href');
+            
+            safeTrack('external_link_click', {
+              destination: href,
+              link_text: externalLink.textContent.trim(),
+              current_page: window.location.pathname,
+              language: lang
+            });
+          }
+        });
+      })();
+    </script>
+    <script async defer src="https://cloud.umami.is/script.js" data-website-id="a9c48eab-814c-4ebc-bb56-b0336f0dc427" data-domains="site.bazinga.ink"></script>
+  </body>
+</html>

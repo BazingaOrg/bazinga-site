@@ -1,0 +1,49 @@
+name: "Add a note"
+
+on:
+  workflow_dispatch:
+    inputs:
+      content:
+        description: "File content"
+        type: string
+        required: true
+      tags:
+        description: "Tags"
+        type: string
+        required: true
+      lang:
+        description: "Language"
+        type: string
+        required: true
+      location:
+        description: "City"
+        type: string
+        required: false
+      datetime:
+        description: "Datetime"
+        type: string
+        required: true
+concurrency: ci-${{ github.action }}
+jobs:
+  process:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: 'main'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 17.7
+
+      - name: Run script
+        run: node .github/workflows/scripts/notes.js '${{ inputs.datetime }}' '${{ inputs.tags }}' '${{ inputs.lang }}' '${{ inputs.location }}' '${{ inputs.content }}'
+
+      - name: Push changes
+        run: |
+          git config user.email 'bot@site.bazinga.ink'
+          git config user.name 'bazinga [bot]'
+          git add .
+          git commit -m "Add note from Apple shortcuts" || echo "Nothing to commit"
+          git fetch origin main
+          git push origin HEAD:main

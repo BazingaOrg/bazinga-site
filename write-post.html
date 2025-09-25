@@ -1,0 +1,985 @@
+---
+layout: default
+title: Write Post
+permalink: /write-post/
+---
+
+<div class="write-post-container" data-page="write-post">
+  <header class="write-post-header">
+    <h2 class="normal-heading">写一篇文章</h2>
+    <p class="desc">把最近长长的思绪落在这里。</p>
+    <p class="subtle-banner" id="post-permission-banner" hidden></p>
+    <p class="subtle-banner" id="draft-banner" hidden></p>
+  </header>
+
+  <section class="preview-section" aria-label="文章预览区域">
+    <h3 class="section-title monospace">文章预览</h3>
+    <div class="preview-card">
+      <article class="post-preview">
+        <header class="post-preview-header">
+          <time class="monospace" id="preview-date" datetime="{{ "now" | date_to_xmlschema }}">{{ "now" | date: "%Y/%m/%d" }}</time>
+          <h1 class="post-preview-title" id="preview-title">文章标题会显示在这里</h1>
+          <ul class="post-preview-tags" id="preview-tags" aria-label="文章标签"></ul>
+        </header>
+        <div class="post-preview-body" id="preview-body">
+          <p class="placeholder-text">文字会在这里出现，像刚写完一样新鲜。</p>
+        </div>
+        <figure class="post-preview-media" id="preview-media" hidden>
+          <img id="preview-image" alt="" loading="lazy" decoding="async">
+          <figcaption id="preview-image-text" hidden></figcaption>
+        </figure>
+      </article>
+    </div>
+
+    <details class="frontmatter-details">
+      <summary class="monospace">Front matter</summary>
+      <pre class="frontmatter-output" id="frontmatter-output"></pre>
+      <div class="copy-row">
+        <button type="button" class="copy-button" id="copy-frontmatter">复制内容</button>
+      </div>
+    </details>
+  </section>
+
+  <section class="form-section" aria-label="文章内容设置">
+    <form class="note-form post-form" id="post-form" novalidate>
+      <div class="form-field">
+        <div class="field-title">
+          <label for="title" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>标题</label>
+        </div>
+        <input type="text" id="title" name="title" placeholder="给这篇文章起个不费力的标题" required>
+        <span class="field-feedback" id="title-feedback" role="status" aria-live="polite"></span>
+      </div>
+
+      <div class="form-field">
+        <div class="field-title">
+          <label for="body" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>正文</label>
+        </div>
+        <textarea id="body" name="body" placeholder="想写什么就写什么，空一行可以分段，Markdown 也支持" required></textarea>
+        <span class="field-feedback" id="body-feedback" role="status" aria-live="polite"></span>
+        <div class="field-hint monospace" id="body-stats">行数：0（0 字符）</div>
+      </div>
+
+      <div class="meta-preview">
+        <p class="field-hint monospace">发布时间将自动设为：<span id="auto-date">{{ "now" | date: "%Y/%m/%d %H:%M" }}</span> <button type="button" class="link-button" id="refresh-date">刷新</button></p>
+        <p class="field-hint monospace">生成的文件名：<code id="generated-filename">post.md</code> <button type="button" class="link-button" id="copy-filename">复制</button></p>
+      </div>
+
+      <details class="advanced-settings">
+        <summary class="advanced-summary monospace">高级设置</summary>
+        <div class="advanced-grid">
+          <div class="form-field">
+            <div class="field-title">
+              <label for="slug" class="field-label monospace">Slug</label>
+            </div>
+            <input type="text" id="slug" name="slug" placeholder="自动生成，可自行调整">
+            <span class="field-feedback" id="slug-feedback" role="status" aria-live="polite"></span>
+          </div>
+
+          <div class="form-field">
+            <div class="field-title">
+              <label class="field-label monospace" for="excerpt">摘要</label>
+            </div>
+            <textarea id="excerpt" name="excerpt" placeholder="可选：用于 meta description，保持在一两句话内。"></textarea>
+          </div>
+
+          <fieldset class="form-field tag-field">
+            <legend class="field-label monospace">标签</legend>
+            <div class="tag-inputs">
+              <div class="tag-pool" id="tag-pool"></div>
+              <label class="field-hint monospace" for="custom-tags">自定义标签（逗号分隔）</label>
+            <input type="text" id="custom-tags" placeholder="新的标签，用逗号隔开，例如：夜读，随记">
+            </div>
+          </fieldset>
+
+          <div class="form-field checkbox-field">
+            <label class="field-label monospace" for="feature">
+              <input type="checkbox" id="feature" name="feature"> 在主页展示（feature: 1）
+            </label>
+            <p class="field-hint">勾选后文章会出现在首页列表，同时自动加入 open_heart: true。</p>
+          </div>
+
+          <div class="form-field">
+            <div class="field-title">
+              <label for="image" class="field-label monospace">主视觉图片 URL</label>
+            </div>
+            <input type="text" id="image" name="image" placeholder="https://">
+          </div>
+
+          <div class="form-field">
+            <div class="field-title">
+              <label for="image-text" class="field-label monospace">图片说明</label>
+            </div>
+            <input type="text" id="image-text" name="image-text" placeholder="可选：用于卡片描述或无障碍文本。">
+          </div>
+        </div>
+      </details>
+
+      <div class="form-field">
+        <div class="field-title">
+          <label for="access-key" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>访问密钥</label>
+        </div>
+        <input type="password" id="access-key" name="access-key" placeholder="输入约定好的密钥才能发布" required>
+        <span class="field-feedback" id="key-feedback" role="status" aria-live="polite"></span>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="submit-btn" id="submit-btn">
+          <span class="btn-text">直接发布</span>
+          <span class="btn-loading" hidden>正在提交…</span>
+        </button>
+        <button type="button" class="ghost-button" id="reset-btn">清空草稿</button>
+      </div>
+
+      <p class="status-message" id="submit-status" hidden></p>
+    </form>
+  </section>
+
+  <section class="manual-section" aria-label="手动发布说明">
+    <h3 class="section-title monospace">手动发布</h3>
+    <div class="manual-card">
+      <ol class="manual-steps">
+        <li>展开上方 Front matter，复制内容并连同正文一起保存为 <code id="manual-filename">_posts/post.md</code></li>
+        <li>运行 <code>bundle exec jekyll build</code> 确认通过</li>
+        <li>提交并推送，等待部署完成</li>
+      </ol>
+      <p class="field-hint">提示：记得检查 `feature: 1` 是否符合主页展示需求。</p>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+  const container = document.querySelector('.write-post-container');
+  if (!container) return;
+
+  const SOURCE_POST_TAGS = {{ site.posts | map: "tags" | jsonify }};
+  const FLATTENED_TAGS = Array.isArray(SOURCE_POST_TAGS)
+    ? SOURCE_POST_TAGS.flat().filter(tag => typeof tag === 'string' && tag.trim().length > 0)
+    : [];
+
+  const TAG_COUNTS = new Map();
+  FLATTENED_TAGS.forEach(tag => {
+    const name = tag.trim();
+    if (!name) return;
+    TAG_COUNTS.set(name, (TAG_COUNTS.get(name) || 0) + 1);
+  });
+
+  const TAG_SUGGESTIONS = Array.from(TAG_COUNTS.entries())
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-CN'))
+    .slice(0, 8)
+    .map(([name, count]) => ({ name, count }));
+
+  const titleInput = document.getElementById('title');
+  const bodyInput = document.getElementById('body');
+  const slugInput = document.getElementById('slug');
+  const excerptInput = document.getElementById('excerpt');
+  const customTagsInput = document.getElementById('custom-tags');
+  const featureCheckbox = document.getElementById('feature');
+  const imageInput = document.getElementById('image');
+  const imageTextInput = document.getElementById('image-text');
+  const accessKeyInput = document.getElementById('access-key');
+  const form = document.getElementById('post-form');
+  const submitBtn = document.getElementById('submit-btn');
+  const resetBtn = document.getElementById('reset-btn');
+  const submitStatus = document.getElementById('submit-status');
+  const autoDateEl = document.getElementById('auto-date');
+  const generatedFilenameEl = document.getElementById('generated-filename');
+  const manualFilenameEl = document.getElementById('manual-filename');
+  const previewTitleEl = document.getElementById('preview-title');
+  const previewBodyEl = document.getElementById('preview-body');
+  const previewDateEl = document.getElementById('preview-date');
+  const previewTagsEl = document.getElementById('preview-tags');
+  const previewMediaEl = document.getElementById('preview-media');
+  const previewImageEl = document.getElementById('preview-image');
+  const previewImageTextEl = document.getElementById('preview-image-text');
+  const frontmatterOutput = document.getElementById('frontmatter-output');
+  const copyFrontmatterBtn = document.getElementById('copy-frontmatter');
+  const copyFilenameBtn = document.getElementById('copy-filename');
+  const bodyStats = document.getElementById('body-stats');
+  const refreshDateBtn = document.getElementById('refresh-date');
+  const postPermissionBanner = document.getElementById('post-permission-banner');
+  const draftBanner = document.getElementById('draft-banner');
+  const tagPool = document.getElementById('tag-pool');
+  const titleFeedback = document.getElementById('title-feedback');
+  const bodyFeedback = document.getElementById('body-feedback');
+  const slugFeedback = document.getElementById('slug-feedback');
+  const keyFeedback = document.getElementById('key-feedback');
+
+  const FEEDBACK = {
+    title: titleFeedback,
+    body: bodyFeedback,
+    slug: slugFeedback,
+    key: keyFeedback
+  };
+
+  const DRAFT_STORAGE_KEY = 'post-draft';
+  const ACCESS_KEY_STORAGE = 'post-access-key';
+
+  let hasUserInteracted = false;
+  let slugManuallyEdited = false;
+  let frontMatterCache = '';
+
+  const state = {
+    tags: [],
+    publish: buildPublishMeta(computeShanghaiDate()),
+    slug: 'post'
+  };
+
+  setPublishingStatus(state.publish);
+  initTagPool();
+  bindEvents();
+  setupPermissionBanner();
+  setupDraftBanner();
+  loadAccessKey();
+  syncSlugFromTitle(true);
+  updateOutputs();
+  setInterval(saveDraft, 30000);
+  window.addEventListener('beforeunload', saveDraft);
+
+  function bindEvents() {
+    titleInput.addEventListener('input', () => {
+      hasUserInteracted = true;
+      if (!slugManuallyEdited) {
+        syncSlugFromTitle(true);
+      }
+      updateOutputs();
+    });
+
+    titleInput.addEventListener('blur', () => {
+      hasUserInteracted = true;
+      validateForm(false);
+    });
+
+    bodyInput.addEventListener('input', () => {
+      hasUserInteracted = true;
+      updateBodyStats();
+      updateOutputs();
+    });
+
+    slugInput.addEventListener('input', () => {
+      slugManuallyEdited = slugInput.value.trim().length > 0;
+      hasUserInteracted = true;
+      updateSlugFromInput();
+      updateOutputs();
+    });
+
+    slugInput.addEventListener('blur', () => {
+      if (!slugInput.value.trim()) {
+        slugManuallyEdited = false;
+        syncSlugFromTitle(true);
+      } else {
+        updateSlugFromInput();
+      }
+      validateForm(false);
+      updateOutputs();
+    });
+
+    excerptInput.addEventListener('input', () => {
+      hasUserInteracted = true;
+      updateOutputs();
+    });
+
+    featureCheckbox.addEventListener('change', () => {
+      hasUserInteracted = true;
+      updateOutputs();
+    });
+
+    imageInput.addEventListener('input', () => {
+      hasUserInteracted = true;
+      updateOutputs();
+    });
+
+    imageTextInput.addEventListener('input', () => {
+      hasUserInteracted = true;
+      updateOutputs();
+    });
+
+    customTagsInput.addEventListener('input', () => {
+      hasUserInteracted = true;
+      updateOutputs();
+    });
+
+    tagPool.addEventListener('change', () => {
+      hasUserInteracted = true;
+      updateOutputs();
+    });
+
+    refreshDateBtn.addEventListener('click', () => {
+      setPublishDate();
+      updateOutputs();
+    });
+
+    copyFrontmatterBtn.addEventListener('click', () => {
+      if (frontMatterCache) {
+        copyText(frontMatterCache, copyFrontmatterBtn);
+      }
+    });
+
+    copyFilenameBtn.addEventListener('click', () => {
+      copyText(generatedFilenameEl.textContent.trim(), copyFilenameBtn);
+    });
+
+    resetBtn.addEventListener('click', () => {
+      form.reset();
+      slugManuallyEdited = false;
+      hasUserInteracted = false;
+      loadAccessKey();
+      syncSlugFromTitle(true);
+      clearDraft(false);
+      setPublishDate();
+      updateOutputs();
+      clearStatus();
+    });
+
+    form.addEventListener('submit', handleSubmit);
+  }
+
+  function initTagPool() {
+    tagPool.innerHTML = '';
+
+    if (TAG_SUGGESTIONS.length === 0) {
+      const hint = document.createElement('p');
+      hint.className = 'field-hint';
+      hint.textContent = '目前没有历史标签，先写一篇文章试试吧。';
+      tagPool.appendChild(hint);
+      return;
+    }
+
+    TAG_SUGGESTIONS.forEach(({ name }) => {
+      tagPool.appendChild(createTagChip(name));
+    });
+  }
+
+  function createTagChip(tagName) {
+    const label = document.createElement('label');
+    label.className = 'tag-chip';
+
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.value = tagName;
+    input.className = 'tag-checkbox';
+    input.dataset.tag = tagName;
+
+    const span = document.createElement('span');
+    span.className = 'tag-name';
+    span.textContent = tagName;
+
+    label.appendChild(input);
+    label.appendChild(span);
+    return label;
+  }
+
+  function ensureTagChip(tagName) {
+    if (!tagName) return;
+    const selector = `input[type="checkbox"][value="${CSS.escape(tagName)}"]`;
+    const existing = tagPool.querySelector(selector);
+    if (existing) return;
+    tagPool.appendChild(createTagChip(tagName));
+  }
+
+  function setupPermissionBanner() {
+    const toggled = localStorage.getItem('show-post-entry') === 'true';
+    const directAccess = !document.referrer || !document.referrer.includes(window.location.origin);
+    if (!toggled && directAccess) {
+      postPermissionBanner.hidden = false;
+      postPermissionBanner.textContent = '这个入口主要面向站点维护者，既然找到了就随便看看预览，不一定要提交。';
+    }
+  }
+
+  function setupDraftBanner() {
+    const rawDraft = localStorage.getItem(DRAFT_STORAGE_KEY);
+    if (!rawDraft) return;
+
+    draftBanner.hidden = false;
+    draftBanner.innerHTML = '检测到未完成的草稿。<button type="button" class="link-button" data-action="restore-draft">恢复</button><button type="button" class="link-button" data-action="discard-draft">忽略</button>';
+
+    const handleDraftAction = (event) => {
+      const action = event.target?.dataset?.action;
+      if (!action) return;
+
+      if (action === 'restore-draft') {
+        try {
+          const draft = JSON.parse(rawDraft);
+          applyDraft(draft);
+        } catch (error) {
+          console.warn('无法恢复草稿:', error);
+        }
+        teardownDraftBanner();
+        saveDraft();
+      }
+
+      if (action === 'discard-draft') {
+        clearDraft();
+        teardownDraftBanner();
+      }
+    };
+
+    function teardownDraftBanner() {
+      draftBanner.hidden = true;
+      draftBanner.innerHTML = '';
+      draftBanner.removeEventListener('click', handleDraftAction);
+    }
+
+    draftBanner.addEventListener('click', handleDraftAction);
+  }
+
+  function applyDraft(draft) {
+    if (!draft) return;
+
+    titleInput.value = draft.title || '';
+    bodyInput.value = draft.body || '';
+    excerptInput.value = draft.excerpt || '';
+    customTagsInput.value = draft.customTags || '';
+    featureCheckbox.checked = Boolean(draft.feature);
+    imageInput.value = draft.image || '';
+    imageTextInput.value = draft.imageText || '';
+    slugManuallyEdited = Boolean(draft.slugManual);
+    slugInput.value = draft.slug || '';
+    updateSlugFromInput();
+
+    tagPool.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.checked = false; });
+    if (Array.isArray(draft.checkedTags)) {
+      draft.checkedTags.forEach(tag => {
+        ensureTagChip(tag);
+        const checkbox = tagPool.querySelector(`input[type="checkbox"][value="${CSS.escape(tag)}"]`);
+        if (checkbox) {
+          checkbox.checked = true;
+        }
+      });
+    }
+
+    if (typeof draft.publishTimestamp === 'number') {
+      setPublishDate(new Date(draft.publishTimestamp));
+    } else {
+      setPublishDate();
+    }
+
+    hasUserInteracted = true;
+    updateOutputs();
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    hasUserInteracted = true;
+
+    if (!validateForm(false)) {
+      return;
+    }
+
+    const formData = gatherFormData();
+    const accessKey = accessKeyInput.value.trim();
+
+    setSubmitting(true);
+
+    fetch('/api/create-post', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Access-Key': accessKey
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(async (response) => {
+        const result = await response.json().catch(() => ({}));
+
+        if (response.ok) {
+          localStorage.setItem(ACCESS_KEY_STORAGE, btoa(accessKey));
+          clearDraft();
+          form.reset();
+          slugManuallyEdited = false;
+          hasUserInteracted = false;
+          setPublishDate();
+          loadAccessKey();
+          syncSlugFromTitle(true);
+          updateOutputs();
+          showStatus(`发布成功。可以 <a href="${result.url}" target="_blank" rel="noopener">查看文章</a>。`, 'success');
+        } else {
+          const message = result.error || '发布没有成功，稍后再试一次吧。';
+          showStatus(message, 'error');
+        }
+      })
+      .catch((error) => {
+        console.error('发布失败:', error);
+        showStatus('网络似乎出了点问题，请稍后再试。', 'error');
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
+  }
+
+  function gatherFormData() {
+    const tags = getSelectedTags();
+    return {
+      title: titleInput.value.trim(),
+      body: bodyInput.value.trim(),
+      slug: state.slug,
+      lang: 'zh-CN',
+      excerpt: excerptInput.value.trim(),
+      tags,
+      feature: featureCheckbox.checked ? 1 : 0,
+      image: imageInput.value.trim(),
+      image_text: imageTextInput.value.trim(),
+      date: state.publish.display,
+      filename: `${state.publish.filenameBase}-${state.slug}.md`
+    };
+  }
+
+  function setPublishingStatus(publishMeta) {
+    state.publish = publishMeta;
+    autoDateEl.textContent = publishMeta.display;
+    previewDateEl.textContent = formatPreviewDate();
+    previewDateEl.setAttribute('datetime', publishMeta.iso);
+    updateFilenameDisplay();
+  }
+
+  function setPublishDate(dateValue) {
+    const nextDate = dateValue instanceof Date ? dateValue : computeShanghaiDate();
+    const publishMeta = buildPublishMeta(nextDate);
+    setPublishingStatus(publishMeta);
+  }
+
+  function computeShanghaiDate(baseDate = new Date()) {
+    const localOffset = baseDate.getTimezoneOffset();
+    const shanghaiOffset = -8 * 60;
+    const diffMinutes = shanghaiOffset - localOffset;
+    return new Date(baseDate.getTime() + diffMinutes * 60000);
+  }
+
+  function buildPublishMeta(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hour = String(date.getHours()).padStart(2, '0');
+    const minute = String(date.getMinutes()).padStart(2, '0');
+    const second = String(date.getSeconds()).padStart(2, '0');
+    const timeSegment = `${hour}${minute}${second}`;
+
+    return {
+      date,
+      display: `${year}/${month}/${day} ${hour}:${minute}`,
+      dayDisplay: `${year}/${month}/${day}`,
+      filenameBase: `${year}-${month}-${day}-${timeSegment}-post`,
+      iso: `${year}-${month}-${day}T${hour}:${minute}:00+08:00`,
+      timestamp: date.getTime()
+    };
+  }
+
+  function syncSlugFromTitle(force) {
+    const generated = generateSlug(titleInput.value);
+    if (force) {
+      slugInput.value = generated;
+    }
+    state.slug = generated || 'post';
+  }
+
+  function updateSlugFromInput() {
+    state.slug = generateSlug(slugInput.value) || 'post';
+    slugInput.value = state.slug;
+  }
+
+  function generateSlug(source) {
+    if (!source) return '';
+    return source
+      .trim()
+      .toLowerCase()
+      .replace(/[^\u4e00-\u9fa5a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+  }
+
+  function updateOutputs() {
+    state.tags = getSelectedTags();
+    updateFilenameDisplay();
+    updatePreviewTitle();
+    updatePreviewDate();
+    updatePreviewTags();
+    updatePreviewBody();
+    updatePreviewMedia();
+    updateFrontMatter();
+    updateBodyStats();
+
+    if (hasUserInteracted) {
+      validateForm(true);
+    }
+  }
+
+  function updateFilenameDisplay() {
+    const filename = `${state.publish.filenameBase}-${state.slug}.md`;
+    generatedFilenameEl.textContent = filename;
+    manualFilenameEl.textContent = `_posts/${filename}`;
+  }
+
+  function updatePreviewTitle() {
+    const title = titleInput.value.trim();
+    previewTitleEl.textContent = title || '文章标题会显示在这里';
+  }
+
+  function updatePreviewDate() {
+    previewDateEl.textContent = formatPreviewDate();
+  }
+
+  function formatPreviewDate() {
+    return state.publish.dayDisplay;
+  }
+
+  function updatePreviewTags() {
+    previewTagsEl.innerHTML = '';
+    state.tags.forEach(tag => {
+      const item = document.createElement('li');
+      item.textContent = tag;
+      previewTagsEl.appendChild(item);
+    });
+  }
+
+  function updatePreviewBody() {
+    const content = bodyInput.value.trim();
+    if (!content) {
+      previewBodyEl.innerHTML = '<p class="placeholder-text">文字会在这里出现，像刚写完一样新鲜。</p>';
+      return;
+    }
+
+    previewBodyEl.innerHTML = renderMarkdown(content);
+  }
+
+  function renderMarkdown(text) {
+    const lines = text.split(/\r?\n/);
+    const html = [];
+    let inCodeBlock = false;
+    let codeBuffer = [];
+
+    for (let i = 0; i < lines.length; i += 1) {
+      const line = lines[i];
+      const trimmed = line.trim();
+
+      if (trimmed.startsWith('```')) {
+        if (!inCodeBlock) {
+          inCodeBlock = true;
+          codeBuffer = [];
+        } else {
+          inCodeBlock = false;
+          html.push(`<pre><code>${escapeHtml(codeBuffer.join('\\n'))}</code></pre>`);
+        }
+        continue;
+      }
+
+      if (inCodeBlock) {
+        codeBuffer.push(line);
+        continue;
+      }
+
+      if (/^#{1,6}\s+/.test(line)) {
+        const level = line.match(/^#+/)[0].length;
+        const content = line.replace(/^#{1,6}\s+/, '');
+        html.push(`<h${level}>${inlineMarkdown(content)}</h${level}>`);
+        continue;
+      }
+
+      if (/^>\s?/.test(line)) {
+        html.push(`<blockquote>${inlineMarkdown(line.replace(/^>\s?/, ''))}</blockquote>`);
+        continue;
+      }
+
+      if (/^[-*+]\s+/.test(line)) {
+        const items = [];
+        while (i < lines.length && /^[-*+]\s+/.test(lines[i])) {
+          items.push(`<li>${inlineMarkdown(lines[i].replace(/^[-*+]\s+/, ''))}</li>`);
+          i += 1;
+        }
+        i -= 1;
+        html.push(`<ul>${items.join('')}</ul>`);
+        continue;
+      }
+
+      if (trimmed.length === 0) {
+        html.push('<p></p>');
+        continue;
+      }
+
+      html.push(`<p>${inlineMarkdown(line)}</p>`);
+    }
+
+    if (inCodeBlock) {
+      html.push(`<pre><code>${escapeHtml(codeBuffer.join('\\n'))}</code></pre>`);
+    }
+
+    return html.join('');
+  }
+
+  function inlineMarkdown(content) {
+    return escapeHtml(content)
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  }
+
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function updatePreviewMedia() {
+    const image = imageInput.value.trim();
+    if (!image) {
+      previewMediaEl.hidden = true;
+      previewImageEl.removeAttribute('src');
+      previewImageEl.removeAttribute('alt');
+      previewImageTextEl.hidden = true;
+      previewImageTextEl.textContent = '';
+      return;
+    }
+
+    previewImageEl.src = image;
+    previewImageEl.alt = imageTextInput.value.trim() || titleInput.value.trim() || '文章配图';
+    const caption = imageTextInput.value.trim();
+    if (caption) {
+      previewImageTextEl.hidden = false;
+      previewImageTextEl.textContent = caption;
+    } else {
+      previewImageTextEl.hidden = true;
+      previewImageTextEl.textContent = '';
+    }
+
+    previewMediaEl.hidden = false;
+  }
+
+  function updateFrontMatter() {
+    const lines = [
+      '---',
+      `title: "${escapeYAML(titleInput.value.trim() || '未命名文章')}"`,
+      'layout: default',
+      'open_heart: true',
+      `date: ${state.publish.display}`
+    ];
+
+    if (featureCheckbox.checked) {
+      lines.push('feature: 1');
+    }
+
+    if (state.tags.length > 0) {
+      lines.push(`tags: [${state.tags.map(tag => `"${escapeYAML(tag)}"`).join(', ')}]`);
+    }
+
+    const excerpt = excerptInput.value.trim();
+    if (excerpt) {
+      lines.push(`excerpt: "${escapeYAML(toSingleLine(excerpt))}"`);
+    }
+
+    const image = imageInput.value.trim();
+    if (image) {
+      lines.push(`image: ${image}`);
+    }
+
+    const imageText = imageTextInput.value.trim();
+    if (imageText) {
+      lines.push(`image_text: "${escapeYAML(imageText)}"`);
+    }
+
+    if (slugManuallyEdited) {
+      lines.push(`slug: "${escapeYAML(state.slug)}"`);
+    }
+
+    lines.push('---');
+
+    frontMatterCache = lines.join('\n');
+    frontmatterOutput.textContent = frontMatterCache;
+  }
+
+  function getSelectedTags() {
+    const tags = new Set();
+
+    tagPool.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+      if (cb.value) tags.add(cb.value);
+    });
+
+    customTagsInput.value.split(',').map(tag => tag.trim()).filter(Boolean).forEach(tag => tags.add(tag));
+    return Array.from(tags);
+  }
+
+  function updateBodyStats() {
+    const content = bodyInput.value.trim();
+    const lines = content ? content.split(/\r?\n/).filter(line => line.trim().length > 0).length : 0;
+    const characters = content.length;
+    bodyStats.textContent = `行数：${lines}（${characters} 字符）`;
+  }
+
+  function showStatus(message, type) {
+    submitStatus.innerHTML = message;
+    submitStatus.dataset.type = type;
+    submitStatus.hidden = false;
+    submitStatus.style.display = 'block';
+
+    if (type === 'success') {
+      setTimeout(() => {
+        submitStatus.style.display = 'none';
+        submitStatus.hidden = true;
+      }, 10000);
+    }
+  }
+
+  function clearStatus() {
+    submitStatus.textContent = '';
+    submitStatus.removeAttribute('data-type');
+    submitStatus.style.display = 'none';
+    submitStatus.hidden = true;
+  }
+
+  function setSubmitting(isSubmitting) {
+    submitBtn.classList.toggle('loading', isSubmitting);
+    submitBtn.disabled = isSubmitting;
+  }
+
+  function validateForm(isPartial) {
+    let isValid = true;
+
+    const title = titleInput.value.trim();
+    if (!title) {
+      showFeedback('title', '标题还空着，先写几个字吧。');
+      isValid = false;
+    } else if (title.length < 3) {
+      showFeedback('title', '再多写一点，让标题更有辨识度。', 'soft');
+    } else {
+      clearFeedback('title');
+    }
+
+    const body = bodyInput.value.trim();
+    if (!body) {
+      showFeedback('body', '正文还没有内容，至少写一段试试。');
+      isValid = false;
+    } else if (body.length < 80) {
+      showFeedback('body', '篇幅再长一点更像一篇文章。', 'soft');
+    } else {
+      clearFeedback('body');
+    }
+
+    if (!validateSlugValue(state.slug)) {
+      showFeedback('slug', 'Slug 只能包含字母、数字、中文和连字符。');
+      isValid = false;
+    } else {
+      clearFeedback('slug');
+    }
+
+    const accessKey = accessKeyInput.value.trim();
+    if (!accessKey) {
+      showFeedback('key', '需要访问密钥才能直接发布。');
+      isValid = false;
+    } else {
+      clearFeedback('key');
+    }
+
+    return isPartial ? true : isValid;
+  }
+
+  function validateSlugValue(value) {
+    return /^[\u4e00-\u9fa5a-z0-9-]+$/i.test(value);
+  }
+
+  function showFeedback(field, message, tone = 'error') {
+    const slot = FEEDBACK[field];
+    if (!slot) return;
+    slot.textContent = message;
+    slot.dataset.tone = tone;
+  }
+
+  function clearFeedback(field) {
+    const slot = FEEDBACK[field];
+    if (!slot) return;
+    slot.textContent = '';
+    slot.removeAttribute('data-tone');
+  }
+
+  function escapeYAML(value) {
+    return value.replace(/"/g, '\\"');
+  }
+
+  function toSingleLine(value) {
+    return value.replace(/\s+/g, ' ').trim();
+  }
+
+  function copyText(text, triggerButton) {
+    if (!navigator.clipboard) {
+      fallbackCopy(text);
+      return;
+    }
+
+    navigator.clipboard.writeText(text).then(() => {
+      flashCopyButton(triggerButton);
+    }).catch(() => {
+      fallbackCopy(text);
+    });
+  }
+
+  function fallbackCopy(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'absolute';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  }
+
+  function flashCopyButton(button) {
+    if (!button) return;
+    const original = button.textContent;
+    button.textContent = '已复制';
+    button.disabled = true;
+    setTimeout(() => {
+      button.textContent = original;
+      button.disabled = false;
+    }, 1500);
+  }
+
+  function saveDraft() {
+    const draft = {
+      title: titleInput.value,
+      body: bodyInput.value,
+      excerpt: excerptInput.value,
+      feature: featureCheckbox.checked,
+      customTags: customTagsInput.value,
+      checkedTags: Array.from(tagPool.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value),
+      image: imageInput.value,
+      imageText: imageTextInput.value,
+      slug: slugInput.value,
+      slugManual: slugManuallyEdited,
+      publishTimestamp: state.publish.timestamp
+    };
+
+    if (draft.title.trim() || draft.body.trim()) {
+      try {
+        localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+      } catch (error) {
+        console.warn('无法保存草稿:', error);
+      }
+    } else {
+      clearDraft(false);
+    }
+  }
+
+  function clearDraft(removeBanner = true) {
+    localStorage.removeItem(DRAFT_STORAGE_KEY);
+    if (removeBanner && draftBanner) {
+      draftBanner.hidden = true;
+      draftBanner.innerHTML = '';
+    }
+  }
+
+  function loadAccessKey() {
+    const savedKey = localStorage.getItem(ACCESS_KEY_STORAGE);
+    if (!savedKey) return;
+
+    try {
+      accessKeyInput.value = atob(savedKey);
+    } catch (error) {
+      localStorage.removeItem(ACCESS_KEY_STORAGE);
+    }
+  }
+})();
+</script>

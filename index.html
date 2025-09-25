@@ -1,0 +1,179 @@
+---
+title: Bazinga
+layout: default
+root: true
+---
+
+<p>
+  Just a Chinese Random Guy into Front-End and AI.
+</p>
+<p>
+  Lives in Hangzhou, Zhejiang. <span class="time" data-timestamp-text="It is currently {time} there."></span>
+</p>
+
+<br />
+
+<nav aria-label="Additional content">
+  <a href="{% link _pages/blogroll.md %}"
+     data-umami-event="nav_click"
+     data-umami-event-section="additional"
+     data-umami-event-link="blogroll">Blogroll</a><hr class="inline-hr">
+  <a href="{% link _pages/issues.html %}"
+     data-umami-event="nav_click"
+     data-umami-event-section="additional"
+     data-umami-event-link="issues">Issues</a><hr class="inline-hr">
+  <a href="{% link _pages/banners.md %}"
+     data-umami-event="nav_click"
+     data-umami-event-section="additional"
+     data-umami-event-link="banners">88&times;31</a>
+</nav>
+<nav aria-label="Social">
+  <a href="#" 
+     data-umami-event="nav_click"
+     data-umami-event-section="profession" 
+     data-umami-event-link="cv"
+     onclick="return false;" rel="me" style="pointer-events: none; color: #999; cursor: default;">CV</a><hr class="inline-hr">
+  <a href="https://github.com/bazingaOrg" rel="me"
+     data-umami-event="social_click"
+     data-umami-event-platform="github"
+     data-umami-event-section="social">GitHub</a>
+</nav>
+
+<div class="lang">
+  <a href="/zh-CN/" srclang="zh-CN"
+     data-umami-event="language_switch"
+     data-umami-event-from="en-US"
+     data-umami-event-to="zh-CN">简体中文</a><a href="/" srclang="en-US" aria-current="true"
+     data-umami-event="language_switch"
+     data-umami-event-from="zh-CN"
+     data-umami-event-to="en-US">English</a>
+</div>
+
+<hr class="hr">
+
+{% include timeline-data.html %}
+
+<div id="year-timeline"></div>
+
+<hr class="hr">
+
+<h2 class="normal-heading">Stories</h2> <a href="/stories.xml" class="styled-link"
+   data-umami-event="rss_click"
+   data-umami-event-type="stories"
+   data-umami-event-section="homepage">RSS</a> <a href="https://github.com/dddddddddzzzz/OpenStories" class="styled-link"
+   data-umami-event="external_help_click"
+   data-umami-event-feature="stories"
+   data-umami-event-destination="github">What are these?</a>
+
+{% include stories.html lang="en" %}
+
+<hr class="hr">
+
+<h2 class="normal-heading">Photos</h2><a href="/photos" class="styled-link{% unless site.data.photos.size > 0 %} disabled{% endunless %}"
+   data-umami-event="section_nav"
+   data-umami-event-section="photos"
+   data-umami-event-action="view_all">All photos</a> <a href="/write-photo" class="styled-link write-entry" id="photo-write-entry"
+   data-umami-event="write_action"
+   data-umami-event-type="photo"
+   data-umami-event-from="homepage">Upload</a> <a href="/photos.xml" class="styled-link"
+   data-umami-event="rss_click"
+   data-umami-event-type="photos"
+   data-umami-event-section="homepage">RSS</a>
+<div class="photos">
+{% assign photos = site.data.photos | sort: "uploaded" | reverse | slice: 0, 10 %}
+{% if photos.size > 0 %}
+{% for photo in photos %}
+  {% capture image_url %}{% for url in photo.variants %}{% if url contains "/thumbnail" %}{{ url }}{% endif %}{% endfor %}{% endcapture %}
+  {% assign image_url = image_url | strip %}
+  {% if image_url == '' %}{% assign image_url = photo.variants[0] %}{% endif %}
+  <a href="/photos#P{{ photo.id }}" class="image-link"
+     data-umami-event="photo_click"
+     data-umami-event-location="homepage"
+     data-umami-event-photo-id="{{ photo.id }}">
+    <img src="{{ image_url }}" height="200" alt="{{ photo.meta.alt }}" loading="lazy" decoding="async">
+  </a>
+{% endfor %}
+{% else %}
+  <p><em style="opacity: 0.65;">No photos have been uploaded yet.</em></p>
+{% endif %}
+</div>
+
+<hr class="hr">
+
+<h2 class="normal-heading">Film photos</h2><a href="/film" class="styled-link{% unless site.data.film.size > 0 %} disabled{% endunless %}"
+   data-umami-event="section_nav"
+   data-umami-event-section="film"
+   data-umami-event-action="view_all">All film photos</a> <a href="/write-film" class="styled-link write-entry" id="film-write-entry"
+   data-umami-event="write_action"
+   data-umami-event-type="film"
+   data-umami-event-from="homepage">Upload film</a> <a href="/film.xml" class="styled-link"
+   data-umami-event="rss_click"
+   data-umami-event-type="film"
+   data-umami-event-section="homepage">RSS</a>
+<div class="photos">
+{% assign photos = site.data.film | sort: "uploaded" | reverse | slice: 0, 10 %}
+{% if photos.size > 0 %}
+{% for photo in photos %}
+  {% capture image_url %}{% for url in photo.variants %}{% if url contains "/thumbnail" %}{{ url }}{% endif %}{% endfor %}{% endcapture %}
+  {% assign image_url = image_url | strip %}
+  {% if image_url == '' %}{% assign image_url = photo.variants[0] %}{% endif %}
+  <a href="/film#P{{ photo.id}}" class="image-link"
+     data-umami-event="film_click"
+     data-umami-event-location="homepage"
+     data-umami-event-photo-id="{{ photo.id }}">
+    <img src="{{ image_url }}" height="200" alt="{{ photo.meta.alt }}" loading="lazy" decoding="async">
+  </a>
+{% endfor %}
+{% else %}
+  <p><em style="opacity: 0.65;">No film photos have been uploaded yet.</em></p>
+{% endif %}
+</div>
+
+<hr class="hr">
+
+{% assign note = site.notes | last %}
+<h2 class="normal-heading">Notes</h2><a href="/notes" class="styled-link{% unless note %} disabled{% endunless %}"
+   data-umami-event="section_nav"
+   data-umami-event-section="notes"
+   data-umami-event-action="view_all">Recent notes</a> <a href="/write-note" class="styled-link write-entry" id="write-entry"
+   data-umami-event="write_action"
+   data-umami-event-type="note"
+   data-umami-event-from="homepage">Write</a> <a href="/notes.xml" class="styled-link"
+   data-umami-event="rss_click"
+   data-umami-event-type="notes"
+   data-umami-event-section="homepage">RSS</a>
+{% if note %}
+<div class="note">
+  <time class="general-actions monospace">
+    {{ note.date | date: "%b %e, %Y" }}
+  </time>
+  <div class="note-content" lang="{{ note.lang }}">{{ note.content | markdownify }}</div>
+  <div class="note-tags">{% for tag in note.tags %}<span class="note-tag" data-tag="{{ tag }}">{{ tag }}</span>{% endfor %}</div>
+</div>
+{% else %}
+  <p><em style="opacity: 0.65;">No notes have been written yet.</em></p>
+{% endif %}
+
+<hr class="hr">
+
+<h2 class="normal-heading">Recent posts</h2><a href="/write-post" class="styled-link write-entry" id="post-write-entry"
+   data-umami-event="write_action"
+   data-umami-event-type="post"
+   data-umami-event-from="homepage">Write</a> <a href="/feed.xml" class="styled-link"
+   data-umami-event="rss_click"
+   data-umami-event-type="posts"
+   data-umami-event-section="homepage">RSS</a>
+{% assign posts = site.posts | where: "feature", 1 %}
+{% if posts.size > 0 %}
+<ul aria-label="posts" class="terminal">
+{% for post in posts %}
+  <li class="line"><a href="{{ post.url }}"
+     data-umami-event="post_click"
+     data-umami-event-location="homepage"
+     data-umami-event-title="{{ post.title | escape }}">{{ post.title }}</a><br>
+    <time class="monospace" datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %e, %Y" }}</time></li>
+{% endfor %}
+</ul>
+{% else %}
+  <p><em style="opacity: 0.65;">No featured posts yet.</em></p>
+{% endif %}
