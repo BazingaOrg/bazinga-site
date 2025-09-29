@@ -498,15 +498,16 @@ permalink: /write-note/
       const result = await response.json();
 
       if (response.ok) {
-        showStatus(`发布成功。可以 <a href="${result.url}" target="_blank" rel="noopener">查看成品</a>，也可以继续写下一条。`, 'success');
+        // 自动删除草稿
+        localStorage.removeItem('note-draft');
         localStorage.setItem('note-access-key', btoa(accessKey));
 
-        form.reset();
-        document.querySelectorAll('.tag-checkbox:checked').forEach(cb => cb.checked = false);
-        localStorage.removeItem('note-draft');
-        ensureGeneratedTitle({ force: true });
-        updatePreviewTime();
-        setTimeout(updatePreview, 50);
+        // 显示成功消息并跳转到首页
+        showStatus(`发布成功！正在跳转到首页...`, 'success');
+
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1500);
       } else {
         showStatus(result.error || '发布没有成功，稍后再试一次吧。', 'error');
       }

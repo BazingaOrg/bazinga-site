@@ -497,14 +497,13 @@ permalink: /write-post/
         if (response.ok) {
           localStorage.setItem(ACCESS_KEY_STORAGE, btoa(accessKey));
           clearDraft();
-          form.reset();
-          slugManuallyEdited = false;
-          hasUserInteracted = false;
-          setPublishDate();
-          loadAccessKey();
-          syncSlugFromTitle(true);
-          updateOutputs();
-          showStatus(`发布成功。可以 <a href="${result.url}" target="_blank" rel="noopener">查看文章</a>。`, 'success');
+
+          // 显示成功消息并跳转到首页
+          showStatus(`发布成功！正在跳转到首页...`, 'success');
+
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 1500);
         } else {
           const message = result.error || '发布没有成功，稍后再试一次吧。';
           showStatus(message, 'error');

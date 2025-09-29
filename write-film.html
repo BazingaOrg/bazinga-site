@@ -635,12 +635,11 @@ permalink: /write-film/
       const result = await response.json();
       if (result?.success) {
         localStorage.setItem('film-access-key', btoa(accessKey));
-        showPublishStatus('发布完成，新的胶片照片已经排队生成。', 'success');
+        showPublishStatus('发布成功！正在跳转到首页...', 'success');
+
         setTimeout(() => {
-          if (confirm('胶片已经上传，重新开始吗？')) {
-            window.location.reload();
-          }
-        }, 2000);
+          window.location.href = '/';
+        }, 1500);
       } else {
         throw new Error(result?.error || '服务端没有返回成功标记');
       }
