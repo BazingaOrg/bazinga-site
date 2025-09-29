@@ -843,6 +843,19 @@ permalink: /write-post/
   function setSubmitting(isSubmitting) {
     submitBtn.classList.toggle('loading', isSubmitting);
     submitBtn.disabled = isSubmitting;
+
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+
+    if (isSubmitting) {
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'inline';
+      btnLoading.hidden = false;
+    } else {
+      btnText.style.display = 'inline';
+      btnLoading.style.display = 'none';
+      btnLoading.hidden = true;
+    }
   }
 
   function validateForm(isPartial) {
