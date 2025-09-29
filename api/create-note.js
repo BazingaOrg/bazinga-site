@@ -65,14 +65,17 @@ export default async function handler(req, res) {
     const dateStr = shanghaiTime.toISOString().split('T')[0]; // YYYY-MM-DD
     const timeStr = `${shanghaiTime.getFullYear()}/${(shanghaiTime.getMonth() + 1).toString().padStart(2, '0')}/${shanghaiTime.getDate().toString().padStart(2, '0')} ${shanghaiTime.getHours().toString().padStart(2, '0')}:${shanghaiTime.getMinutes().toString().padStart(2, '0')}`; // YYYY/MM/DD HH:mm
     
-    // 生成 slug (从标题生成)
-    const slug = generateSlug(title.trim());
-    const filename = `${dateStr}-${slug}.md`;
+    // 生成时间戳格式文件名 (与现有notes保持一致)
+    const hours = shanghaiTime.getHours().toString().padStart(2, '0');
+    const minutes = shanghaiTime.getMinutes().toString().padStart(2, '0');
+    const timeSlug = `${hours}${minutes}`;
+    const titleSlug = `${dateStr.replace(/-/g, '')}${hours}${minutes}`;
+    const filename = `${dateStr}-${timeSlug}.md`;
     const filepath = `_notes/${filename}`;
     
     // 生成 Markdown 内容
     const markdownContent = createMarkdownContent({
-      title: title.trim(),
+      title: titleSlug,
       date: timeStr,
       tags: cleanedTags,
       lang,
@@ -85,11 +88,11 @@ export default async function handler(req, res) {
       repo: GITHUB_REPO,
       filepath,
       content: markdownContent,
-      message: `feat: Add note: ${slug}`
+      message: `feat: Add note: ${timeSlug}`
     });
     
     // 生成笔记 URL
-    const noteUrl = `/notes/${now.getFullYear()}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getDate().toString().padStart(2, '0')}/${slug}/`;
+    const noteUrl = `/notes/${now.getFullYear()}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getDate().toString().padStart(2, '0')}/${timeSlug}/`;
     
     return res.status(200).json({
       success: true,
