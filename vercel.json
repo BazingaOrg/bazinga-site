@@ -36,6 +36,10 @@
     {
       "src": "/like",
       "dest": "/like.html"
+    },
+    {
+      "src": "/posts/(.*)",
+      "dest": "/posts/$1.html"
     }
   ]
 }
