@@ -43,6 +43,7 @@ _site/                    # outputDirectory
 - **Liquid** - Jekyll 模板引擎
 - **SCSS** - CSS 预处理器（`assets/new.scss`）
 - **OpenStories/OpenHeart** - 自定义 Web Components，用于故事展示和点赞功能
+- **JavaScript ES6+** - 模块化前端脚本，包含分析、光标效果和交互功能
 
 ### 多语言和国际化架构
 网站支持中英双语，通过以下方式实现：
@@ -168,16 +169,24 @@ alt: |                        # 必填：图片 alt 文本
 
 ## 开发注意事项
 
-### 样式和脚本
-- 主样式文件：`assets/new.scss`
-- 主脚本文件：`assets/site.js`
-- 根页面特殊脚本：`assets/root.js`
+### 样式和脚本架构
+- **主样式文件**：`assets/new.scss` - 包含所有网站样式
+- **主脚本文件**：`assets/site.js` - 核心功能模块
+- **根页面脚本**：`assets/root.js` - 主页特殊交互
+- **模块化脚本**：
+  - `umami.js` - 网站分析追踪
+  - `cursor-effects.js` - 光标效果
+  - `performance-tracking.js` - 性能监控
+  - `journey-tracking.js` - 用户行为追踪
+  - `content-health-scoring.js` - 内容健康度评估
+  - `ab-testing.js` - A/B 测试功能
 
 ### 数据更新指南
 - 博客链接：编辑 `_data/blogroll.yml`
 - 问题跟踪：编辑 `_data/issues.yml`
 - 照片数据：编辑 `_data/photos.json`
 - 胶片照片数据：编辑 `_data/film.json`
+- 故事数据：编辑 `_data/stories.json`
 
 ### UUID 生成
 Stories 文件名使用 UUID 格式，生成方法：
@@ -379,4 +388,23 @@ tags: [技术, 博客]           # 可选：标签
 
 **必填字段**: `title`, `date`
 **重要字段**: `feature: 1`（用于在主页显示）
+
+### Web Components 和自定义功能
+
+#### OpenHeart 点赞系统
+- **用途**: 网站内容点赞功能
+- **实现**: 使用 `open-heart-element` Web Component
+- **存储**: 点赞数据存储在独立服务端
+- **集成**: 在故事页面和胶卷专辑中使用
+
+#### 内容分析系统
+- **Umami 集成**: 网站访问和用户行为分析
+- **性能监控**: 页面加载时间和性能指标追踪
+- **A/B 测试**: 内容展示效果测试
+- **内容健康度**: 自动评估内容质量和用户参与度
+
+#### 动态功能
+- **光标效果**: 基于页面类型的动态光标效果
+- **分享功能**: 原生分享 API 集成
+- **本地存储**: 用户偏好设置和缓存管理
 
