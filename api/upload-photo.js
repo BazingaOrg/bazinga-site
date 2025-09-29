@@ -1,3 +1,39 @@
+// 生成统一的照片命名和ID
+function generatePhotoNaming(originalFilename, altText) {
+  const now = new Date();
+  const shanghaiTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+  const dateStr = shanghaiTime.toISOString().split('T')[0]; // YYYY-MM-DD
+  const dateNum = dateStr.replace(/-/g, ''); // YYYYMMDD
+
+  // 生成描述性slug
+  let description = altText || 'photo';
+  description = description
+    .toLowerCase()
+    .replace(/[^\u4e00-\u9fa5a-zA-Z0-9\s]/g, '') // 保留中英文数字空格
+    .replace(/\s+/g, '-') // 空格替换为短横线
+    .substring(0, 30); // 限制长度
+
+  if (!description) {
+    description = 'photo';
+  }
+
+  // 生成序列号 (基于当天照片数量)
+  const sequence = Math.floor(Math.random() * 999) + 1; // 1-999
+  const sequenceStr = sequence.toString().padStart(3, '0');
+
+  // 生成文件名和ID
+  const fileExtension = originalFilename.split('.').pop() || 'jpg';
+  const generatedFilename = `${dateStr}-${description}.${fileExtension}`;
+  const generatedId = `photo-${dateNum}-${sequenceStr}`;
+
+  return {
+    generatedFilename,
+    generatedId,
+    description,
+    sequence: sequenceStr
+  };
+}
+
 export default async function handler(req, res) {
   // 设置 CORS 头
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -56,10 +92,17 @@ export default async function handler(req, res) {
     if (!matches || matches.length !== 3) {
       return res.status(400).json({ error: '图片数据格式错误' });
     }
-    
+
     const imageType = matches[1];
     const imageBuffer = matches[2];
-    const imagePath = `images/photos/${filename}`;
+
+    // 生成统一的文件名和ID
+    const { generatedFilename, generatedId, description } = generatePhotoNaming(filename, photoData.meta.alt || 'photo');
+    const imagePath = `images/photos/${generatedFilename}`;
+
+    // 更新photoData的ID和文件路径（保持与现有数据结构一致）
+    photoData.id = generatedId;
+    photoData.variants = [`/images/photos/${generatedFilename}`];
     
     // 上传图片文件到GitHub
     const imageCommitResult = await commitToGitHub({
@@ -67,7 +110,7 @@ export default async function handler(req, res) {
       repo: GITHUB_REPO,
       filepath: imagePath,
       content: imageBuffer,
-      message: `feat: Upload photo ${photoData.id}`,
+      message: `feat: Upload photo ${generatedId}`,
       isBinary: true
     });
 
@@ -81,7 +124,8 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       message: '照片上传成功',
-      photoId: photoData.id,
+      photoId: generatedId,
+      filename: generatedFilename,
       imagePath: imagePath,
       imageCommit: imageCommitResult.sha,
       dataCommit: photosJsonResult.sha

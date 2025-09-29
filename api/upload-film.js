@@ -1,3 +1,39 @@
+// 生成统一的胶片命名和ID
+function generateFilmNaming(originalFilename, altText) {
+  const now = new Date();
+  const shanghaiTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+  const dateStr = shanghaiTime.toISOString().split('T')[0]; // YYYY-MM-DD
+  const dateNum = dateStr.replace(/-/g, ''); // YYYYMMDD
+
+  // 生成描述性slug
+  let description = altText || 'film';
+  description = description
+    .toLowerCase()
+    .replace(/[^\u4e00-\u9fa5a-zA-Z0-9\s]/g, '') // 保留中英文数字空格
+    .replace(/\s+/g, '-') // 空格替换为短横线
+    .substring(0, 30); // 限制长度
+
+  if (!description) {
+    description = 'film';
+  }
+
+  // 生成序列号 (基于当天胶片数量)
+  const sequence = Math.floor(Math.random() * 999) + 1; // 1-999
+  const sequenceStr = sequence.toString().padStart(3, '0');
+
+  // 生成文件名和ID
+  const fileExtension = originalFilename.split('.').pop() || 'jpg';
+  const generatedFilename = `${dateStr}-${description}.${fileExtension}`;
+  const generatedId = `film-${dateNum}-${sequenceStr}`;
+
+  return {
+    generatedFilename,
+    generatedId,
+    description,
+    sequence: sequenceStr
+  };
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -53,14 +89,20 @@ export default async function handler(req, res) {
     }
 
     const imageBuffer = matches[2];
-    const imagePath = `images/film/${filename}`;
+
+    // 生成统一的文件名和ID
+    const { generatedFilename, generatedId, description } = generateFilmNaming(filename, filmData.meta.alt || 'film');
+    const imagePath = `images/film/${generatedFilename}`;
+
+    // 更新filmData的ID
+    filmData.id = generatedId;
 
     const imageCommit = await commitToGitHub({
       token: GITHUB_TOKEN,
       repo: GITHUB_REPO,
       filepath: imagePath,
       content: imageBuffer,
-      message: `feat: Upload film ${filmData.id}`,
+      message: `feat: Upload film ${generatedId}`,
       isBinary: true
     });
 
@@ -73,7 +115,8 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       message: '胶片上传成功',
-      filmId: filmData.id,
+      filmId: generatedId,
+      filename: generatedFilename,
       imagePath,
       imageCommit: imageCommit.sha,
       dataCommit: dataCommit.sha
