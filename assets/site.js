@@ -105,5 +105,42 @@ document.addEventListener('mousemove', () => {
   }
 }, { once: true })
 
+// 密码显示/隐藏切换功能
+function initPasswordToggle() {
+  const passwordWrappers = document.querySelectorAll('.password-field-wrapper')
+
+  passwordWrappers.forEach(wrapper => {
+    const input = wrapper.querySelector('input[type="password"], input[type="text"]')
+    const toggle = wrapper.querySelector('.password-toggle')
+
+    if (!input || !toggle) return
+
+    toggle.addEventListener('click', () => {
+      const isPassword = input.type === 'password'
+      input.type = isPassword ? 'text' : 'password'
+
+      const eyeIcon = toggle.querySelector('.eye-icon')
+      const eyeSlashIcon = toggle.querySelector('.eye-slash-icon')
+
+      if (isPassword) {
+        eyeIcon.style.display = 'none'
+        eyeSlashIcon.style.display = 'block'
+      } else {
+        eyeIcon.style.display = 'block'
+        eyeSlashIcon.style.display = 'none'
+      }
+
+      toggle.setAttribute('aria-label', isPassword ? '隐藏密码' : '显示密码')
+    })
+  })
+}
+
+// 初始化密码切换功能
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPasswordToggle)
+} else {
+  initPasswordToggle()
+}
+
 // 导出控制函数供全局使用
 window.toggleCursorEffects = toggleCursorEffects

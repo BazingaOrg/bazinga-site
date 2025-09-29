@@ -2653,3 +2653,64 @@ textarea[data-autofill] {
     justify-content: center;
   }
 }
+
+// Password field with toggle visibility
+.password-field-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  input[type="password"],
+  input[type="text"] {
+    padding-right: 3rem;
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 1px solid var(--borderColor);
+    border-radius: 999px;
+    color: var(--mutedTextColor);
+    cursor: pointer;
+    padding: 0.25rem;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+
+    &:hover {
+      border-color: var(--secondaryTextColor);
+      color: var(--textColor);
+      background: var(--subtleBackgroundColor);
+    }
+
+    &:focus {
+      outline: 2px solid var(--activeColor);
+      outline-offset: 2px;
+      border-color: var(--activeColor);
+    }
+
+    &:active {
+      color: var(--textColor);
+      background: var(--backgroundColor);
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    svg {
+      width: 1.125rem;
+      height: 1.125rem;
+      stroke: currentColor;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      transition: stroke 0.2s ease;
+    }
+  }
+}
