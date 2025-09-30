@@ -21,7 +21,7 @@ function generateFilmNaming(originalFilename, altText) {
   }
 
   const fileExtension = originalFilename.split('.').pop() || 'jpg';
-  const generatedFilename = `${dateStr}-${description}.${fileExtension}`;
+  const generatedFilename = `${dateStr}-${timeStr}-${description}.${fileExtension}`;
   const generatedId = `film-${dateNum}-${timeStr}`;
 
   return {
@@ -89,13 +89,13 @@ export default async function handler(req, res) {
 
     // 生成统一的文件名和ID
     const { generatedFilename, generatedId, description } = generateFilmNaming(filename, filmData.meta.alt || 'film');
-    const imagePath = `images/film/${generatedFilename}`;
+    let imagePath = `images/film/${generatedFilename}`;
     const publicImagePath = `/${imagePath}`;
 
     // 更新 filmData 的 ID 与图片路径，确保数据引用最终落盘的文件
     filmData.id = generatedId;
     const existingVariants = Array.isArray(filmData.variants) ? filmData.variants.filter(Boolean) : [];
-    filmData.variants = [publicImagePath, ...existingVariants.filter(variant => variant !== publicImagePath)];
+    filmData.filename = generatedFilename;
 
     const imageCommit = await commitToGitHub({
       token: GITHUB_TOKEN,
@@ -105,6 +105,13 @@ export default async function handler(req, res) {
       message: `feat: Upload film ${generatedId}`,
       isBinary: true
     });
+
+    if (imageCommit?.content?.path) {
+      imagePath = imageCommit.content.path;
+    }
+
+    const committedPublicPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+    filmData.variants = [committedPublicPath, ...existingVariants.filter(variant => variant !== committedPublicPath)];
 
     const dataCommit = await updateFilmJson({
       token: GITHUB_TOKEN,
