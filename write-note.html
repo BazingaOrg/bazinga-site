@@ -137,8 +137,8 @@ permalink: /write-note/
 
         <div class="form-actions">
           <button type="submit" class="submit-btn" id="submit-btn">
-            <span class="btn-text">发布随笔</span>
-            <span class="btn-loading">正在发布…</span>
+            <span class="btn-text">直接发布</span>
+            <span class="btn-loading">正在提交…</span>
           </button>
           <button type="button" class="ghost-button" id="reset-draft-btn">清空草稿</button>
         </div>
@@ -147,6 +147,18 @@ permalink: /write-note/
       <div class="status-message" id="status-message" role="status" aria-live="polite"></div>
     </section>
   </div>
+
+  <section class="manual-section" aria-label="手动发布说明">
+    <h3 class="section-title monospace">手动发布</h3>
+    <div class="manual-card">
+      <ol class="manual-steps">
+        <li>复制上方预览内容，保存为 <code id="note-manual-filename">_notes/note-YYYY-MM-DD-HHmm.md</code></li>
+        <li>确认 front matter 中的标签与语言设置正确</li>
+        <li>运行 <code>bundle exec jekyll build</code> 并提交部署</li>
+      </ol>
+      <p class="field-hint">提示：页面会自动生成文件名与日期，也可以直接使用自动发布。</p>
+    </div>
+  </section>
 </div>
 
 <script>
@@ -181,6 +193,7 @@ permalink: /write-note/
   const resetDraftBtn = document.getElementById('reset-draft-btn');
   const statusMessage = document.getElementById('status-message');
   const permissionBanner = document.getElementById('permission-banner');
+  const manualFilenameEl = document.getElementById('note-manual-filename');
 
   const previewContent = document.getElementById('preview-content');
   const previewTags = document.getElementById('preview-tags');
@@ -262,6 +275,9 @@ permalink: /write-note/
     const identifiers = generateNoteIdentifiers();
     previewTime.textContent = identifiers.dateDisplay;
     previewTime.setAttribute('datetime', identifiers.isoLocal);
+    if (manualFilenameEl) {
+      manualFilenameEl.textContent = `_notes/${identifiers.filename}.md`;
+    }
   }
 
   function generateNoteIdentifiers(baseDate = new Date()) {
