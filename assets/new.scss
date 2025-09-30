@@ -19,6 +19,9 @@ html { font-size: 100%; font: -apple-system-body; }
   --langShadowColor: transparent;
   --logoColor: #cccccc;
   --photoBackground: #f4f4f4;
+  --scrollbarTrackColor: #f2f2f2;
+  --scrollbarThumbColor: #c7c7c7;
+  --scrollbarThumbHoverColor: #b0b0b0;
 
   --sansserif: 'Anuphan', system-ui, sans-serif;
   --monospace: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
@@ -41,7 +44,15 @@ html { font-size: 100%; font: -apple-system-body; }
     --langShadowColor: #0b0c0b33;
     --logoColor: #555555;
     --photoBackground: #1a1a1a;
+    --scrollbarTrackColor: #1f1f1f;
+    --scrollbarThumbColor: #4a4a4a;
+    --scrollbarThumbHoverColor: #5b5b5b;
   }
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbarThumbColor) var(--scrollbarTrackColor);
 }
 
 body {
@@ -52,6 +63,26 @@ body {
   margin: 0;
   font-size: 1.1rem;
   word-wrap: break-word;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbarTrackColor);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbarThumbColor);
+  border-radius: 999px;
+  border: 2px solid var(--scrollbarTrackColor);
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbarThumbHoverColor);
 }
 
 body, kbd, button {
