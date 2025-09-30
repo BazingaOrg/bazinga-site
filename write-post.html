@@ -133,7 +133,7 @@ permalink: /write-post/
     <h3 class="section-title monospace">手动发布</h3>
     <div class="manual-card">
       <ol class="manual-steps">
-        <li>展开上方 Front matter，复制内容并连同正文一起保存为 <code id="manual-filename">_posts/post.md</code></li>
+        <li>展开上方 Front matter，复制内容并连同正文一起保存为 <code id="manual-filename">_posts/YYYY-MM-DD-post-HHmm-slug.md</code></li>
         <li>运行 <code>bundle exec jekyll build</code> 确认通过</li>
         <li>提交并推送，等待部署完成</li>
       </ol>
@@ -454,7 +454,7 @@ permalink: /write-post/
       date,
       display: `${year}/${month}/${day} ${hour}:${minute}`,
       dayDisplay: `${year}/${month}/${day}`,
-      filenameBase: `${year}-${month}-${day}-${timeSegment}-post`,
+      filenameBase: `${year}-${month}-${day}-post-${timeSegment}`,
       iso: `${year}-${month}-${day}T${hour}:${minute}:00+08:00`,
       timestamp: date.getTime()
     };

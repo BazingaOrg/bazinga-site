@@ -21,13 +21,12 @@ function generateFilmNaming(originalFilename, altText) {
   }
 
   const fileExtension = originalFilename.split('.').pop() || 'jpg';
-  const generatedFilename = `${dateStr}-${timeStr}-${description}.${fileExtension}`;
+  const generatedFilename = `film-${dateStr}-${timeStr}-${description}.${fileExtension}`;
   const generatedId = `film-${dateNum}-${timeStr}`;
 
   return {
     generatedFilename,
-    generatedId,
-    description
+    generatedId
   };
 }
 
@@ -88,9 +87,8 @@ export default async function handler(req, res) {
     const imageBuffer = matches[2];
 
     // 生成统一的文件名和ID
-    const { generatedFilename, generatedId, description } = generateFilmNaming(filename, filmData.meta.alt || 'film');
+    const { generatedFilename, generatedId } = generateFilmNaming(filename, filmData.meta.alt || 'film');
     let imagePath = `images/film/${generatedFilename}`;
-    const publicImagePath = `/${imagePath}`;
 
     // 更新 filmData 的 ID 与图片路径，确保数据引用最终落盘的文件
     filmData.id = generatedId;

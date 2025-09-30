@@ -69,7 +69,8 @@ export default async function handler(req, res) {
     date: publishInfo.frontMatter
   });
 
-  const fallbackFilename = `${publishInfo.filenameBase}-${cleanedSlug}.md`;
+  const filenameStem = `${publishInfo.filenameBase}-${cleanedSlug}`;
+  const fallbackFilename = `${filenameStem}.md`;
   const filename = isValidFilename(providedFilename)
     ? providedFilename
     : fallbackFilename;
@@ -81,7 +82,7 @@ export default async function handler(req, res) {
       repo: GITHUB_REPO,
       filepath,
       content: markdown,
-      message: `feat: add post: ${cleanedSlug}`
+      message: `feat: add post ${filenameStem}`
     });
 
     const responseFilename = commitResult?.content?.path
@@ -149,7 +150,7 @@ function buildPublishInfo(providedDate) {
 
   return {
     frontMatter,
-    filenameBase: `${year}-${month}-${day}-${timeSegment}-post`,
+    filenameBase: `${year}-${month}-${day}-post-${timeSegment}`,
     iso: `${year}-${month}-${day}T${hour}:${minute}:00+08:00`
   };
 }

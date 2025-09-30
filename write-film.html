@@ -180,7 +180,7 @@ permalink: /write-film/
       <h4 class="monospace">手动发布步骤</h4>
       <ol>
         <li>复制上面的 JSON 配置，粘贴到 <code>_data/film.json</code> 最前面</li>
-        <li>把图片重命名为：<code id="film-suggested-filename">film.jpg</code></li>
+        <li>把图片重命名为：<code id="film-suggested-filename">film-YYYY-MM-DD-HHmm-alt.jpg</code></li>
         <li>把图片放到 <code>images/film/</code> 目录（如有 thumbnail/public CDN 可补充到 variants 中）</li>
         <li>提交并推送改动，等待部署完成</li>
       </ol>
@@ -312,6 +312,34 @@ permalink: /write-film/
     }
   }
 
+  function normalizeFilmSlug(value) {
+    return (value || '')
+      .toString()
+      .toLowerCase()
+      .replace(/[^\u4e00-\u9fa5a-zA-Z0-9\s]/g, '')
+      .replace(/\s+/g, '-')
+      .substring(0, 30) || 'film';
+  }
+
+  function generateFilmIdentifiers({ baseDate = new Date(), altText = '', extension = 'jpg' } = {}) {
+    const shanghaiTime = new Date(baseDate.getTime() + (8 * 60 * 60 * 1000));
+    const dateStr = shanghaiTime.toISOString().split('T')[0];
+    const dateNum = dateStr.replace(/-/g, '');
+    const hours = shanghaiTime.getUTCHours().toString().padStart(2, '0');
+    const minutes = shanghaiTime.getUTCMinutes().toString().padStart(2, '0');
+    const timeStr = `${hours}${minutes}`;
+    const slug = normalizeFilmSlug(altText);
+    const filename = `film-${dateStr}-${timeStr}-${slug}.${extension}`;
+    const id = `film-${dateNum}-${timeStr}`;
+
+    return {
+      dateStr,
+      timeStr,
+      filename,
+      id
+    };
+  }
+
   async function handleFileSelect(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -320,23 +348,25 @@ permalink: /write-film/
     selectedFile = file;
 
     try {
-      const uuid = generateUUID();
-      const timestamp = new Date().toISOString();
+      const baseDate = new Date();
+      const timestamp = baseDate.toISOString();
       const imageInfo = await getImageInfo(file);
-      const filename = deriveFilename(file, uuid);
+      const extension = extractExtension(file?.name) || 'jpg';
+      const identifiers = generateFilmIdentifiers({ baseDate, extension });
 
       filmData = {
-        id: uuid,
+        id: identifiers.id,
         uploaded: timestamp,
-        variants: [`/images/film/${filename}`],
+        variants: [`/images/film/${identifiers.filename}`],
         meta: {
           ratio: imageInfo.ratio,
           alt: '',
           camera: '',
           film: ''
         },
-        filename,
-        originalName: file.name || filename,
+        filename: identifiers.filename,
+        extension,
+        originalName: file.name || identifiers.filename,
         originalSize: file.size,
         dimensions: {
           width: imageInfo.width,
@@ -344,8 +374,8 @@ permalink: /write-film/
         }
       };
 
-      renderPreviewCard(file, imageInfo, uuid, filename);
-      suggestedFilename.textContent = filename;
+      renderPreviewCard(file, imageInfo);
+      suggestedFilename.textContent = filmData.filename;
       toggleSections(true);
 
       insightData = await gatherInsights(file, imageInfo);
@@ -357,7 +387,7 @@ permalink: /write-film/
     }
   }
 
-  function renderPreviewCard(file, imageInfo, uuid, filename) {
+  function renderPreviewCard(file, imageInfo) {
     const reader = new FileReader();
     reader.onload = event => {
       previewCard.hidden = false;
@@ -369,8 +399,8 @@ permalink: /write-film/
         <div class="meta-row"><span>体积</span><span>${formatFileSize(file.size)}</span></div>
         <div class="meta-row"><span>尺寸</span><span>${imageInfo.width} × ${imageInfo.height}</span></div>
         <div class="meta-row"><span>比例</span><span>${imageInfo.ratio}</span></div>
-        <div class="meta-row meta-row--uuid"><span>UUID</span><span>${uuid}</span></div>
-        <div class="meta-row meta-row--filename"><span>建议文件名</span><span>${escapeHtml(filename)}</span></div>
+        <div class="meta-row meta-row--uuid"><span>ID</span><span>${filmData.id}</span></div>
+        <div class="meta-row meta-row--filename"><span>建议文件名</span><span>${escapeHtml(filmData.filename)}</span></div>
       `;
     };
     reader.readAsDataURL(file);
@@ -512,11 +542,34 @@ permalink: /write-film/
     filmData.meta.location = locationInput.value.trim() || undefined;
     filmData.meta.caption = captionInput.value.trim() || undefined;
 
+    const baseDate = new Date(filmData.uploaded);
+    const fileExtension = filmData.extension || extractExtension(filmData.filename) || 'jpg';
+    const identifiers = generateFilmIdentifiers({
+      baseDate,
+      altText: filmData.meta.alt,
+      extension: fileExtension
+    });
+
+    filmData.id = identifiers.id;
+    filmData.filename = identifiers.filename;
+
+    const idCell = imageMeta.querySelector('.meta-row--uuid span:last-child');
+    if (idCell) {
+      idCell.textContent = filmData.id;
+    }
+
+    const filenameCell = imageMeta.querySelector('.meta-row--filename span:last-child');
+    if (filenameCell) {
+      filenameCell.textContent = filmData.filename;
+    }
+
     const extraVariants = parseVariants(variantsInput.value);
     filmData.variants = [`/images/film/${filmData.filename}`];
     if (extraVariants.length > 0) {
       filmData.variants = filmData.variants.concat(extraVariants);
     }
+
+    suggestedFilename.textContent = filmData.filename;
 
     previewImg.src = previewImage.src;
     previewImg.alt = filmData.meta.alt;
@@ -718,11 +771,6 @@ permalink: /write-film/
       .filter(Boolean);
   }
 
-  function deriveFilename(file, uuid) {
-    const ext = extractExtension(file?.name) || 'jpg';
-    return `${uuid}.${ext}`;
-  }
-
   function extractExtension(name = '') {
     const match = name.match(/\.([a-zA-Z0-9]{2,5})$/);
     return match ? match[1].toLowerCase() : '';
@@ -734,14 +782,6 @@ permalink: /write-film/
       reader.onload = event => resolve(event.target.result);
       reader.onerror = reject;
       reader.readAsDataURL(file);
-    });
-  }
-
-  function generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, char => {
-      const random = Math.random() * 16 | 0;
-      const value = char === 'x' ? random : (random & 0x3 | 0x8);
-      return value.toString(16);
     });
   }
 

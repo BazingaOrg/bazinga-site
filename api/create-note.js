@@ -64,13 +64,14 @@ export default async function handler(req, res) {
     const shanghaiTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
     const dateStr = shanghaiTime.toISOString().split('T')[0]; // YYYY-MM-DD
     const timeStr = `${shanghaiTime.getFullYear()}/${(shanghaiTime.getMonth() + 1).toString().padStart(2, '0')}/${shanghaiTime.getDate().toString().padStart(2, '0')} ${shanghaiTime.getHours().toString().padStart(2, '0')}:${shanghaiTime.getMinutes().toString().padStart(2, '0')}`; // YYYY/MM/DD HH:mm
-    
-    // 生成时间戳格式文件名 (与现有notes保持一致)
+
+    const fileDateSegment = dateStr;
     const hours = shanghaiTime.getHours().toString().padStart(2, '0');
     const minutes = shanghaiTime.getMinutes().toString().padStart(2, '0');
     const timeSlug = `${hours}${minutes}`;
     const titleSlug = `${dateStr.replace(/-/g, '')}${hours}${minutes}`;
-    const filename = `${dateStr}-${timeSlug}.md`;
+    const filenameBase = `note-${fileDateSegment}-${timeSlug}`;
+    const filename = `${filenameBase}.md`;
     const filepath = `_notes/${filename}`;
     
     // 生成 Markdown 内容
@@ -88,7 +89,7 @@ export default async function handler(req, res) {
       repo: GITHUB_REPO,
       filepath,
       content: markdownContent,
-      message: `feat: Add note: ${timeSlug}`
+      message: `feat: add note ${filenameBase}`
     });
     
     // 生成笔记 URL
