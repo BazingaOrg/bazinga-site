@@ -1,19 +1,22 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-Content lives in Jekyll collections: `_posts/` for long-form posts, `_notes/` for short updates, and `_stories/` for narrative pieces created with `uuidgen`. Layouts reside in `_layouts/`, reusable snippets in `_includes/`, and standalone pages in `_pages/`. Static assets go under `assets/` (global styles in `assets/new.scss`, scripts in `assets/site.js` and `assets/root.js`). Structured data sources live in `_data/`, while Atom/RSS feeds are in `feeds/`. Production builds emit to `_site/`, so never edit that directory directly.
+Content lives in Jekyll collections: `_posts/` for long-form articles, `_notes/` for quick updates, and `_stories/` for narrative entries. Layouts reside under `_layouts/`, shared partials in `_includes/`, while standalone pages live in `_pages/`. Static assets sit in `assets/` (`assets/new.scss`, `assets/site.js`, `assets/root.js`). Generated data (photos, feeds, etc.) is stored in `_data/` and `feeds/`. The build output `_site/` is disposable—never edit it directly.
 
 ## Build, Test, and Development Commands
-Install dependencies with `bundle install`. Start local preview via `./start`, which runs `bundle exec jekyll server -w --future`; use `bundle exec jekyll serve --host 0.0.0.0 --port 3000` when you need a specific host/port. Generate a production build with `bundle exec jekyll build`, and sanity-check config issues using `bundle exec jekyll doctor`.
+- `bundle install`: install Ruby gems defined in `Gemfile`.
+- `./start`: launch the local preview (`bundle exec jekyll server -w --future`).
+- `bundle exec jekyll serve --host 0.0.0.0 --port 3000`: custom host/port preview.
+- `bundle exec jekyll build`: produce a production build for verification.
 
 ## Coding Style & Naming Conventions
-Use 2-space indentation for HTML/Liquid, SCSS, YAML, and JSON. Front matter stays in YAML, wrapped by `---`, with lowercase keys (`title`, `date`, `tags`). Name posts as `_posts/YYYY-MM-DD-title.md`, notes as `_notes/YYYY-MM-DD-title.md`, and stories as `_stories/<uuid>.md`. Keep `_config.yml` authoritative for i18n and collection settings.
+Use 2-space indentation for HTML/Liquid, SCSS, YAML, and JSON. Front matter keys stay lowercase (`title`, `date`, `tags`). Posts follow `_posts/YYYY-MM-DD-slug.md`; notes use `_notes/YYYY-MM-DD-slug.md`. Prefer descriptive filenames and avoid spaces. CSS lives in SCSS files; keep variables and mixins scoped logically.
 
 ## Testing Guidelines
-There is no automated test suite. Validate changes by running `bundle exec jekyll build` and reviewing key pages plus feeds like `/feed.xml` and `/photos.xml`. Optionally run `bundle exec jekyll doctor` and spot-check links in the rendered site. Document manual verification steps when submitting changes.
+No automated test suite exists. After changes, run `bundle exec jekyll build` and manually review key routes (home, `/notes/`, `/photos/`, feeds like `/feed.xml`). Spot-check note/post pages for layout regressions and confirm external embeds still load.
 
 ## Commit & Pull Request Guidelines
-Follow Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`) where practical; English or Chinese summaries are both acceptable. Scope pull requests narrowly, linking issues when relevant. Provide before/after screenshots for UI tweaks and confirm `bundle exec jekyll build` passes locally. Do not mix structural refactors with content edits in the same PR.
+Adopt Conventional Commits when practical (`feat:`, `fix:`, `docs:`, `chore:`). Each commit should focus on one logical change set. Pull requests must include: summary of changes, manual verification steps (e.g., build + page checks), linked issues when relevant, and before/after screenshots for UI tweaks. Keep PR scope tight—avoid mixing structural refactors with content edits.
 
 ## Security & Configuration Tips
-Never commit secrets—this is a static site. Review `_config.yml` carefully before altering automation-sensitive settings. GitHub Actions scripts may write into `_data/` and `_stories/`; test those flows locally before changing them.
+Do not commit secrets or API tokens. Review `_config.yml` carefully before toggling deployment-related settings. GitHub Actions may write to `_stories/` and `_data/`; test those flows locally prior to altering related scripts.
