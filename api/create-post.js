@@ -82,7 +82,7 @@ export default async function handler(req, res) {
       repo: GITHUB_REPO,
       filepath,
       content: markdown,
-      message: `feat: add post ${filenameStem}`
+      message: `feat: Add post ${filenameStem}`
     });
 
     const responseFilename = commitResult?.content?.path
@@ -150,7 +150,7 @@ function buildPublishInfo(providedDate) {
 
   return {
     frontMatter,
-    filenameBase: `${year}-${month}-${day}-post-${timeSegment}`,
+    filenameBase: `${year}-${month}-${day}-${timeSegment}-post`,
     iso: `${year}-${month}-${day}T${hour}:${minute}:00+08:00`
   };
 }

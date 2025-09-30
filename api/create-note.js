@@ -89,7 +89,7 @@ export default async function handler(req, res) {
       repo: GITHUB_REPO,
       filepath,
       content: markdownContent,
-      message: `feat: add note ${filenameBase}`
+      message: `feat: Add note ${filenameBase}`
     });
     
     // 生成笔记 URL
