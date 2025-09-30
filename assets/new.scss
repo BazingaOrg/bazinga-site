@@ -2266,17 +2266,26 @@ label:has(input:not(:checked)) ~ label:has(input:not(:checked)) ~ label:has(inpu
 
   div {
     display: flex;
-    justify-content: space-between;
-    gap: 1.5rem;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 0.75rem;
+    flex-wrap: nowrap;
   }
 
   span:first-child {
     color: var(--mutedTextColor);
+    min-width: 4rem;
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
 
   span:last-child {
     color: var(--textColor);
     word-break: break-all;
+    flex: 1 1 auto;
+    min-width: 0;
+    margin-left: auto;
+    text-align: right;
   }
 }
 
@@ -2500,7 +2509,7 @@ textarea.photo-input {
 }
 
 .film-meta {
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  grid-template-columns: 1fr;
 
   .meta-row--filename {
     grid-column: 1 / -1;
@@ -2509,16 +2518,6 @@ textarea.photo-input {
       display: block;
       word-break: break-all;
     }
-  }
-}
-
-@media (min-width: 960px) {
-  .film-meta {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .film-meta .meta-row--uuid {
-    grid-column: span 2;
   }
 }
 

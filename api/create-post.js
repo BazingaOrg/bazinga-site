@@ -145,8 +145,7 @@ function buildPublishInfo(providedDate) {
   const day = String(baseDate.getDate()).padStart(2, '0');
   const hour = String(baseDate.getHours()).padStart(2, '0');
   const minute = String(baseDate.getMinutes()).padStart(2, '0');
-  const second = String(baseDate.getSeconds()).padStart(2, '0');
-  const timeSegment = `${hour}${minute}${second}`;
+  const timeSegment = `${hour}${minute}`;
 
   return {
     frontMatter,

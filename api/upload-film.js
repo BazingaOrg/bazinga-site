@@ -4,6 +4,9 @@ function generateFilmNaming(originalFilename, altText) {
   const shanghaiTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
   const dateStr = shanghaiTime.toISOString().split('T')[0]; // YYYY-MM-DD
   const dateNum = dateStr.replace(/-/g, ''); // YYYYMMDD
+  const hours = shanghaiTime.getUTCHours().toString().padStart(2, '0');
+  const minutes = shanghaiTime.getUTCMinutes().toString().padStart(2, '0');
+  const timeStr = `${hours}${minutes}`; // HHmm
 
   // 生成描述性slug
   let description = altText || 'film';
@@ -17,20 +20,14 @@ function generateFilmNaming(originalFilename, altText) {
     description = 'film';
   }
 
-  // 生成序列号 (基于当天胶片数量)
-  const sequence = Math.floor(Math.random() * 999) + 1; // 1-999
-  const sequenceStr = sequence.toString().padStart(3, '0');
-
-  // 生成文件名和ID
   const fileExtension = originalFilename.split('.').pop() || 'jpg';
   const generatedFilename = `${dateStr}-${description}.${fileExtension}`;
-  const generatedId = `film-${dateNum}-${sequenceStr}`;
+  const generatedId = `film-${dateNum}-${timeStr}`;
 
   return {
     generatedFilename,
     generatedId,
-    description,
-    sequence: sequenceStr
+    description
   };
 }
 
@@ -93,9 +90,12 @@ export default async function handler(req, res) {
     // 生成统一的文件名和ID
     const { generatedFilename, generatedId, description } = generateFilmNaming(filename, filmData.meta.alt || 'film');
     const imagePath = `images/film/${generatedFilename}`;
+    const publicImagePath = `/${imagePath}`;
 
-    // 更新filmData的ID
+    // 更新 filmData 的 ID 与图片路径，确保数据引用最终落盘的文件
     filmData.id = generatedId;
+    const existingVariants = Array.isArray(filmData.variants) ? filmData.variants.filter(Boolean) : [];
+    filmData.variants = [publicImagePath, ...existingVariants.filter(variant => variant !== publicImagePath)];
 
     const imageCommit = await commitToGitHub({
       token: GITHUB_TOKEN,
