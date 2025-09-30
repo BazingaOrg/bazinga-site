@@ -72,10 +72,10 @@
       {% if page.root != true %}
         <div class="logo-container">
           <a href="/{% if page.collection == "notes" %}notes{% endif %}" aria-label="Home" class="back-link"
-             data-umami-event="nav_back"
-             data-umami-event-from-page="{{ page.url }}"
-             data-umami-event-to-section="{% if page.collection == 'notes' %}notes{% else %}home{% endif %}"
-             data-umami-event-page-type="{{ page.collection | default: 'page' }}">&leftarrow;</a>
+              data-umami-event="nav_back"
+              data-umami-event-from-page="{{ page.url }}"
+              data-umami-event-to-section="{% if page.collection == 'notes' %}notes{% else %}home{% endif %}"
+              data-umami-event-page-type="{{ page.collection | default: 'page' }}">&leftarrow;</a>
           <svg class="logo" viewBox="0 0 196 169" fill="none" xmlns="http://www.w3.org/2000/svg">
             <title>Bazinga</title>
             <path d="M8 92.7061H188" stroke="#cccccc" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
@@ -83,14 +83,18 @@
             <path d="M83.0002 8H113" stroke="#cccccc" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M53.3782 160.773C64.4534 151.592 86.0271 133.546 97.4226 133.546C112.866 133.546 113.373 160.773 126.168 160.773C138.963 160.773 150.185 155.479 150.185 155.479" stroke="#cccccc" stroke-width="16" stroke-linecap="round"/>
           </svg>
-          <span class="font">Bazinga</span>
+            <span class="font">Bazinga</span>
         </div>
+        <h1 class="h1">
+          <span lang="{{lang}}">{{ page.title }}</span>
+        </h1>
       {% endif %}
       {% if page.root == true %}
         {% include signature.html %}
       {% endif %}
       {% if page.collection == "posts" %}<time class="monospace" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %e, %Y" }}</time>{% endif %}
       {% if page.collection == "notes" or page.collection == "stories" %}<time class="monospace" datetime="{{ page.date }}">{{ page.date | date: "%Y/%m/%d %H:%M" }}</time>{% endif %}
+      <div class="desc">{{ page.header_content }}</div>
       
     </header>
     <main>
@@ -115,7 +119,6 @@
         {% endif %}
         {{ content }}
       {% endcapture %}
-
       {% if page.collection == "posts" or page.collection == "pages" %}
         <article>
           {{ content_and_then_some }}

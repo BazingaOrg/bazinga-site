@@ -36,8 +36,6 @@ export default async function handler(req, res) {
     body,
     slug: providedSlug,
     lang = 'zh-CN',
-    excerpt,
-    tags,
     feature,
     image,
     image_text: imageText,
@@ -57,7 +55,6 @@ export default async function handler(req, res) {
 
   const cleanedSlug = generateSlug(providedSlug || title);
   const normalizedLang = typeof lang === 'string' && lang.trim() ? lang.trim() : 'zh-CN';
-  const normalizedTags = normalizeTags(tags);
   const shouldFeature = feature === 1 || feature === '1' || feature === true;
   const publishInfo = buildPublishInfo(date);
 
@@ -66,8 +63,6 @@ export default async function handler(req, res) {
     body: String(body).trim(),
     slug: cleanedSlug,
     lang: normalizedLang,
-    excerpt,
-    tags: normalizedTags,
     feature: shouldFeature,
     image,
     imageText,
@@ -121,14 +116,6 @@ export default async function handler(req, res) {
   }
 }
 
-function normalizeTags(tags) {
-  if (!Array.isArray(tags)) return [];
-  return tags
-    .map(tag => String(tag || '').trim())
-    .filter(tag => tag.length > 0)
-    .slice(0, 12);
-}
-
 function buildPublishInfo(providedDate) {
   const pattern = /^(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})$/;
   let baseDate;
@@ -173,7 +160,7 @@ function computeShanghaiDate(baseDate = new Date()) {
   return new Date(utc + 8 * 60 * 60000);
 }
 
-function createMarkdown({ title, body, slug, lang, excerpt, tags, feature, image, imageText, date }) {
+function createMarkdown({ title, body, slug, lang, feature, image, imageText, date }) {
   const lines = [
     '---',
     `title: "${escapeYAML(title)}"`,
@@ -188,14 +175,6 @@ function createMarkdown({ title, body, slug, lang, excerpt, tags, feature, image
 
   if (lang && lang !== 'zh-CN') {
     lines.push(`lang: ${lang}`);
-  }
-
-  if (Array.isArray(tags) && tags.length > 0) {
-    lines.push(`tags: [${tags.map(tag => `"${escapeYAML(tag)}"`).join(', ')}]`);
-  }
-
-  if (excerpt && String(excerpt).trim()) {
-    lines.push(`excerpt: "${escapeYAML(toSingleLine(String(excerpt)))}"`);
   }
 
   if (image && String(image).trim()) {
@@ -230,10 +209,6 @@ function generateSlug(source) {
 
 function escapeYAML(value) {
   return value.replace(/"/g, '\\"');
-}
-
-function toSingleLine(value) {
-  return value.replace(/\s+/g, ' ').trim();
 }
 
 function isValidFilename(value) {

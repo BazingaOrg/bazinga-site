@@ -19,7 +19,6 @@ permalink: /write-post/
         <header class="post-preview-header">
           <time class="monospace" id="preview-date" datetime="{{ "now" | date_to_xmlschema }}">{{ "now" | date: "%Y/%m/%d" }}</time>
           <h1 class="post-preview-title" id="preview-title">文章标题会显示在这里</h1>
-          <ul class="post-preview-tags" id="preview-tags" aria-label="文章标签"></ul>
         </header>
         <div class="post-preview-body" id="preview-body">
           <p class="placeholder-text">文字会在这里出现，像刚写完一样新鲜。</p>
@@ -74,22 +73,6 @@ permalink: /write-post/
             <input type="text" id="slug" name="slug" placeholder="自动生成，可自行调整">
             <span class="field-feedback" id="slug-feedback" role="status" aria-live="polite"></span>
           </div>
-
-          <div class="form-field">
-            <div class="field-title">
-              <label class="field-label monospace" for="excerpt">摘要</label>
-            </div>
-            <textarea id="excerpt" name="excerpt" placeholder="可选：用于 meta description，保持在一两句话内。"></textarea>
-          </div>
-
-          <fieldset class="form-field tag-field">
-            <legend class="field-label monospace">标签</legend>
-            <div class="tag-inputs">
-              <div class="tag-pool" id="tag-pool"></div>
-              <label class="field-hint monospace" for="custom-tags">自定义标签（逗号分隔）</label>
-            <input type="text" id="custom-tags" placeholder="新的标签，用逗号隔开，例如：夜读，随记">
-            </div>
-          </fieldset>
 
           <div class="form-field checkbox-field">
             <label class="field-label monospace" for="feature">
@@ -164,28 +147,9 @@ permalink: /write-post/
   const container = document.querySelector('.write-post-container');
   if (!container) return;
 
-  const SOURCE_POST_TAGS = {{ site.posts | map: "tags" | jsonify }};
-  const FLATTENED_TAGS = Array.isArray(SOURCE_POST_TAGS)
-    ? SOURCE_POST_TAGS.flat().filter(tag => typeof tag === 'string' && tag.trim().length > 0)
-    : [];
-
-  const TAG_COUNTS = new Map();
-  FLATTENED_TAGS.forEach(tag => {
-    const name = tag.trim();
-    if (!name) return;
-    TAG_COUNTS.set(name, (TAG_COUNTS.get(name) || 0) + 1);
-  });
-
-  const TAG_SUGGESTIONS = Array.from(TAG_COUNTS.entries())
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-CN'))
-    .slice(0, 8)
-    .map(([name, count]) => ({ name, count }));
-
   const titleInput = document.getElementById('title');
   const bodyInput = document.getElementById('body');
   const slugInput = document.getElementById('slug');
-  const excerptInput = document.getElementById('excerpt');
-  const customTagsInput = document.getElementById('custom-tags');
   const featureCheckbox = document.getElementById('feature');
   const imageInput = document.getElementById('image');
   const imageTextInput = document.getElementById('image-text');
@@ -200,7 +164,6 @@ permalink: /write-post/
   const previewTitleEl = document.getElementById('preview-title');
   const previewBodyEl = document.getElementById('preview-body');
   const previewDateEl = document.getElementById('preview-date');
-  const previewTagsEl = document.getElementById('preview-tags');
   const previewMediaEl = document.getElementById('preview-media');
   const previewImageEl = document.getElementById('preview-image');
   const previewImageTextEl = document.getElementById('preview-image-text');
@@ -211,7 +174,6 @@ permalink: /write-post/
   const refreshDateBtn = document.getElementById('refresh-date');
   const postPermissionBanner = document.getElementById('post-permission-banner');
   const draftBanner = document.getElementById('draft-banner');
-  const tagPool = document.getElementById('tag-pool');
   const titleFeedback = document.getElementById('title-feedback');
   const bodyFeedback = document.getElementById('body-feedback');
   const slugFeedback = document.getElementById('slug-feedback');
@@ -232,13 +194,11 @@ permalink: /write-post/
   let frontMatterCache = '';
 
   const state = {
-    tags: [],
     publish: buildPublishMeta(computeShanghaiDate()),
     slug: 'post'
   };
 
   setPublishingStatus(state.publish);
-  initTagPool();
   bindEvents();
   setupPermissionBanner();
   setupDraftBanner();
@@ -286,11 +246,6 @@ permalink: /write-post/
       updateOutputs();
     });
 
-    excerptInput.addEventListener('input', () => {
-      hasUserInteracted = true;
-      updateOutputs();
-    });
-
     featureCheckbox.addEventListener('change', () => {
       hasUserInteracted = true;
       updateOutputs();
@@ -302,16 +257,6 @@ permalink: /write-post/
     });
 
     imageTextInput.addEventListener('input', () => {
-      hasUserInteracted = true;
-      updateOutputs();
-    });
-
-    customTagsInput.addEventListener('input', () => {
-      hasUserInteracted = true;
-      updateOutputs();
-    });
-
-    tagPool.addEventListener('change', () => {
       hasUserInteracted = true;
       updateOutputs();
     });
@@ -344,49 +289,6 @@ permalink: /write-post/
     });
 
     form.addEventListener('submit', handleSubmit);
-  }
-
-  function initTagPool() {
-    tagPool.innerHTML = '';
-
-    if (TAG_SUGGESTIONS.length === 0) {
-      const hint = document.createElement('p');
-      hint.className = 'field-hint';
-      hint.textContent = '目前没有历史标签，先写一篇文章试试吧。';
-      tagPool.appendChild(hint);
-      return;
-    }
-
-    TAG_SUGGESTIONS.forEach(({ name }) => {
-      tagPool.appendChild(createTagChip(name));
-    });
-  }
-
-  function createTagChip(tagName) {
-    const label = document.createElement('label');
-    label.className = 'tag-chip';
-
-    const input = document.createElement('input');
-    input.type = 'checkbox';
-    input.value = tagName;
-    input.className = 'tag-checkbox';
-    input.dataset.tag = tagName;
-
-    const span = document.createElement('span');
-    span.className = 'tag-name';
-    span.textContent = tagName;
-
-    label.appendChild(input);
-    label.appendChild(span);
-    return label;
-  }
-
-  function ensureTagChip(tagName) {
-    if (!tagName) return;
-    const selector = `input[type="checkbox"][value="${CSS.escape(tagName)}"]`;
-    const existing = tagPool.querySelector(selector);
-    if (existing) return;
-    tagPool.appendChild(createTagChip(tagName));
   }
 
   function setupPermissionBanner() {
@@ -440,25 +342,12 @@ permalink: /write-post/
 
     titleInput.value = draft.title || '';
     bodyInput.value = draft.body || '';
-    excerptInput.value = draft.excerpt || '';
-    customTagsInput.value = draft.customTags || '';
     featureCheckbox.checked = Boolean(draft.feature);
     imageInput.value = draft.image || '';
     imageTextInput.value = draft.imageText || '';
     slugManuallyEdited = Boolean(draft.slugManual);
     slugInput.value = draft.slug || '';
     updateSlugFromInput();
-
-    tagPool.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.checked = false; });
-    if (Array.isArray(draft.checkedTags)) {
-      draft.checkedTags.forEach(tag => {
-        ensureTagChip(tag);
-        const checkbox = tagPool.querySelector(`input[type="checkbox"][value="${CSS.escape(tag)}"]`);
-        if (checkbox) {
-          checkbox.checked = true;
-        }
-      });
-    }
 
     if (typeof draft.publishTimestamp === 'number') {
       setPublishDate(new Date(draft.publishTimestamp));
@@ -519,14 +408,11 @@ permalink: /write-post/
   }
 
   function gatherFormData() {
-    const tags = getSelectedTags();
     return {
       title: titleInput.value.trim(),
       body: bodyInput.value.trim(),
       slug: state.slug,
       lang: 'zh-CN',
-      excerpt: excerptInput.value.trim(),
-      tags,
       feature: featureCheckbox.checked ? 1 : 0,
       image: imageInput.value.trim(),
       image_text: imageTextInput.value.trim(),
@@ -600,11 +486,9 @@ permalink: /write-post/
   }
 
   function updateOutputs() {
-    state.tags = getSelectedTags();
     updateFilenameDisplay();
     updatePreviewTitle();
     updatePreviewDate();
-    updatePreviewTags();
     updatePreviewBody();
     updatePreviewMedia();
     updateFrontMatter();
@@ -632,15 +516,6 @@ permalink: /write-post/
 
   function formatPreviewDate() {
     return state.publish.dayDisplay;
-  }
-
-  function updatePreviewTags() {
-    previewTagsEl.innerHTML = '';
-    state.tags.forEach(tag => {
-      const item = document.createElement('li');
-      item.textContent = tag;
-      previewTagsEl.appendChild(item);
-    });
   }
 
   function updatePreviewBody() {
@@ -772,15 +647,6 @@ permalink: /write-post/
       lines.push('feature: 1');
     }
 
-    if (state.tags.length > 0) {
-      lines.push(`tags: [${state.tags.map(tag => `"${escapeYAML(tag)}"`).join(', ')}]`);
-    }
-
-    const excerpt = excerptInput.value.trim();
-    if (excerpt) {
-      lines.push(`excerpt: "${escapeYAML(toSingleLine(excerpt))}"`);
-    }
-
     const image = imageInput.value.trim();
     if (image) {
       lines.push(`image: ${image}`);
@@ -799,17 +665,6 @@ permalink: /write-post/
 
     frontMatterCache = lines.join('\n');
     frontmatterOutput.textContent = frontMatterCache;
-  }
-
-  function getSelectedTags() {
-    const tags = new Set();
-
-    tagPool.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
-      if (cb.value) tags.add(cb.value);
-    });
-
-    customTagsInput.value.split(',').map(tag => tag.trim()).filter(Boolean).forEach(tag => tags.add(tag));
-    return Array.from(tags);
   }
 
   function updateBodyStats() {
@@ -921,10 +776,6 @@ permalink: /write-post/
     return value.replace(/"/g, '\\"');
   }
 
-  function toSingleLine(value) {
-    return value.replace(/\s+/g, ' ').trim();
-  }
-
   function copyText(text, triggerButton) {
     if (!navigator.clipboard) {
       fallbackCopy(text);
@@ -965,10 +816,7 @@ permalink: /write-post/
     const draft = {
       title: titleInput.value,
       body: bodyInput.value,
-      excerpt: excerptInput.value,
       feature: featureCheckbox.checked,
-      customTags: customTagsInput.value,
-      checkedTags: Array.from(tagPool.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value),
       image: imageInput.value,
       imageText: imageTextInput.value,
       slug: slugInput.value,
