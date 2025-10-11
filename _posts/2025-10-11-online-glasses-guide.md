@@ -143,6 +143,6 @@ feature: 1
 在写这篇分享时，参考了以下优质内容：
 
 1. [网上配眼镜的经验分享/避坑指南](https://fast.v2ex.com/t/1153116)
-2. [V2EX眼镜交流帖](https://www.v2ex.com/t/543782#reply94)
-3. [网上配镜避坑指南](https://v2ex.com/t/843358)
+2. [眼镜，眼镜！](https://www.v2ex.com/t/543782#reply94)
+3. [分享一次网上配镜的经历。](https://v2ex.com/t/843358)
 4. [大耳陶的互联网配镜攻略](https://www.bilibili.com/video/BV1xt4y1U7nu/?share_source=copy_web&vd_source=61409c2dae41a631a59035bdb553efba)
