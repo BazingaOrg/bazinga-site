@@ -2,6 +2,23 @@ title:            Bazinga
 description:      Bazinga's home page on the World Wide Web.
 url:              https://site.bazinga.ink
 lang:              en-US
+
+# SEO配置
+author:
+  name:           Bazinga
+  email:          zhangyouxiu66@gmail.com
+
+# 网站关键字
+keywords:         bazinga, blog, personal website, notes, stories, photos, film, travel, life
+
+# 社交媒体链接
+social:
+  github:         https://github.com/BazingaOrg
+  twitter:        https://x.com/zhangyouxiu6
+
+# 网站图标和图片
+favicon:          /assets/fav.svg
+logo:             /assets/logo.png
 permalink:        /posts/:title
 timezone:         Asia/Shanghai
 sass:

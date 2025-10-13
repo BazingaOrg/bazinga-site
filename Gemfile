@@ -13,4 +13,5 @@ gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 group :jekyll_plugins do
   gem "jekyll-commonmark"
   gem "jekyll-commonmark-ghpages", "~> 0.2"
+  gem "jekyll-sitemap"
 end
