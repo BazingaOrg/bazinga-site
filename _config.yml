@@ -17,7 +17,7 @@ social:
   twitter:        https://x.com/zhangyouxiu6
 
 # 网站图标和图片
-favicon:          /assets/fav.svg
+favicon:          /assets/favicon-32x32.png
 logo:             /assets/logo.png
 permalink:        /posts/:title
 timezone:         Asia/Shanghai
