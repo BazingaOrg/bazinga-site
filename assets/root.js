@@ -30,38 +30,6 @@ function settime() {
 
 settime()
 
-const statusEl = document.querySelector('[data-status-loading]')
-
-if (statusEl) {
-  try {
-    statusEl.hidden = false
-    // Status functionality disabled for now
-    statusEl.remove()
-  } catch (e) {
-    statusEl.remove()
-    console.warn(e)
-  }
-}
-
-function relativeDate(date) {
-  const now = new Date()
-  const diff = now - date
-  const hour = 1000 * 60 * 60
-  const day = hour * 24
-  const week = day * 7
-  const rtf = new Intl.RelativeTimeFormat('en', { style: 'narrow' })
-
-  if (diff < hour) {
-    return rtf.format(-Math.floor(diff / 60000), 'minute')
-  } else if (diff < day) {
-    return rtf.format(-Math.floor(diff / hour), 'hour')
-  } else if (diff < week) {
-    return rtf.format(-Math.floor(diff / day), 'day')
-  } else {
-    return
-  }
-}
-
 // Language preference memory functionality
 function initLanguageMemory() {
   const STORAGE_KEY = 'site-language-preference'
@@ -205,18 +173,10 @@ function initLanguageMemory() {
   }
 }
 
-// Initialize language memory when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initLanguageMemory)
-} else {
-  initLanguageMemory()
-}
-
 // Write Note 入口显隐控制
 function initWriteEntryControl() {
-  const writeEntry = document.getElementById('write-entry')
-  if (!writeEntry) return
-  
+  const headings = Array.from(document.querySelectorAll('.normal-heading'))
+
   const logEntryToggle = (entry, action) => {
     trackUmami('write_entry_toggle', {
       entry,
@@ -226,345 +186,148 @@ function initWriteEntryControl() {
     })
   }
 
-  // 检查是否已激活
-  if (localStorage.getItem('show-write-entry') === 'true') {
-    writeEntry.classList.add('show')
+  function resolveHeadings(candidates) {
+    return headings.filter(heading => candidates.includes(heading.textContent.trim()))
   }
-  
-  // 找到Notes标题进行交互监听
-  const notesHeadings = Array.from(document.querySelectorAll('.normal-heading')).filter(h => 
-    h.textContent.trim() === 'Notes'
-  )
-  
-  notesHeadings.forEach(notesTitle => {
-    // 桌面端：双击事件
-    notesTitle.addEventListener('dblclick', (e) => {
-      e.preventDefault()
-      toggleWriteEntry()
+
+  function bindTitleInteractions(targetHeadings, onToggle, updateTitleHint) {
+    targetHeadings.forEach(targetHeading => {
+      targetHeading.addEventListener('dblclick', event => {
+        event.preventDefault()
+        onToggle()
+      })
+
+      let pressTimer = null
+      let isLongPress = false
+
+      targetHeading.addEventListener('touchstart', event => {
+        isLongPress = false
+        pressTimer = setTimeout(() => {
+          isLongPress = true
+          event.preventDefault()
+          onToggle()
+        }, 1500)
+      })
+
+      targetHeading.addEventListener('touchend', event => {
+        clearTimeout(pressTimer)
+        if (isLongPress) {
+          event.preventDefault()
+        }
+      })
+
+      targetHeading.addEventListener('touchmove', () => {
+        clearTimeout(pressTimer)
+      })
+
+      targetHeading.style.cursor = 'pointer'
+      updateTitleHint(targetHeading)
     })
-    
-    // 移动端：长按事件
-    let pressTimer = null
-    let isLongPress = false
-    
-    notesTitle.addEventListener('touchstart', (e) => {
-      isLongPress = false
-      pressTimer = setTimeout(() => {
-        isLongPress = true
-        e.preventDefault()
-        toggleWriteEntry()
-      }, 1500) // 1.5秒长按
-    })
-    
-    notesTitle.addEventListener('touchend', (e) => {
-      clearTimeout(pressTimer)
-      if (isLongPress) {
-        e.preventDefault()
+  }
+
+  function createWriteEntryController(config) {
+    const {
+      entryId,
+      storageKey,
+      headingTexts,
+      activeTitle,
+      inactiveTitle,
+      activeMessage,
+      inactiveMessage,
+      trackingEntry
+    } = config
+
+    const entryElement = document.getElementById(entryId)
+    if (!entryElement) return
+
+    const targetHeadings = resolveHeadings(headingTexts)
+    if (targetHeadings.length === 0) return
+
+    if (localStorage.getItem(storageKey) === 'true') {
+      entryElement.classList.add('show')
+    }
+
+    const updateTitleHint = titleElement => {
+      const isActive = localStorage.getItem(storageKey) === 'true'
+      const isMobile = window.innerWidth <= 768
+      const action = isMobile ? '长按' : '双击'
+      titleElement.title = isActive ? `${action}${activeTitle}` : `${action}${inactiveTitle}`
+    }
+
+    const activateEntry = () => {
+      entryElement.classList.add('show')
+      localStorage.setItem(storageKey, 'true')
+      entryElement.style.animation = 'writeEntryAppear 0.6s ease-out'
+      showToast(activeMessage, 'success')
+      logEntryToggle(trackingEntry, 'show')
+    }
+
+    const hideEntry = () => {
+      entryElement.style.animation = 'writeEntryDisappear 0.4s ease-in'
+      setTimeout(() => {
+        entryElement.classList.remove('show')
+        localStorage.setItem(storageKey, 'false')
+      }, 400)
+      showToast(inactiveMessage, 'info')
+      logEntryToggle(trackingEntry, 'hide')
+    }
+
+    const toggleEntry = () => {
+      if (entryElement.classList.contains('show')) {
+        hideEntry()
+      } else {
+        activateEntry()
       }
-    })
-    
-    notesTitle.addEventListener('touchmove', () => {
-      clearTimeout(pressTimer)
-    })
-    
-    // 添加提示样式
-    notesTitle.style.cursor = 'pointer'
-    updateTitleHint(notesTitle)
+      targetHeadings.forEach(updateTitleHint)
+    }
+
+    bindTitleInteractions(targetHeadings, toggleEntry, updateTitleHint)
+  }
+
+  createWriteEntryController({
+    entryId: 'write-entry',
+    storageKey: 'show-write-entry',
+    headingTexts: ['Notes'],
+    activeTitle: '隐藏写作入口',
+    inactiveTitle: '激活写作模式',
+    activeMessage: '✏️ 写作模式已激活',
+    inactiveMessage: '📝 写作模式已隐藏',
+    trackingEntry: 'notes'
   })
-  
-  function updateTitleHint(titleElement) {
-    const isActive = localStorage.getItem('show-write-entry') === 'true'
-    const isMobile = window.innerWidth <= 768
-    const action = isMobile ? '长按' : '双击'
-    titleElement.title = isActive ? `${action}隐藏写作入口` : `${action}激活写作模式`
-  }
-  
-  function toggleWriteEntry() {
-    const isCurrentlyActive = writeEntry.classList.contains('show')
-    
-    if (isCurrentlyActive) {
-      // 隐藏入口
-      hideWriteEntry()
-    } else {
-      // 激活入口
-      activateWriteEntry()
-    }
-    
-    // 更新所有Notes标题的提示
-    notesHeadings.forEach(updateTitleHint)
-  }
 
-  // Photos 标题交互逻辑
-  const photoEntry = document.getElementById('photo-write-entry')
-  if (photoEntry) {
-    // 检查localStorage中的Photos写作入口状态
-    if (localStorage.getItem('show-photo-entry') === 'true') {
-      photoEntry.classList.add('show')
-    }
+  createWriteEntryController({
+    entryId: 'photo-write-entry',
+    storageKey: 'show-photo-entry',
+    headingTexts: ['Photos', '照片'],
+    activeTitle: '隐藏上传入口',
+    inactiveTitle: '激活照片上传',
+    activeMessage: '📷 照片上传已激活',
+    inactiveMessage: '📸 照片上传已隐藏',
+    trackingEntry: 'photos'
+  })
 
-    // 找到Photos标题进行交互监听
-    const photosHeadings = Array.from(document.querySelectorAll('.normal-heading')).filter(h =>
-      h.textContent.trim() === 'Photos' || h.textContent.trim() === '照片'
-    )
+  createWriteEntryController({
+    entryId: 'film-write-entry',
+    storageKey: 'show-film-entry',
+    headingTexts: ['Film photos', '胶片照片'],
+    activeTitle: '隐藏胶片入口',
+    inactiveTitle: '激活胶片入口',
+    activeMessage: '🎞️ 胶片入口已激活',
+    inactiveMessage: '📽️ 胶片入口已隐藏',
+    trackingEntry: 'film'
+  })
 
-    photosHeadings.forEach(photosTitle => {
-      // 桌面端：双击事件
-      photosTitle.addEventListener('dblclick', (e) => {
-        e.preventDefault()
-        togglePhotoEntry()
-      })
+  createWriteEntryController({
+    entryId: 'post-write-entry',
+    storageKey: 'show-post-entry',
+    headingTexts: ['Recent posts', '文章'],
+    activeTitle: '隐藏文章入口',
+    inactiveTitle: '激活文章入口',
+    activeMessage: '📰 文章入口已激活',
+    inactiveMessage: '🗞️ 文章入口已隐藏',
+    trackingEntry: 'posts'
+  })
 
-      // 移动端：长按事件
-      let photoPressTimer = null
-      let isPhotoLongPress = false
-
-      photosTitle.addEventListener('touchstart', (e) => {
-        isPhotoLongPress = false
-        photoPressTimer = setTimeout(() => {
-          isPhotoLongPress = true
-          e.preventDefault()
-          togglePhotoEntry()
-        }, 1500) // 1.5秒长按
-      })
-
-      photosTitle.addEventListener('touchend', (e) => {
-        clearTimeout(photoPressTimer)
-        if (isPhotoLongPress) {
-          e.preventDefault()
-        }
-      })
-
-      photosTitle.addEventListener('touchmove', () => {
-        clearTimeout(photoPressTimer)
-      })
-
-      // 添加提示样式
-      photosTitle.style.cursor = 'pointer'
-      updatePhotoTitleHint(photosTitle)
-    })
-
-    function updatePhotoTitleHint(titleElement) {
-      const isActive = localStorage.getItem('show-photo-entry') === 'true'
-      const isMobile = window.innerWidth <= 768
-      const action = isMobile ? '长按' : '双击'
-      titleElement.title = isActive ? `${action}隐藏上传入口` : `${action}激活照片上传`
-    }
-
-    function togglePhotoEntry() {
-      const isCurrentlyActive = photoEntry.classList.contains('show')
-
-      if (isCurrentlyActive) {
-        // 隐藏入口
-        hidePhotoEntry()
-      } else {
-        // 激活入口
-        activatePhotoEntry()
-      }
-
-      // 更新所有Photos标题的提示
-      photosHeadings.forEach(updatePhotoTitleHint)
-    }
-
-  function activatePhotoEntry() {
-    photoEntry.classList.add('show')
-    localStorage.setItem('show-photo-entry', 'true')
-    photoEntry.style.animation = 'writeEntryAppear 0.6s ease-out'
-    showToast('📷 照片上传已激活', 'success')
-    logEntryToggle('photos', 'show')
-  }
-
-  function hidePhotoEntry() {
-    photoEntry.style.animation = 'writeEntryDisappear 0.4s ease-in'
-    setTimeout(() => {
-      photoEntry.classList.remove('show')
-      localStorage.setItem('show-photo-entry', 'false')
-    }, 400)
-    showToast('📸 照片上传已隐藏', 'info')
-    logEntryToggle('photos', 'hide')
-  }
-  }
-
-  // Film photos 标题交互逻辑
-  const filmEntry = document.getElementById('film-write-entry')
-  if (filmEntry) {
-    if (localStorage.getItem('show-film-entry') === 'true') {
-      filmEntry.classList.add('show')
-    }
-
-    const filmHeadings = Array.from(document.querySelectorAll('.normal-heading')).filter(h =>
-      h.textContent.trim() === 'Film photos' || h.textContent.trim() === '胶片照片'
-    )
-
-    filmHeadings.forEach(filmTitle => {
-      filmTitle.addEventListener('dblclick', (e) => {
-        e.preventDefault()
-        toggleFilmEntry()
-      })
-
-      let filmPressTimer = null
-      let isFilmLongPress = false
-
-      filmTitle.addEventListener('touchstart', (e) => {
-        isFilmLongPress = false
-        filmPressTimer = setTimeout(() => {
-          isFilmLongPress = true
-          e.preventDefault()
-          toggleFilmEntry()
-        }, 1500)
-      })
-
-      filmTitle.addEventListener('touchend', (e) => {
-        clearTimeout(filmPressTimer)
-        if (isFilmLongPress) {
-          e.preventDefault()
-        }
-      })
-
-      filmTitle.addEventListener('touchmove', () => {
-        clearTimeout(filmPressTimer)
-      })
-
-      filmTitle.style.cursor = 'pointer'
-      updateFilmTitleHint(filmTitle)
-    })
-
-    function updateFilmTitleHint(titleElement) {
-      const isActive = localStorage.getItem('show-film-entry') === 'true'
-      const isMobile = window.innerWidth <= 768
-      const action = isMobile ? '长按' : '双击'
-      titleElement.title = isActive ? `${action}隐藏胶片入口` : `${action}激活胶片入口`
-    }
-
-    function toggleFilmEntry() {
-      const isCurrentlyActive = filmEntry.classList.contains('show')
-
-      if (isCurrentlyActive) {
-        hideFilmEntry()
-      } else {
-        activateFilmEntry()
-      }
-
-      filmHeadings.forEach(updateFilmTitleHint)
-    }
-
-    function activateFilmEntry() {
-      filmEntry.classList.add('show')
-      localStorage.setItem('show-film-entry', 'true')
-      filmEntry.style.animation = 'writeEntryAppear 0.6s ease-out'
-      showToast('🎞️ 胶片入口已激活', 'success')
-      logEntryToggle('film', 'show')
-    }
-
-    function hideFilmEntry() {
-      filmEntry.style.animation = 'writeEntryDisappear 0.4s ease-in'
-      setTimeout(() => {
-        filmEntry.classList.remove('show')
-        localStorage.setItem('show-film-entry', 'false')
-      }, 400)
-      showToast('📽️ 胶片入口已隐藏', 'info')
-      logEntryToggle('film', 'hide')
-    }
-  }
-
-  const postEntry = document.getElementById('post-write-entry')
-  if (postEntry) {
-    if (localStorage.getItem('show-post-entry') === 'true') {
-      postEntry.classList.add('show')
-    }
-
-    const postHeadings = Array.from(document.querySelectorAll('.normal-heading')).filter(h =>
-      h.textContent.trim() === 'Recent posts' || h.textContent.trim() === '文章'
-    )
-
-    postHeadings.forEach(postTitle => {
-      postTitle.addEventListener('dblclick', (e) => {
-        e.preventDefault()
-        togglePostEntry()
-      })
-
-      let postPressTimer = null
-      let isPostLongPress = false
-
-      postTitle.addEventListener('touchstart', (e) => {
-        isPostLongPress = false
-        postPressTimer = setTimeout(() => {
-          isPostLongPress = true
-          e.preventDefault()
-          togglePostEntry()
-        }, 1500)
-      })
-
-      postTitle.addEventListener('touchend', (e) => {
-        clearTimeout(postPressTimer)
-        if (isPostLongPress) {
-          e.preventDefault()
-        }
-      })
-
-      postTitle.addEventListener('touchmove', () => {
-        clearTimeout(postPressTimer)
-      })
-
-      postTitle.style.cursor = 'pointer'
-      updatePostTitleHint(postTitle)
-    })
-
-    function updatePostTitleHint(titleElement) {
-      const isActive = localStorage.getItem('show-post-entry') === 'true'
-      const isMobile = window.innerWidth <= 768
-      const action = isMobile ? '长按' : '双击'
-      titleElement.title = isActive ? `${action}隐藏文章入口` : `${action}激活文章入口`
-    }
-
-    function togglePostEntry() {
-      const isCurrentlyActive = postEntry.classList.contains('show')
-
-      if (isCurrentlyActive) {
-        hidePostEntry()
-      } else {
-        activatePostEntry()
-      }
-
-      postHeadings.forEach(updatePostTitleHint)
-    }
-
-    function activatePostEntry() {
-      postEntry.classList.add('show')
-      localStorage.setItem('show-post-entry', 'true')
-      postEntry.style.animation = 'writeEntryAppear 0.6s ease-out'
-      showToast('📰 文章入口已激活', 'success')
-      logEntryToggle('posts', 'show')
-    }
-
-    function hidePostEntry() {
-      postEntry.style.animation = 'writeEntryDisappear 0.4s ease-in'
-      setTimeout(() => {
-        postEntry.classList.remove('show')
-        localStorage.setItem('show-post-entry', 'false')
-      }, 400)
-      showToast('🗞️ 文章入口已隐藏', 'info')
-      logEntryToggle('posts', 'hide')
-    }
-  }
-
-  function activateWriteEntry() {
-    writeEntry.classList.add('show')
-    localStorage.setItem('show-write-entry', 'true')
-    writeEntry.style.animation = 'writeEntryAppear 0.6s ease-out'
-    showToast('✏️ 写作模式已激活', 'success')
-    logEntryToggle('notes', 'show')
-  }
-  
-  function hideWriteEntry() {
-    writeEntry.style.animation = 'writeEntryDisappear 0.4s ease-in'
-    setTimeout(() => {
-      writeEntry.classList.remove('show')
-      localStorage.setItem('show-write-entry', 'false')
-    }, 400)
-    showToast('📝 写作模式已隐藏', 'info')
-    logEntryToggle('notes', 'hide')
-  }
-  
   function showToast(message, type) {
     const toast = document.createElement('div')
     toast.className = `toast toast-${type}`

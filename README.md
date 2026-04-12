@@ -22,6 +22,10 @@ $ ./start
 
 This site is configured for deployment on Vercel. The Jekyll build process is handled automatically.
 
+## Documentation
+
+Contributor-facing guides are kept in the repository root (for example, `AGENTS.md` and `DEPLOYMENT.md`).
+
 ## License
 
 The following directories and their contents are Copyright Bazinga. You may not reuse anything therein without permission:

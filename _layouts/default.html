@@ -192,11 +192,6 @@
 
     {% if page.root %}
     <script type="module" src="/assets/root.js"></script>
-    <script type="module" src="https://unpkg.com/open-stories-element@latest"></script>
-    {% if jekyll.environment == 'production' %}
-    {% comment %}<!-- Stories 浏览行为追踪 -->{% endcomment %}
-    <script type="module" src="/assets/stories-tracking.js"></script>
-    {% endif %}
     {% endif %}
     {% if page.feature == 1 or page.open_heart or page.has_open_heart %}
     <script type="module" src="https://unpkg.com/open-heart-element@latest"></script>
@@ -212,8 +207,7 @@
       })
 
       // Track open-heart interactions with umami
-      document.addEventListener('open-heart:liked', function(event) {
-        const heartElement = event.target;
+      document.addEventListener('open-heart:liked', function() {
         const pageType = '{{ page.collection | default: "page" }}';
         const pageUrl = window.location.pathname;
         const pageTitle = '{{ page.title | default: site.title }}';
@@ -229,8 +223,7 @@
         }
       });
 
-      document.addEventListener('open-heart:unliked', function(event) {
-        const heartElement = event.target;
+      document.addEventListener('open-heart:unliked', function() {
         const pageType = '{{ page.collection | default: "page" }}';
         const pageUrl = window.location.pathname;
         const pageTitle = '{{ page.title | default: site.title }}';

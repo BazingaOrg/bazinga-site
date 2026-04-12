@@ -62,55 +62,6 @@ root: true
 
 <hr class="hr">
 
-<h2 class="normal-heading">动态</h2> <a href="/stories.xml" class="styled-link"
-   data-umami-event="rss_click"
-   data-umami-event-type="stories"
-   data-umami-event-section="homepage"
-   data-umami-event-lang="zh-CN">RSS</a> <a href="https://github.com/dddddddddzzzz/OpenStories" class="styled-link"
-   data-umami-event="external_help_click"
-   data-umami-event-feature="stories"
-   data-umami-event-destination="github"
-   data-umami-event-lang="zh-CN">这是什么？</a>
-
-{% include stories.html lang="zh-CN" %}
-
-<hr class="hr">
-
-<h2 class="normal-heading">照片</h2><a href="/photos" class="styled-link{% unless site.data.photos.size > 0 %} disabled{% endunless %}"
-   data-umami-event="section_nav"
-   data-umami-event-section="photos"
-   data-umami-event-action="view_all"
-   data-umami-event-lang="zh-CN">全部照片</a> <a href="/write-photo" class="styled-link write-entry" id="photo-write-entry"
-   data-umami-event="write_action"
-   data-umami-event-type="photo"
-   data-umami-event-from="homepage"
-   data-umami-event-lang="zh-CN">上传照片</a> <a href="/photos.xml" class="styled-link"
-   data-umami-event="rss_click"
-   data-umami-event-type="photos"
-   data-umami-event-section="homepage"
-   data-umami-event-lang="zh-CN">RSS</a>
-<div class="photos">
-{% assign photos = site.data.photos | sort: "uploaded" | reverse | slice: 0, 10 %}
-{% if photos.size > 0 %}
-{% for photo in photos %}
-  {% capture image_url %}{% for url in photo.variants %}{% if url contains "/thumbnail" %}{{ url }}{% endif %}{% endfor %}{% endcapture %}
-  {% assign image_url = image_url | strip %}
-  {% if image_url == '' %}{% assign image_url = photo.variants[0] %}{% endif %}
-  <a href="/photos#P{{ photo.id }}" class="image-link"
-     data-umami-event="photo_click"
-     data-umami-event-location="homepage"
-     data-umami-event-photo-id="{{ photo.id }}"
-     data-umami-event-lang="zh-CN">
-    <img src="{{ image_url }}" height="200" alt="{{ photo.meta.alt }}" loading="lazy" decoding="async">
-  </a>
-{% endfor %}
-{% else %}
-  <p><em style="opacity: 0.65;">还没有上传任何照片呢。</em></p>
-{% endif %}
-</div>
-
-<hr class="hr">
-
 <h2 class="normal-heading">胶片照片</h2><a href="/film" class="styled-link{% unless site.data.film.size > 0 %} disabled{% endunless %}"
    data-umami-event="section_nav"
    data-umami-event-section="film"
