@@ -17,7 +17,9 @@ html { font-size: 100%; font: -apple-system-body; }
   --activeColor: #74d274;
   --langBackgroundColor: #eeeeee;
   --langShadowColor: transparent;
+  --logoBackgroundColor: #ffffff;
   --logoColor: #cccccc;
+  --logoAccentColor: #8c8c8c;
   --photoBackground: #f4f4f4;
   --scrollbarTrackColor: #f2f2f2;
   --scrollbarThumbColor: #c7c7c7;
@@ -42,7 +44,9 @@ html { font-size: 100%; font: -apple-system-body; }
     --activeColor: #74d274;
     --langBackgroundColor: #2c2c2c;
     --langShadowColor: #0b0c0b33;
+    --logoBackgroundColor: #151615;
     --logoColor: #555555;
+    --logoAccentColor: #a0a0a0;
     --photoBackground: #1a1a1a;
     --scrollbarTrackColor: #1f1f1f;
     --scrollbarThumbColor: #4a4a4a;
@@ -163,9 +167,21 @@ h1, h2, h3, h4, h5, h6 {
 
 .logo {
   width: 2em;
+  height: auto;
+  display: block;
+  flex-shrink: 0;
+  color: var(--logoColor);
 
-  path {
-    stroke: var(--logoColor);
+  .logo-bg-fill {
+    fill: var(--logoBackgroundColor);
+  }
+
+  .logo-primary-stroke {
+    stroke: currentColor;
+  }
+
+  .logo-secondary-fill {
+    fill: var(--logoAccentColor);
   }
 }
 
@@ -181,14 +197,11 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   .logo {
-    width: 1em;
+    width: 1.75em;
+    height: auto;
     margin-left: .8em;
     margin-right: .4em;
-
-    path { 
-      stroke: var(--mutedTextColor);
-      stroke-width: 16; 
-    }
+    color: var(--mutedTextColor);
   }
 
   .h1 {

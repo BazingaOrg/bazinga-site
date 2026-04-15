@@ -1,0 +1,20 @@
+/* TEAM */
+Owner: Bazinga
+Role: Writer, Designer, Developer
+Contact: zhangyouxiu66@gmail.com
+Website: https://site.bazinga.ink
+GitHub: https://github.com/BazingaOrg
+
+/* SITE */
+Name: Bazinga
+Description: Bazinga's home page on the World Wide Web.
+URL: https://site.bazinga.ink
+Language: en-US, zh-CN
+
+/* TECHNOLOGY */
+Built with: Jekyll
+Styles: SCSS
+Hosting: GitHub Pages
+
+/* META */
+Last updated: 2026-04-15

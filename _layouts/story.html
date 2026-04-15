@@ -1,14 +1,25 @@
 <!doctype html>
 <html lang="{% if page.path contains 'zh-TW' %}zh-TW{% elsif page.path contains 'de-DE' %}de-DE{% else %}en{% endif %}">
+  {% assign story_description = page.caption | default: page.content | strip_html | strip_newlines | truncate: 160 %}
   <head>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <link rel="canonical" href="{{ site.url }}{{ page.url }}">
     <link rel="me" href="https://micro.blog/muan">
     <link rel="alternate" type="application/rss+xml" href="/notes.xml">
+    <link rel="author" type="text/plain" href="/humans.txt">
+    <link rel="shortcut icon" href="/favicon.ico?v1" type="image/x-icon">
+    <link rel="icon" href="/assets/favicon.svg?v1" type="image/svg+xml">
     <link rel="icon" href="/assets/favicon-32x32.png" type="image/png" sizes="32x32">
     <link href="/assets/new.css" rel="stylesheet" type="text/css">
+    <title>{{ page.title }} - {{ site.title }}</title>
+    <meta content="{{ site.title }}" property="og:site_name">
     <meta content="{{ site.url }}{{ page.url }}" property="og:url">
-    <meta content="{{ page.content | strip_html | strip_newlines | truncate: 120 }}" name="description">
+    <meta content="article" property="og:type">
+    <meta content="{{ story_description }}" name="description">
+    <meta content="{{ story_description }}" property="og:description">
+    <meta content="{{ story_description }}" name="twitter:description">
+    <meta content="summary_large_image" name="twitter:card">
     <meta content="{{ page.image }}" property="og:image">
     <meta content="{{ page.image }}" property="twitter:image">
     <meta content="{{ page.title }} - {{ site.title }}" property="og:title">
