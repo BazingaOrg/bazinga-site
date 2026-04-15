@@ -5,9 +5,6 @@ home:
     bio_time: It is currently {time} there.
     nav_additional: Additional content
     nav_social: Social
-    section_film: Film photos
-    section_film_all: All film photos
-    section_film_upload: Upload film
     section_photos: Photos
     section_photos_all: All photos
     section_photos_upload: Upload photo
@@ -18,7 +15,6 @@ home:
     section_notes_write: Write note
     section_posts: Recent posts
     section_posts_write: Write post
-    empty_film: No film photos have been uploaded yet.
     empty_photos: No photos have been uploaded yet.
     empty_stories: No stories have been published yet.
     empty_notes: No notes have been written yet.
@@ -29,9 +25,6 @@ home:
     bio_time: 那边现在是 {time}。
     nav_additional: 额外内容
     nav_social: 社交
-    section_film: 胶片照片
-    section_film_all: 全部胶片照片
-    section_film_upload: 上传胶片
     section_photos: 照片
     section_photos_all: 全部照片
     section_photos_upload: 上传照片
@@ -42,7 +35,6 @@ home:
     section_notes_write: 写随笔
     section_posts: 文章
     section_posts_write: 写文章
-    empty_film: 还没有上传任何胶片照片。
     empty_photos: 还没有上传任何照片。
     empty_stories: 还没有发布任何故事。
     empty_notes: 还没有写过任何随笔。
@@ -59,7 +51,6 @@ list_pages:
     notes_limit_hint: Only the most recent 200 notes are shown.
     photos_title: Photos
     stories_title: Stories
-    film_title: Film
     caption_expand: Expand
     camera_details: Camera details
     stories_empty: No stories have been published yet.
@@ -73,7 +64,6 @@ list_pages:
     notes_limit_hint: 仅显示最近 200 条随笔。
     photos_title: 照片
     stories_title: 故事
-    film_title: 胶片
     caption_expand: 展开
     camera_details: 相机信息
     stories_empty: 还没有发布任何故事。
@@ -104,7 +94,6 @@ terminology:
     post_plural: Posts
     photo_singular: Photo
     photo_plural: Photos
-    film_section: Film photos
     access_key: Access key
     alt_text: Alt text
     caption: Caption
@@ -118,7 +107,6 @@ terminology:
     post_plural: 文章
     photo_singular: 照片
     photo_plural: 照片
-    film_section: 胶片照片
     access_key: 访问密钥
     alt_text: Alt 文本
     caption: 图注

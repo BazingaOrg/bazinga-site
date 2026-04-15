@@ -27,7 +27,7 @@ class ABTestManager {
           'compact': { weight: 25, name: 'Compact Layout' },
           'wizard': { weight: 25, name: 'Wizard Layout' }
         },
-        targetPages: ['/write-note/', '/write-photo/', '/write-film/'],
+        targetPages: ['/write-note/', '/write-photo/'],
         goals: ['form_submission', 'write_submit_success'],
         segments: ['desktop_user', 'mobile_user']
       },
@@ -72,7 +72,7 @@ class ABTestManager {
           'masonry': { weight: 33, name: 'Masonry Layout' },
           'carousel': { weight: 33, name: 'Carousel Layout' }
         },
-        targetPages: ['/photos/', '/film/'],
+        targetPages: ['/photos/'],
         goals: ['photo_deep_browse', 'photo_like'],
         segments: ['photo_enthusiast', 'casual_browser']
       }

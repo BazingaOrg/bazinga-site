@@ -310,17 +310,6 @@ function initWriteEntryControl() {
   })
 
   createWriteEntryController({
-    entryId: 'film-write-entry',
-    storageKey: 'show-film-entry',
-    headingTexts: ['Film photos', '胶片照片'],
-    activeTitle: isChineseInterface ? '隐藏胶片入口' : 'hide film entry',
-    inactiveTitle: isChineseInterface ? '激活胶片入口' : 'activate film entry',
-    activeMessage: isChineseInterface ? '胶片入口已激活' : 'Film entry enabled',
-    inactiveMessage: isChineseInterface ? '胶片入口已隐藏' : 'Film entry hidden',
-    trackingEntry: 'film'
-  })
-
-  createWriteEntryController({
     entryId: 'post-write-entry',
     storageKey: 'show-post-entry',
     headingTexts: ['Recent posts', '文章'],

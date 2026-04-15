@@ -437,7 +437,7 @@ class FormTracker {
 // 自动初始化表单追踪器
 document.addEventListener('DOMContentLoaded', () => {
   // 检测是否在写作页面
-  const writePages = ['write-note', 'write-photo', 'write-film', 'write-post']
+  const writePages = ['write-note', 'write-photo', 'write-post']
   const currentPage = document.body.getAttribute('data-page')
 
   if (writePages.includes(currentPage)) {
@@ -450,9 +450,6 @@ document.addEventListener('DOMContentLoaded', () => {
         break
       case 'write-photo':
         formSelector = '#photo-form'
-        break
-      case 'write-film':
-        formSelector = '#film-form'
         break
       case 'write-post':
         formSelector = '#post-form'

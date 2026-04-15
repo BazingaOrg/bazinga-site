@@ -51,34 +51,15 @@ root: true
 
 <hr class="hr">
 
-<h2 class="normal-heading">{{ site.data.i18n_copy.home['en-US'].section_film }}</h2><a href="/film" class="styled-link{% unless site.data.film.size > 0 %} disabled{% endunless %}"
-   data-umami-event="section_nav"
-   data-umami-event-section="film"
-   data-umami-event-action="view_all">{{ site.data.i18n_copy.home['en-US'].section_film_all }}</a> <a href="/write-film" class="styled-link write-entry" id="film-write-entry"
-   data-umami-event="write_action"
-   data-umami-event-type="film"
-   data-umami-event-from="homepage">{{ site.data.i18n_copy.home['en-US'].section_film_upload }}</a> <a href="/film.xml" class="styled-link"
+<h2 class="normal-heading">{{ site.data.i18n_copy.home['en-US'].section_stories }}</h2> <a href="/stories.xml" class="styled-link"
    data-umami-event="rss_click"
-   data-umami-event-type="film"
-   data-umami-event-section="homepage">RSS</a>
-<div class="photos">
-{% assign photos = site.data.film | sort: "uploaded" | reverse | slice: 0, 10 %}
-{% if photos.size > 0 %}
-{% for photo in photos %}
-  {% capture image_url %}{% for url in photo.variants %}{% if url contains "/thumbnail" %}{{ url }}{% endif %}{% endfor %}{% endcapture %}
-  {% assign image_url = image_url | strip %}
-  {% if image_url == '' %}{% assign image_url = photo.variants[0] %}{% endif %}
-  <a href="/film#P{{ photo.id}}" class="image-link"
-     data-umami-event="film_click"
-     data-umami-event-location="homepage"
-     data-umami-event-photo-id="{{ photo.id }}">
-    <img src="{{ image_url }}" height="200" alt="{{ photo.meta.alt }}" loading="lazy" decoding="async">
-  </a>
-{% endfor %}
-{% else %}
-  <p><em style="opacity: 0.65;">{{ site.data.i18n_copy.home['en-US'].empty_film }}</em></p>
-{% endif %}
-</div>
+   data-umami-event-type="stories"
+   data-umami-event-section="homepage">RSS</a> <a href="https://github.com/dddddddddzzzz/OpenStories" class="styled-link"
+   data-umami-event="external_help_click"
+   data-umami-event-feature="stories"
+   data-umami-event-destination="github">What are these?</a>
+
+{% include stories.html lang="en" %}
 
 <hr class="hr">
 
@@ -110,18 +91,6 @@ root: true
   <p><em style="opacity: 0.65;">{{ site.data.i18n_copy.home['en-US'].empty_photos }}</em></p>
 {% endif %}
 </div>
-
-<hr class="hr">
-
-<h2 class="normal-heading">{{ site.data.i18n_copy.home['en-US'].section_stories }}</h2> <a href="/stories.xml" class="styled-link"
-   data-umami-event="rss_click"
-   data-umami-event-type="stories"
-   data-umami-event-section="homepage">RSS</a> <a href="https://github.com/dddddddddzzzz/OpenStories" class="styled-link"
-   data-umami-event="external_help_click"
-   data-umami-event-feature="stories"
-   data-umami-event-destination="github">What are these?</a>
-
-{% include stories.html lang="en" %}
 
 <hr class="hr">
 

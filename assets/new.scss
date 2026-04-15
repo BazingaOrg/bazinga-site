@@ -2083,8 +2083,7 @@ label:has(input:not(:checked)) ~ label:has(input:not(:checked)) ~ label:has(inpu
 }
 
 // 写照片页面
-.write-photo-container,
-.write-film-container {
+.write-photo-container {
   max-width: 36em;
   margin: 0 auto;
   padding: 2rem 1.5rem 3rem;
@@ -2093,8 +2092,7 @@ label:has(input:not(:checked)) ~ label:has(input:not(:checked)) ~ label:has(inpu
   gap: 2rem;
 }
 
-.write-photo-header,
-.write-film-header {
+.write-photo-header {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -2404,20 +2402,6 @@ textarea.photo-input {
   }
 }
 
-.film-form {
-  .form-row {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  }
-
-  .field-hint {
-    margin-top: 0.35rem;
-    color: var(--mutedTextColor);
-    font-size: 0.8rem;
-  }
-}
-
 .insights-card {
   border: 1px solid var(--borderColor);
   border-radius: 0.75rem;
@@ -2426,19 +2410,6 @@ textarea.photo-input {
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
-}
-
-.film-meta {
-  grid-template-columns: 1fr;
-
-  .meta-row--filename {
-    grid-column: 1 / -1;
-
-    span:last-child {
-      display: block;
-      word-break: break-all;
-    }
-  }
 }
 
 .insights-header {
@@ -2513,8 +2484,7 @@ textarea[data-autofill] {
 }
 
 @media (max-width: 960px) {
-  .write-photo-container,
-  .write-film-container {
+  .write-photo-container {
     padding: 1.5rem 1rem 2.5rem;
   }
 
@@ -2525,8 +2495,7 @@ textarea[data-autofill] {
 }
 
 @media (max-width: 640px) {
-  .write-photo-container,
-  .write-film-container {
+  .write-photo-container {
     padding: 1.25rem 0.85rem 2rem;
   }
 
