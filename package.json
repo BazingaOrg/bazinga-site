@@ -1,9 +1,13 @@
 {
   "type": "module",
   "scripts": {
+    "vendor:sync:open-heart": "bash scripts/vendor/sync-open-heart-element.sh",
+    "vendor:sync": "npm run vendor:sync:open-heart",
     "check:terms": "bash scripts/check/check-terminology.sh",
     "check:i18n": "bash scripts/check/check-i18n-keys.sh",
     "check:routes": "bash scripts/check/check-language-routes.sh",
-    "check:all": "bash scripts/check/run-all-checks.sh"
+    "check:all": "bash scripts/check/run-all-checks.sh",
+    "perf:measure": "bash scripts/perf/measure-page-load.sh docs/perf/latest.json",
+    "perf:compare": "bash scripts/perf/compare-page-metrics.sh docs/perf/before.json docs/perf/latest.json"
   }
 }

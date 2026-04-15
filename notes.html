@@ -9,12 +9,6 @@ permalink: /notes/
 {% assign copy = site.data.i18n_copy.list_pages[current_lang] %}
 {% assign notes = site.notes | sort: "date" | reverse %}
 {% assign tags = notes | map: "tags" | uniq | sort %}
-<style>
-  {% for tag in tags %}
-  body:has([value="{{ tag }}"]:not(:checked)) .note:has([data-tag="{{ tag }}"]) { display: none; }
-  body:has([value="{{ tag }}"]:checked) .note:has([data-tag="{{ tag }}"]) { display: block !important; }
-  {% endfor %}
-</style>
 
 <details class="details-note-tags">
   <summary class="monospace smol">{{ copy.notes_filter }}</summary>
@@ -74,3 +68,50 @@ permalink: /notes/
     if (window.location.hash) document.querySelector(document.location.hash)?.click()
   </script>
 {% endif %}
+
+<script>
+  (() => {
+    const filterForm = document.querySelector('.details-note-tags form');
+    const noteItems = Array.from(document.querySelectorAll('ul.notes > li.note'));
+    if (!filterForm || noteItems.length === 0) return;
+
+    const tagCheckboxes = Array.from(filterForm.querySelectorAll('input[name="tag"]'));
+    if (tagCheckboxes.length === 0) return;
+
+    const noteTagIndex = noteItems.map(noteItem => {
+      const tags = Array.from(noteItem.querySelectorAll('.note-tags [data-tag]'))
+        .map(tagElement => tagElement.getAttribute('data-tag'))
+        .filter(Boolean);
+      return {
+        noteItem,
+        tags: new Set(tags)
+      };
+    });
+
+    const applyTagFilter = () => {
+      const enabledTags = new Set(
+        tagCheckboxes
+          .filter(tagCheckbox => tagCheckbox.checked)
+          .map(tagCheckbox => tagCheckbox.value)
+      );
+
+      noteTagIndex.forEach(({ noteItem, tags }) => {
+        const shouldDisplay = tags.size === 0 || Array.from(tags).some(tag => enabledTags.has(tag));
+        noteItem.hidden = !shouldDisplay;
+      });
+    };
+
+    filterForm.addEventListener('change', event => {
+      const eventTarget = event.target;
+      if (eventTarget instanceof HTMLInputElement && eventTarget.name === 'tag') {
+        applyTagFilter();
+      }
+    });
+
+    filterForm.addEventListener('reset', () => {
+      requestAnimationFrame(applyTagFilter);
+    });
+
+    applyTagFilter();
+  })();
+</script>
