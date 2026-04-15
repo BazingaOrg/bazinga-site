@@ -18,9 +18,28 @@ Requires a Ruby environment.
 $ ./start
 ```
 
+### Verification
+
+```bash
+# Quick local gate (checks + production build)
+npm run test:quick
+
+# Full gate (quick gate + performance snapshot)
+npm run test:full
+```
+
+### Optional local git hook
+
+```bash
+# Install pre-push hook that runs test:quick
+npm run hooks:install
+```
+
 ## Deployment
 
 This site is configured for deployment on Vercel. The Jekyll build process is handled automatically.
+
+Build command includes vendor synchronization before Jekyll build.
 
 ## Documentation
 

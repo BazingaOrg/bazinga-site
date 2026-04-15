@@ -7,6 +7,7 @@ This directory keeps project automation scripts with a consistent layout.
 - `check/`: validation and smoke-test scripts.
 - `perf/`: page-load metric collection and comparison scripts.
 - `vendor/`: third-party asset sync scripts.
+- `git-hooks/`: local git hook templates and installers.
 
 ## Current checks
 
@@ -28,6 +29,24 @@ bash scripts/perf/measure-page-load.sh docs/perf/latest.json
 
 # 2) Compare snapshots
 bash scripts/perf/compare-page-metrics.sh docs/perf/before.json docs/perf/latest.json
+```
+
+## Project-level test commands
+
+- `npm test`: default local verification (same as `test:quick`).
+- `npm run test:quick`: run `check:all` and a production Jekyll build.
+- `npm run test:full`: run `test:quick` plus page-load metric collection.
+
+## Git hooks
+
+- `git-hooks/pre-push`: local pre-push gate that runs `npm run test:quick`.
+- `git-hooks/install.sh`: install the pre-push hook into `.git/hooks/pre-push`.
+
+### Usage
+
+```bash
+# Install local pre-push hook
+npm run hooks:install
 ```
 
 ## Vendor scripts

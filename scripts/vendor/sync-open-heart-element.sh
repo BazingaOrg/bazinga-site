@@ -9,17 +9,23 @@ if [[ ! -f "$VERSION_FILE" ]]; then
   exit 1
 fi
 
-if ! command -v jq >/dev/null 2>&1; then
-  echo "jq is required for parsing $VERSION_FILE" >&2
-  exit 1
-fi
-
 if ! command -v curl >/dev/null 2>&1; then
   echo "curl is required to download vendor assets" >&2
   exit 1
 fi
 
-OPEN_HEART_VERSION="$(jq -r '.open_heart_element // empty' "$VERSION_FILE")"
+if ! command -v node >/dev/null 2>&1; then
+  echo "node is required for parsing $VERSION_FILE" >&2
+  exit 1
+fi
+
+OPEN_HEART_VERSION="$(node -e '
+  const fs = require("fs");
+  const path = process.argv[1];
+  const content = fs.readFileSync(path, "utf8");
+  const parsed = JSON.parse(content);
+  process.stdout.write(parsed.open_heart_element || "");
+' "$VERSION_FILE")"
 if [[ -z "$OPEN_HEART_VERSION" ]]; then
   echo "open_heart_element version is empty in $VERSION_FILE" >&2
   exit 1

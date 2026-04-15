@@ -6,10 +6,17 @@ on:
     paths:
       - '_data/**'
       - '_layouts/**'
+      - '_includes/**'
+      - '_notes/**'
+      - '_posts/**'
+      - '_stories/**'
+      - '_pages/**'
       - '*.html'
       - 'assets/**'
       - 'scripts/**'
       - 'package.json'
+      - 'Gemfile'
+      - 'Gemfile.lock'
       - '_config.yml'
       - '.github/workflows/quality.yml'
   push:
@@ -17,10 +24,17 @@ on:
     paths:
       - '_data/**'
       - '_layouts/**'
+      - '_includes/**'
+      - '_notes/**'
+      - '_posts/**'
+      - '_stories/**'
+      - '_pages/**'
       - '*.html'
       - 'assets/**'
       - 'scripts/**'
       - 'package.json'
+      - 'Gemfile'
+      - 'Gemfile.lock'
       - '_config.yml'
       - '.github/workflows/quality.yml'
   workflow_dispatch:
@@ -33,11 +47,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
 
-      - name: Run quality checks
-        run: bash scripts/check/run-all-checks.sh
+      - name: Install required CLI tools
+        run: sudo apt-get update && sudo apt-get install -y ripgrep jq
+
+      - name: Run full project verification
+        run: npm run test:full
