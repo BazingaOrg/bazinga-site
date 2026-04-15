@@ -1,20 +1,21 @@
 ---
 layout: default
-permalink: /write-film/
+permalink: /zh-CN/write-film/
+lang: zh-CN
 ---
 
 <div class="write-photo-container write-film-container" data-page="write-film">
   <header class="write-photo-header write-film-header">
-    <h2 class="desc">Pick one scan and complete the memory of this roll.</h2>
+    <h2 class="desc">挑一张扫描件，把关于这卷的记忆补全。</h2>
     <p class="subtle-banner" id="film-permission-banner" hidden></p>
   </header>
 
-  <section class="photo-section upload-pane film-section" aria-label="Select film photo">
-    <h3 class="section-title monospace">Select image</h3>
+  <section class="photo-section upload-pane film-section" aria-label="选择胶片照片">
+    <h3 class="section-title monospace">选择图片</h3>
     <label class="upload-dropzone" for="film-upload">
       <input type="file" id="film-upload" accept="image/*" hidden>
-      <span class="upload-primary">Click or drag a file here</span>
-      <span class="upload-secondary">Common image formats supported; ID, filename, and ratio are generated automatically</span>
+      <span class="upload-primary">点击或拖动到这里</span>
+      <span class="upload-secondary">支持常见图片格式；会自动生成 ID、文件名和比例</span>
     </label>
     <div class="image-preview-card" id="film-preview-card" hidden>
       <img id="film-preview" class="image-preview" alt="">
@@ -22,37 +23,37 @@ permalink: /write-film/
     </div>
     <div class="insights-card" id="auto-insights" hidden>
       <div class="insights-header">
-        <span class="monospace">Auto parse</span>
-        <button type="button" id="apply-insights" class="ghost-button ghost-button--sm" hidden>Apply all</button>
+        <span class="monospace">自动解析</span>
+        <button type="button" id="apply-insights" class="ghost-button ghost-button--sm" hidden>一键填入</button>
       </div>
       <ul id="insights-list"></ul>
     </div>
   </section>
 
-  <section class="photo-section film-section" id="film-form-section" aria-label="Film information" hidden>
-    <h3 class="section-title monospace">Film information</h3>
+  <section class="photo-section film-section" id="film-form-section" aria-label="胶片信息" hidden>
+    <h3 class="section-title monospace">胶片信息</h3>
     <form id="film-form" class="photo-form film-form" novalidate>
       <div class="form-field">
         <div class="field-title">
-          <label for="film-alt" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Alt text</label>
+          <label for="film-alt" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Alt 文本</label>
         </div>
-        <input type="text" id="film-alt" class="photo-input" placeholder="Describe the image in one sentence for accessibility" required>
+        <input type="text" id="film-alt" class="photo-input" placeholder="一句话描述画面内容，方便无障碍阅读" required>
         <span class="field-feedback" id="alt-feedback" aria-live="polite"></span>
       </div>
 
       <div class="form-row">
         <div class="form-field">
           <div class="field-title">
-            <label for="film-camera" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Camera</label>
+            <label for="film-camera" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>相机</label>
           </div>
-          <input type="text" id="film-camera" class="photo-input" placeholder="e.g. Leica M6" required>
+          <input type="text" id="film-camera" class="photo-input" placeholder="例如：Leica M6" required>
           <span class="field-feedback" id="camera-feedback" aria-live="polite"></span>
         </div>
         <div class="form-field">
           <div class="field-title">
-            <label for="film-stock" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Film stock</label>
+            <label for="film-stock" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>胶卷</label>
           </div>
-          <input type="text" id="film-stock" class="photo-input" placeholder="e.g. Kodak Portra 400" required>
+          <input type="text" id="film-stock" class="photo-input" placeholder="例如：Kodak Portra 400" required>
           <span class="field-feedback" id="film-feedback" aria-live="polite"></span>
         </div>
       </div>
@@ -60,60 +61,60 @@ permalink: /write-film/
       <div class="form-row">
         <div class="form-field">
           <div class="field-title">
-            <label for="film-lens" class="field-label monospace">Lens</label>
+            <label for="film-lens" class="field-label monospace">镜头</label>
           </div>
-          <input type="text" id="film-lens" class="photo-input" placeholder="e.g. Summicron 35mm f/2">
+          <input type="text" id="film-lens" class="photo-input" placeholder="例如：Summicron 35mm f/2">
         </div>
         <div class="form-field">
           <div class="field-title">
-            <label for="film-exposure" class="field-label monospace">Exposure/label>
+            <label for="film-exposure" class="field-label monospace">曝光参数</label>
           </div>
-          <input type="text" id="film-exposure" class="photo-input" placeholder="e.g. f/2 · 1/125s">
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-field">
-          <div class="field-title">
-            <label for="film-roll" class="field-label monospace">Roll/Batch</label>
-          </div>
-          <input type="text" id="film-roll" class="photo-input" placeholder="e.g. Roll #12 or Batch 2024-05">
-        </div>
-        <div class="form-field">
-          <div class="field-title">
-            <label for="film-lab" class="field-label monospace">Lab/Scan</label>
-          </div>
-          <input type="text" id="film-lab" class="photo-input" placeholder="e.g. Local Lab / Noritsu Scan">
+          <input type="text" id="film-exposure" class="photo-input" placeholder="例如：f/2 · 1/125s">
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-field">
           <div class="field-title">
-            <label for="film-location" class="field-label monospace">Location</label>
+            <label for="film-roll" class="field-label monospace">卷号/批次</label>
           </div>
-          <input type="text" id="film-location" class="photo-input" placeholder="Where it was shot, optional">
+          <input type="text" id="film-roll" class="photo-input" placeholder="例如：Roll #12 或 Batch 2024-05">
         </div>
         <div class="form-field">
           <div class="field-title">
-            <label for="film-variants" class="field-label monospace">Extra image URLs</label>
+            <label for="film-lab" class="field-label monospace">冲洗/扫描</label>
           </div>
-          <input type="text" id="film-variants" class="photo-input monospace" placeholder="Optional: comma-separated full URLs for thumbnail/public variants">
-          <span class="field-hint">Leave empty to use only the uploaded image; append CDN variants here when needed.</span>
+          <input type="text" id="film-lab" class="photo-input" placeholder="例如：Local Lab / Noritsu Scan">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <div class="field-title">
+            <label for="film-location" class="field-label monospace">地点</label>
+          </div>
+          <input type="text" id="film-location" class="photo-input" placeholder="在哪儿拍的，可留空">
+        </div>
+        <div class="form-field">
+          <div class="field-title">
+            <label for="film-variants" class="field-label monospace">额外图片 URL</label>
+          </div>
+          <input type="text" id="film-variants" class="photo-input monospace" placeholder="可选：逗号分隔 thumbnail/public 等完整 URL">
+          <span class="field-hint">留空则只使用上传的原图；如有 CDN 版本可在此补齐。</span>
         </div>
       </div>
 
       <div class="form-field">
         <div class="field-title">
-          <label for="film-caption" class="field-label monospace">Caption</label>
+          <label for="film-caption" class="field-label monospace">图注</label>
         </div>
-        <textarea id="film-caption" class="photo-input" placeholder="Story or context, Markdown supported"></textarea>
+        <textarea id="film-caption" class="photo-input" placeholder="想讲的故事、补充信息，支持 Markdown"></textarea>
       </div>
     </form>
   </section>
 
-  <section class="photo-section film-section" id="film-preview-section" aria-label="Preview" hidden>
-    <h3 class="section-title monospace">Preview</h3>
+  <section class="photo-section film-section" id="film-preview-section" aria-label="预览" hidden>
+    <h3 class="section-title monospace">预览</h3>
     <div class="preview-frame">
       <figure class="figure-landscape" id="film-preview-figure">
         <a href="#" class="image-link" id="film-preview-link">
@@ -124,7 +125,7 @@ permalink: /write-film/
             <div id="film-preview-date">{{ "now" | date: "%Y/%m/%d (%a)" }}</div>
             <div id="film-preview-location" hidden></div>
             <open-heart class="text-open-heart" href="#" emoji="❤️">
-              <span class="on">Liked.</span><span class="off">Like?</span>
+              <span class="on">已收藏。</span><span class="off">喜欢吗？</span>
             </open-heart>
           </div>
           <div class="caption-container" id="film-caption-container" hidden>
@@ -139,14 +140,14 @@ permalink: /write-film/
     </div>
   </section>
 
-  <section class="photo-section film-section" id="film-output-section" aria-label="Generated config" hidden>
-    <h3 class="section-title monospace">Generated config and publish</h3>
+  <section class="photo-section film-section" id="film-output-section" aria-label="生成配置" hidden>
+    <h3 class="section-title monospace">生成配置与发布</h3>
     <div class="publish-card" id="film-publish-card">
       <div class="access-field">
-        <label for="film-access-key" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Access key</label>
+        <label for="film-access-key" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>访问密钥</label>
         <div class="password-field-wrapper">
-          <input type="password" id="film-access-key" class="photo-input" placeholder="Enter the shared access key to publish">
-          <button type="button" class="password-toggle" aria-label="Show password">
+          <input type="password" id="film-access-key" class="photo-input" placeholder="输入约定好的密钥才能发布">
+          <button type="button" class="password-toggle" aria-label="显示密码">
             <svg class="eye-icon" viewBox="0 0 24 24" style="display: none;">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
@@ -160,29 +161,29 @@ permalink: /write-film/
       </div>
       <div class="publish-actions">
         <button type="button" id="film-publish-btn" class="publish-button" disabled>
-          <span class="btn-text">Publish now</span>
-          <span class="btn-loading" hidden>Submitting…</span>
+          <span class="btn-text">直接发布</span>
+          <span class="btn-loading" hidden>正在提交…</span>
         </button>
         <p class="publish-feedback" id="film-publish-status" hidden></p>
       </div>
     </div>
 
-    <div class="divider" role="presentation"><span>or</span></div>
+    <div class="divider" role="presentation"><span>或</span></div>
 
     <div class="json-output-card">
       <pre id="film-json-output" class="json-output"></pre>
-      <button type="button" id="film-copy-json" class="copy-button">Copy JSON</button>
+      <button type="button" id="film-copy-json" class="copy-button">复制 JSON</button>
     </div>
 
     <div class="instructions">
-      <h4 class="monospace">Manual publishing steps</h4>
+      <h4 class="monospace">手动发布步骤</h4>
       <ol>
-        <li>Copy the JSON above and insert it at the top of <code>_data/film.json</code></li>
-        <li>Rename the image as:<code id="film-suggested-filename">film-YYYY-MM-DD-HHmm-alt.jpg</code></li>
-        <li>Move the image into <code>images/film/</code> directory (append thumbnail/public CDN URLs to variants if available)</li>
-        <li>Commit and push changes, then wait for deployment</li>
+        <li>复制上面的 JSON 配置，粘贴到 <code>_data/film.json</code> 最前面</li>
+        <li>把图片重命名为：<code id="film-suggested-filename">film-YYYY-MM-DD-HHmm-alt.jpg</code></li>
+        <li>把图片放到 <code>images/film/</code> 目录（如有 thumbnail/public CDN 可补充到 variants 中）</li>
+        <li>提交并推送改动，等待部署完成</li>
       </ol>
-      <p class="field-hint">Tip: with a valid key, image upload and JSON update are automatic.</p>
+      <p class="field-hint">提示：访问密钥正确时，会自动上传图片并更新 JSON。</p>
     </div>
   </section>
 </div>
@@ -253,7 +254,7 @@ permalink: /write-film/
 
     if (!isOwnerActivated && directAccess) {
       permissionBanner.hidden = false;
-      permissionBanner.textContent = 'This entry is usually for site maintainers; preview is open, publishing still requires a key.';
+      permissionBanner.textContent = '这个入口通常只对站长开放，随便看看也无妨，真正发布需要密钥。';
     }
   }
 
@@ -273,18 +274,18 @@ permalink: /write-film/
 
     publishBtn.addEventListener('click', async () => {
       if (!filmData || !selectedFile) {
-        showPublishStatus('Image is not ready yet.', 'error');
+        showPublishStatus('图片还没准备好。', 'error');
         return;
       }
 
       if (!validateRequired()) {
-        showPublishStatus('Please complete required fields first.', 'error');
+        showPublishStatus('请先补全必填信息。', 'error');
         return;
       }
 
       const accessKey = accessKeyInput.value.trim();
       if (!accessKey) {
-        showPublishStatus('Please enter an access key.', 'error');
+        showPublishStatus('请输入访问密钥。', 'error');
         return;
       }
 
@@ -380,8 +381,8 @@ permalink: /write-film/
       renderInsights(insightData);
       updatePreview();
     } catch (error) {
-      console.error('Failed to parse image:', error);
-      showPublishStatus('Failed to read image metadata. Try another file.', 'error');
+      console.error('无法解析图片:', error);
+      showPublishStatus('读取图片信息时出错，请换一张试试。', 'error');
     }
   }
 
@@ -393,12 +394,12 @@ permalink: /write-film/
       previewImage.alt = file.name;
 
       imageMeta.innerHTML = `
-        <div class="meta-row"><span>Original file</span><span>${escapeHtml(filmData.originalName)}</span></div>
-        <div class="meta-row"><span>Size</span><span>${formatFileSize(file.size)}</span></div>
-        <div class="meta-row"><span>Dimensions</span><span>${imageInfo.width} × ${imageInfo.height}</span></div>
-        <div class="meta-row"><span>Ratio</span><span>${imageInfo.ratio}</span></div>
+        <div class="meta-row"><span>原文件</span><span>${escapeHtml(filmData.originalName)}</span></div>
+        <div class="meta-row"><span>体积</span><span>${formatFileSize(file.size)}</span></div>
+        <div class="meta-row"><span>尺寸</span><span>${imageInfo.width} × ${imageInfo.height}</span></div>
+        <div class="meta-row"><span>比例</span><span>${imageInfo.ratio}</span></div>
         <div class="meta-row meta-row--uuid"><span>ID</span><span>${filmData.id}</span></div>
-        <div class="meta-row meta-row--filename"><span>Suggested filename</span><span>${escapeHtml(filmData.filename)}</span></div>
+        <div class="meta-row meta-row--filename"><span>建议文件名</span><span>${escapeHtml(filmData.filename)}</span></div>
       `;
     };
     reader.readAsDataURL(file);
@@ -415,7 +416,7 @@ permalink: /write-film/
         if (exifData.src) sources.add(exifData.src);
       }
     } catch (error) {
-      console.warn('EXIF parse failed:', error);
+      console.warn('EXIF 解析失败:', error);
     }
 
     const nameHints = parseFromFileName(file.name);
@@ -514,14 +515,14 @@ permalink: /write-film/
 
   function insightLabel(key) {
     switch (key) {
-      case 'camera': return 'Camera';
-      case 'film': return 'Film';
-      case 'lens': return 'Lens';
-      case 'exposure': return 'Exposure';
-      case 'location': return 'Location';
-      case 'roll': return 'Roll';
-      case 'lab': return 'Lab/Scan';
-      case 'caption': return 'Caption';
+      case 'camera': return '相机';
+      case 'film': return '胶卷';
+      case 'lens': return '镜头';
+      case 'exposure': return '曝光';
+      case 'location': return '地点';
+      case 'roll': return '卷号';
+      case 'lab': return '冲洗/扫描';
+      case 'caption': return '图注';
       default: return '';
     }
   }
@@ -576,7 +577,7 @@ permalink: /write-film/
     previewFigure.className = filmData.meta.ratio > 1 ? 'figure-landscape' : 'figure-portrait';
 
     const now = new Date();
-    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
     previewDate.textContent = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} (${weekdays[now.getDay()]})`;
 
     if (filmData.meta.location) {
@@ -666,7 +667,7 @@ permalink: /write-film/
   async function publishFilm(accessKey) {
     try {
       setPublishLoading(true);
-      showPublishStatus('Preparing upload…', 'info');
+      showPublishStatus('正在准备上传…', 'info');
 
       const payload = await buildUploadPayload();
       const response = await fetch('/api/upload-film', {
@@ -686,24 +687,24 @@ permalink: /write-film/
       const result = await response.json();
       if (result?.success) {
         localStorage.setItem('film-access-key', btoa(accessKey));
-        showPublishStatus('Published successfully. Redirecting to home...', 'success');
+        showPublishStatus('发布成功！正在跳转到首页...', 'success');
 
         setTimeout(() => {
           window.location.href = '/';
         }, 1500);
       } else {
-        throw new Error(result?.error || 'Server did not return success flag');
+        throw new Error(result?.error || '服务端没有返回成功标记');
       }
     } catch (error) {
-      console.error('Upload failed:', error);
-      showPublishStatus(`Upload failed: ${error.message}`, 'error');
+      console.error('上传失败:', error);
+      showPublishStatus(`上传失败：${error.message}`, 'error');
     } finally {
       setPublishLoading(false);
     }
   }
 
   async function buildUploadPayload() {
-    if (!selectedFile || !filmData) throw new Error('Missing required upload data');
+    if (!selectedFile || !filmData) throw new Error('缺少必要的上传数据');
 
     const base64Data = await toBase64(selectedFile);
 
@@ -753,7 +754,7 @@ permalink: /write-film/
   function handleCopyJson() {
     navigator.clipboard.writeText(jsonOutput.textContent).then(() => {
       const original = copyJsonBtn.textContent;
-      copyJsonBtn.textContent = 'Copied';
+      copyJsonBtn.textContent = '已复制';
       copyJsonBtn.classList.add('copied');
       setTimeout(() => {
         copyJsonBtn.textContent = original;
@@ -919,7 +920,7 @@ permalink: /write-film/
       const nextIFDOffset = dataView.getUint32(offset + 2 + (entries * 12), littleEndian);
       return { values, nextIFD: nextIFDOffset };
     } catch (error) {
-      console.warn('IFD parse error:', error);
+      console.warn('IFD 解析异常:', error);
       return { values: {}, nextIFD: 0 };
     }
   }

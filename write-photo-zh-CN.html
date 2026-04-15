@@ -1,20 +1,21 @@
 ---
 layout: default
-permalink: /write-photo/
+permalink: /zh-CN/write-photo/
+lang: zh-CN
 ---
 
 <div class="write-photo-container" data-page="write-photo">
   <header class="write-photo-header">
-    <h2 class="desc">Pick one frame worth keeping.</h2>
+    <h2 class="desc">挑一张值得留下的画面。</h2>
     <p class="subtle-banner" id="photo-permission-banner" hidden></p>
   </header>
 
-  <section class="photo-section upload-pane" aria-label="Select photo">
-    <h3 class="section-title monospace">Select image</h3>
+  <section class="photo-section upload-pane" aria-label="选择照片">
+    <h3 class="section-title monospace">选择图片</h3>
     <label class="upload-dropzone" for="photo-upload">
       <input type="file" id="photo-upload" accept="image/*" hidden>
-      <span class="upload-primary">Click or drag a file here</span>
-      <span class="upload-secondary">Common image formats supported; ID and filename are generated automatically</span>
+      <span class="upload-primary">点击或拖动到这里</span>
+      <span class="upload-secondary">支持常见图片格式；上传后会自动生成 ID 和文件名</span>
     </label>
     <div class="image-preview-card" id="image-preview-container" hidden>
       <img id="image-preview" class="image-preview" alt="">
@@ -22,37 +23,37 @@ permalink: /write-photo/
     </div>
   </section>
 
-  <section class="photo-section" id="form-section" aria-label="Photo information" hidden>
-    <h3 class="section-title monospace">Photo information</h3>
+  <section class="photo-section" id="form-section" aria-label="照片信息" hidden>
+    <h3 class="section-title monospace">照片信息</h3>
     <form id="photo-form" class="photo-form" novalidate>
       <div class="form-field">
         <div class="field-title">
-          <label for="alt-text" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Alt text</label>
+          <label for="alt-text" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Alt 文本</label>
         </div>
-        <input type="text" id="alt-text" class="photo-input" placeholder="Describe the image in one sentence for accessibility" required>
+        <input type="text" id="alt-text" class="photo-input" placeholder="一句话描述画面内容，方便无障碍阅读" required>
         <span class="field-feedback" id="alt-feedback" aria-live="polite"></span>
       </div>
 
       <div class="form-field">
         <div class="field-title">
-          <label for="caption" class="field-label monospace">Caption</label>
+          <label for="caption" class="field-label monospace">图注</label>
         </div>
-        <textarea id="caption" class="photo-input" placeholder="Story or context, Markdown supported"></textarea>
+        <textarea id="caption" class="photo-input" placeholder="想讲的故事、补充信息，Markdown 语法可用"></textarea>
         <span class="field-feedback" id="caption-feedback" aria-live="polite"></span>
       </div>
 
       <div class="form-field">
         <div class="field-title">
-          <label for="location" class="field-label monospace">Location</label>
+          <label for="location" class="field-label monospace">地点</label>
         </div>
-        <input type="text" id="location" class="photo-input" placeholder="Where it was shot, optional">
+        <input type="text" id="location" class="photo-input" placeholder="在哪儿拍的，可留空">
         <span class="field-feedback" id="location-feedback" aria-live="polite"></span>
       </div>
     </form>
   </section>
 
-  <section class="photo-section" id="preview-section" aria-label="Preview" hidden>
-    <h3 class="section-title monospace">Preview</h3>
+  <section class="photo-section" id="preview-section" aria-label="预览" hidden>
+    <h3 class="section-title monospace">预览</h3>
     <div class="preview-frame">
       <figure class="figure-landscape" id="preview-figure">
         <a href="#" class="image-link" id="preview-link">
@@ -63,7 +64,7 @@ permalink: /write-photo/
             <div id="preview-date">{{ "now" | date: "%Y/%m/%d (%a)" }}</div>
             <div id="preview-location" hidden></div>
             <open-heart class="text-open-heart" href="#" emoji="❤️">
-              <span class="on">Liked.</span><span class="off">Like?</span>
+              <span class="on">已收藏。</span><span class="off">喜欢吗？</span>
             </open-heart>
           </div>
           <div class="caption-container" id="preview-caption-container" hidden>
@@ -74,14 +75,14 @@ permalink: /write-photo/
     </div>
   </section>
 
-  <section class="photo-section" id="output-section" aria-label="Generated config" hidden>
-    <h3 class="section-title monospace">Generated config and publish</h3>
+  <section class="photo-section" id="output-section" aria-label="生成配置" hidden>
+    <h3 class="section-title monospace">生成配置与发布</h3>
     <div class="publish-card" id="publish-section">
       <div class="access-field">
-        <label for="access-key" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Access key</label>
+        <label for="access-key" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>访问密钥</label>
         <div class="password-field-wrapper">
-          <input type="password" id="access-key" class="photo-input" placeholder="Enter the shared access key to publish">
-          <button type="button" class="password-toggle" aria-label="Show password">
+          <input type="password" id="access-key" class="photo-input" placeholder="输入约定好的密钥才能发布">
+          <button type="button" class="password-toggle" aria-label="显示密码">
             <svg class="eye-icon" viewBox="0 0 24 24" style="display: none;">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
@@ -95,29 +96,29 @@ permalink: /write-photo/
       </div>
       <div class="publish-actions">
         <button type="button" id="publish-btn" class="publish-button" disabled>
-          <span class="btn-text">Publish now</span>
-          <span class="btn-loading" hidden>Submitting…</span>
+          <span class="btn-text">直接发布</span>
+          <span class="btn-loading" hidden>正在提交…</span>
         </button>
         <p class="publish-feedback" id="publish-status" hidden></p>
       </div>
     </div>
 
-    <div class="divider" role="presentation"><span>or</span></div>
+    <div class="divider" role="presentation"><span>或</span></div>
 
     <div class="json-output-card">
       <pre id="json-output" class="json-output"></pre>
-      <button type="button" id="copy-json" class="copy-button">Copy JSON</button>
+      <button type="button" id="copy-json" class="copy-button">复制 JSON</button>
     </div>
 
     <div class="instructions">
-      <h4 class="monospace">Manual publishing steps</h4>
+      <h4 class="monospace">手动发布步骤</h4>
       <ol>
-        <li>Copy the JSON above and insert it at the top of <code>_data/photos.json</code></li>
-        <li>Rename the image as:<code id="suggested-filename">filename.jpg</code></li>
-        <li>Move the image into <code>images/photos/</code></li>
-        <li>Commit and push changes, then wait for deployment</li>
+        <li>复制上面的 JSON 配置，粘贴到 <code>_data/photos.json</code> 最前面</li>
+        <li>把图片重命名为：<code id="suggested-filename">filename.jpg</code></li>
+        <li>把图片放到 <code>images/photos/</code> 目录</li>
+        <li>提交并推送改动，等部署完成</li>
       </ol>
-      <p class="field-hint">Tip: with a valid key, the script can skip these manual steps.</p>
+      <p class="field-hint">提示：访问密钥输入正确时，可以跳过这些步骤由脚本直接处理。</p>
     </div>
   </section>
 </div>
@@ -171,7 +172,7 @@ permalink: /write-photo/
 
     if (!isOwnerActivated && directAccess) {
       permissionBanner.hidden = false;
-      permissionBanner.textContent = 'This entry is usually for site maintainers; preview is open, publishing still requires a key.';
+      permissionBanner.textContent = '这个入口通常只对站长开放，随便看看也无妨，真正发布需要密钥。';
     }
   }
 
@@ -188,13 +189,13 @@ permalink: /write-photo/
 
     publishBtn.addEventListener('click', async () => {
       if (!selectedFile || !photoData?.meta.alt) {
-        showPublishStatus('Image or alt text is not ready yet.', 'error');
+        showPublishStatus('图片或 Alt 文本还没准备好。', 'error');
         return;
       }
 
       const accessKey = accessKeyInput.value.trim();
       if (!accessKey) {
-        showPublishStatus('Enter an access key before publishing.', 'error');
+        showPublishStatus('请输入访问密钥再尝试发布。', 'error');
         return;
       }
 
@@ -254,8 +255,8 @@ permalink: /write-photo/
       updatePreview();
       toggleSections(true);
     } catch (error) {
-      console.error('Failed to read image metadata:', error);
-      showPublishStatus('Failed to read image metadata. Try another file.', 'error');
+      console.error('无法读取图片信息:', error);
+      showPublishStatus('读取图片信息时出错，请换一张试试。', 'error');
     }
   }
 
@@ -266,12 +267,12 @@ permalink: /write-photo/
       imagePreview.alt = file.name;
 
       imageInfo.innerHTML = `
-        <div><span>Original file</span><span>${photoData.originalName}</span></div>
-        <div><span>Size</span><span>${formatFileSize(file.size)}</span></div>
-        <div><span>Dimensions</span><span>${imageData.width} × ${imageData.height}</span></div>
-        <div><span>Ratio</span><span>${imageData.ratio}</span></div>
+        <div><span>原文件</span><span>${photoData.originalName}</span></div>
+        <div><span>体积</span><span>${formatFileSize(file.size)}</span></div>
+        <div><span>尺寸</span><span>${imageData.width} × ${imageData.height}</span></div>
+        <div><span>比例</span><span>${imageData.ratio}</span></div>
         <div><span>UUID</span><span>${uuid}</span></div>
-        <div><span>Suggested filename</span><span>${filename}</span></div>
+        <div><span>建议文件名</span><span>${filename}</span></div>
       `;
 
       imagePreviewContainer.hidden = false;
@@ -282,7 +283,7 @@ permalink: /write-photo/
   async function publishPhoto(accessKey) {
     try {
       setPublishLoading(true);
-      showPublishStatus('Preparing upload…', 'info');
+      showPublishStatus('正在准备上传…', 'info');
 
       const uploadData = await buildUploadPayload();
       const response = await fetch('/api/upload-photo', {
@@ -302,17 +303,17 @@ permalink: /write-photo/
       const result = await response.json();
       if (result?.success) {
         localStorage.setItem('photo-access-key', btoa(accessKey));
-        showPublishStatus('Published successfully. Redirecting to home...', 'success');
+        showPublishStatus('发布成功！正在跳转到首页...', 'success');
 
         setTimeout(() => {
           window.location.href = '/';
         }, 1500);
       } else {
-        throw new Error(result?.error || 'Server did not return success flag');
+        throw new Error(result?.error || '服务端没有返回成功标记');
       }
     } catch (error) {
-      console.error('Upload failed:', error);
-      showPublishStatus(`Upload failed: ${error.message}`, 'error');
+      console.error('上传失败:', error);
+      showPublishStatus(`上传失败：${error.message}`, 'error');
     } finally {
       setPublishLoading(false);
     }
@@ -367,7 +368,7 @@ permalink: /write-photo/
   function handleCopyJson() {
     navigator.clipboard.writeText(jsonOutput.textContent).then(() => {
       const original = copyButton.textContent;
-      copyButton.textContent = 'Copied';
+      copyButton.textContent = '已复制';
       copyButton.classList.add('copied');
       setTimeout(() => {
         copyButton.textContent = original;
@@ -388,7 +389,7 @@ permalink: /write-photo/
     previewFigure.className = photoData.meta.ratio > 1 ? 'figure-landscape' : 'figure-portrait';
 
     const now = new Date();
-    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
     previewDate.textContent = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} (${weekdays[now.getDay()]})`;
 
     if (photoData.meta.location) {

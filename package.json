@@ -1,3 +1,9 @@
 {
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "check:terms": "bash scripts/check/check-terminology.sh",
+    "check:i18n": "bash scripts/check/check-i18n-keys.sh",
+    "check:routes": "bash scripts/check/check-language-routes.sh",
+    "check:all": "bash scripts/check/run-all-checks.sh"
+  }
 }

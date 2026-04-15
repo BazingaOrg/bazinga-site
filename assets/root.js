@@ -1,4 +1,5 @@
 import { trackUmami } from './umami.js'
+const isChineseInterface = document.documentElement.lang?.startsWith('zh')
 
 function settime() {
   const timestamp = document.querySelector('[data-timestamp-text]')
@@ -173,7 +174,7 @@ function initLanguageMemory() {
   }
 }
 
-// Write Note 入口显隐控制
+// Write entry visibility control
 function initWriteEntryControl() {
   const headings = Array.from(document.querySelectorAll('.normal-heading'))
 
@@ -250,7 +251,9 @@ function initWriteEntryControl() {
     const updateTitleHint = titleElement => {
       const isActive = localStorage.getItem(storageKey) === 'true'
       const isMobile = window.innerWidth <= 768
-      const action = isMobile ? '长按' : '双击'
+      const action = isChineseInterface
+        ? (isMobile ? '长按' : '双击')
+        : (isMobile ? 'long press' : 'double-click')
       titleElement.title = isActive ? `${action}${activeTitle}` : `${action}${inactiveTitle}`
     }
 
@@ -287,11 +290,11 @@ function initWriteEntryControl() {
   createWriteEntryController({
     entryId: 'write-entry',
     storageKey: 'show-write-entry',
-    headingTexts: ['Notes'],
-    activeTitle: '隐藏写作入口',
-    inactiveTitle: '激活写作模式',
-    activeMessage: '✏️ 写作模式已激活',
-    inactiveMessage: '📝 写作模式已隐藏',
+    headingTexts: ['Notes', '随笔'],
+    activeTitle: isChineseInterface ? '隐藏写作入口' : 'hide writing entry',
+    inactiveTitle: isChineseInterface ? '激活写作模式' : 'activate writing mode',
+    activeMessage: isChineseInterface ? '写作模式已激活' : 'Write mode enabled',
+    inactiveMessage: isChineseInterface ? '写作模式已隐藏' : 'Write mode hidden',
     trackingEntry: 'notes'
   })
 
@@ -299,10 +302,10 @@ function initWriteEntryControl() {
     entryId: 'photo-write-entry',
     storageKey: 'show-photo-entry',
     headingTexts: ['Photos', '照片'],
-    activeTitle: '隐藏上传入口',
-    inactiveTitle: '激活照片上传',
-    activeMessage: '📷 照片上传已激活',
-    inactiveMessage: '📸 照片上传已隐藏',
+    activeTitle: isChineseInterface ? '隐藏上传入口' : 'hide upload entry',
+    inactiveTitle: isChineseInterface ? '激活照片上传' : 'activate photo upload',
+    activeMessage: isChineseInterface ? '照片上传已激活' : 'Photo upload enabled',
+    inactiveMessage: isChineseInterface ? '照片上传已隐藏' : 'Photo upload hidden',
     trackingEntry: 'photos'
   })
 
@@ -310,10 +313,10 @@ function initWriteEntryControl() {
     entryId: 'film-write-entry',
     storageKey: 'show-film-entry',
     headingTexts: ['Film photos', '胶片照片'],
-    activeTitle: '隐藏胶片入口',
-    inactiveTitle: '激活胶片入口',
-    activeMessage: '🎞️ 胶片入口已激活',
-    inactiveMessage: '📽️ 胶片入口已隐藏',
+    activeTitle: isChineseInterface ? '隐藏胶片入口' : 'hide film entry',
+    inactiveTitle: isChineseInterface ? '激活胶片入口' : 'activate film entry',
+    activeMessage: isChineseInterface ? '胶片入口已激活' : 'Film entry enabled',
+    inactiveMessage: isChineseInterface ? '胶片入口已隐藏' : 'Film entry hidden',
     trackingEntry: 'film'
   })
 
@@ -321,10 +324,10 @@ function initWriteEntryControl() {
     entryId: 'post-write-entry',
     storageKey: 'show-post-entry',
     headingTexts: ['Recent posts', '文章'],
-    activeTitle: '隐藏文章入口',
-    inactiveTitle: '激活文章入口',
-    activeMessage: '📰 文章入口已激活',
-    inactiveMessage: '🗞️ 文章入口已隐藏',
+    activeTitle: isChineseInterface ? '隐藏文章入口' : 'hide post entry',
+    inactiveTitle: isChineseInterface ? '激活文章入口' : 'activate post entry',
+    activeMessage: isChineseInterface ? '文章入口已激活' : 'Post entry enabled',
+    inactiveMessage: isChineseInterface ? '文章入口已隐藏' : 'Post entry hidden',
     trackingEntry: 'posts'
   })
 
@@ -335,12 +338,12 @@ function initWriteEntryControl() {
 
     document.body.appendChild(toast)
 
-    // 显示动画
+    // Show animation
     requestAnimationFrame(() => {
       toast.classList.add('show')
     })
 
-    // 2秒后自动消失
+    // Auto hide after 2 seconds
     setTimeout(() => {
       toast.classList.remove('show')
       setTimeout(() => {
@@ -352,7 +355,7 @@ function initWriteEntryControl() {
   }
 }
 
-// 在语言内存初始化后初始化写作入口控制
+// Initialize write-entry controller after language memory setup
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     initLanguageMemory()

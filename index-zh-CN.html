@@ -3,18 +3,19 @@ title: Bazinga
 permalink: /zh-CN/
 layout: default
 root: true
+lang: zh-CN
 ---
 
 <p>
-  一个在前端代码和 AI 幻觉之间打转的中国人，算不上有趣，尽量不无聊。
+  {{ site.data.i18n_copy.home['zh-CN'].bio_intro }}
 </p>
 <p>
-  杭州常住，偶尔抬头看看天，顺便看看几点了。<span class="time" data-timestamp-text="现在是 {time}，时间从来不等人。"></span>
+  {{ site.data.i18n_copy.home['zh-CN'].bio_location }} <span class="time" data-timestamp-text="{{ site.data.i18n_copy.home['zh-CN'].bio_time }}"></span>
 </p>
 
 <br />
 
-<nav aria-label="额外内容">
+<nav aria-label="{{ site.data.i18n_copy.home['zh-CN'].nav_additional }}">
   <a href="{% link _pages/blogroll.md %}"
      data-umami-event="nav_click"
      data-umami-event-section="additional"
@@ -31,7 +32,7 @@ root: true
      data-umami-event-link="banners"
      data-umami-event-lang="zh-CN">88&times;31</a>
 </nav>
-<nav aria-label="社交">
+<nav aria-label="{{ site.data.i18n_copy.home['zh-CN'].nav_social }}">
   <a href="#" 
      data-umami-event="nav_click"
      data-umami-event-section="profession" 
@@ -56,15 +57,15 @@ root: true
 
 <hr class="hr">
 
-<h2 class="normal-heading">胶片照片</h2><a href="/film" class="styled-link{% unless site.data.film.size > 0 %} disabled{% endunless %}"
+<h2 class="normal-heading">{{ site.data.i18n_copy.home['zh-CN'].section_film }}</h2><a href="/zh-CN/film" class="styled-link{% unless site.data.film.size > 0 %} disabled{% endunless %}"
    data-umami-event="section_nav"
    data-umami-event-section="film"
    data-umami-event-action="view_all"
-   data-umami-event-lang="zh-CN">全部胶片照片</a> <a href="/write-film" class="styled-link write-entry" id="film-write-entry"
+   data-umami-event-lang="zh-CN">{{ site.data.i18n_copy.home['zh-CN'].section_film_all }}</a> <a href="/zh-CN/write-film" class="styled-link write-entry" id="film-write-entry"
    data-umami-event="write_action"
    data-umami-event-type="film"
    data-umami-event-from="homepage"
-   data-umami-event-lang="zh-CN">上传胶片</a> <a href="/film.xml" class="styled-link"
+   data-umami-event-lang="zh-CN">{{ site.data.i18n_copy.home['zh-CN'].section_film_upload }}</a> <a href="/film.xml" class="styled-link"
    data-umami-event="rss_click"
    data-umami-event-type="film"
    data-umami-event-section="homepage"
@@ -85,22 +86,22 @@ root: true
   </a>
 {% endfor %}
 {% else %}
-  <p><em style="opacity: 0.65;">还没有上传任何胶片照片呢。</em></p>
+  <p><em style="opacity: 0.65;">{{ site.data.i18n_copy.home['zh-CN'].empty_film }}</em></p>
 {% endif %}
 </div>
 
 <hr class="hr">
 
 {% assign note = site.notes | last %}
-<h2 class="normal-heading">随笔</h2><a href="/notes" class="styled-link{% unless note %} disabled{% endunless %}"
+<h2 class="normal-heading">{{ site.data.i18n_copy.home['zh-CN'].section_notes }}</h2><a href="/zh-CN/notes" class="styled-link{% unless note %} disabled{% endunless %}"
    data-umami-event="section_nav"
    data-umami-event-section="notes"
    data-umami-event-action="view_all"
-   data-umami-event-lang="zh-CN">近期随笔</a> <a href="/write-note" class="styled-link write-entry" id="write-entry"
+   data-umami-event-lang="zh-CN">{{ site.data.i18n_copy.home['zh-CN'].section_notes_all }}</a> <a href="/zh-CN/write-note" class="styled-link write-entry" id="write-entry"
    data-umami-event="write_action"
    data-umami-event-type="note"
    data-umami-event-from="homepage"
-   data-umami-event-lang="zh-CN">写随笔</a> <a href="/notes.xml" class="styled-link"
+   data-umami-event-lang="zh-CN">{{ site.data.i18n_copy.home['zh-CN'].section_notes_write }}</a> <a href="/notes.xml" class="styled-link"
    data-umami-event="rss_click"
    data-umami-event-type="notes"
    data-umami-event-section="homepage"
@@ -114,16 +115,16 @@ root: true
   <div class="note-tags">{% for tag in note.tags %}<span class="note-tag" data-tag="{{ tag }}">{{ tag }}</span>{% endfor %}</div>
 </div>
 {% else %}
-  <p><em style="opacity: 0.65;">还没有写过任何随笔呢。</em></p>
+  <p><em style="opacity: 0.65;">{{ site.data.i18n_copy.home['zh-CN'].empty_notes }}</em></p>
 {% endif %}
 
 <hr class="hr">
 
-<h2 class="normal-heading">文章</h2><a href="/write-post" class="styled-link write-entry" id="post-write-entry"
+<h2 class="normal-heading">{{ site.data.i18n_copy.home['zh-CN'].section_posts }}</h2><a href="/zh-CN/write-post" class="styled-link write-entry" id="post-write-entry"
    data-umami-event="write_action"
    data-umami-event-type="post"
    data-umami-event-from="homepage"
-   data-umami-event-lang="zh-CN">写文章</a> <a href="/feed.xml" class="styled-link"
+   data-umami-event-lang="zh-CN">{{ site.data.i18n_copy.home['zh-CN'].section_posts_write }}</a> <a href="/feed.xml" class="styled-link"
    data-umami-event="rss_click"
    data-umami-event-type="posts"
    data-umami-event-section="homepage"
@@ -141,5 +142,5 @@ root: true
 {% endfor %}
 </ul>
 {% else %}
-  <p><em style="opacity: 0.65;">还没有发表任何文章呢。</em></p>
+  <p><em style="opacity: 0.65;">{{ site.data.i18n_copy.home['zh-CN'].empty_posts }}</em></p>
 {% endif %}

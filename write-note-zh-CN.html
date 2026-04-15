@@ -1,42 +1,43 @@
 ---
 layout: default
-permalink: /write-note/
+permalink: /zh-CN/write-note/
+lang: zh-CN
 ---
 
 <div class="write-note-container" data-page="write-note">
   <header class="write-note-header">
-    <h2 class="normal-heading">Write down a thought while it still smells like now.</h2>
+    <h2 class="normal-heading">写点眼前的碎念、保留一丝当下的气味。</h2>
     <p class="subtle-banner" id="permission-banner" hidden></p>
   </header>
 
   <div class="write-note-body">
-    <section class="preview-section" aria-live="polite" aria-label="Note preview">
-      <h3 class="section-title monospace">Preview</h3>
+    <section class="preview-section" aria-live="polite" aria-label="随笔预览">
+      <h3 class="section-title monospace">预览</h3>
       <div class="preview-card">
         <article class="note" id="preview-note">
           <time class="general-actions monospace" id="preview-time" datetime="{{ "now" | date_to_xmlschema }}">
             {{ "now" | date: "%Y/%m/%d" }}
           </time>
-          <div class="note-content" lang="en-US" id="preview-content">
-            <p class="placeholder-text">Text will appear here as soon as you start typing.</p>
+          <div class="note-content" lang="zh-CN" id="preview-content">
+            <p class="placeholder-text">文字会在这里出现，像刚写完一样新鲜。</p>
           </div>
           <div class="note-tags" id="preview-tags"></div>
         </article>
       </div>
     </section>
 
-    <section class="form-section" aria-label="Note settings">
+    <section class="form-section" aria-label="随笔设置">
       <form id="note-form" class="note-form" novalidate>
         <input type="hidden" id="title" name="title">
 
         <div class="form-field">
           <div class="field-title">
-            <label for="content" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Content</label>
+            <label for="content" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>正文</label>
           </div>
           <textarea
             id="content"
             name="content"
-            placeholder="Write freely. Leave a blank line for new paragraphs. Markdown is supported."
+            placeholder="想写什么就写什么，空一行可以分段，Markdown 也支持"
             required
           ></textarea>
           <span class="field-feedback" id="content-feedback" role="status" aria-live="polite"></span>
@@ -44,7 +45,7 @@ permalink: /write-note/
 
         <fieldset class="form-field tag-field">
             <legend class="field-title">
-            <span class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Tags</span>
+            <span class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>标签</span>
           </legend>
           <div class="tag-pool" id="existing-tags">
             {% assign notes = site.notes | sort: "date" | reverse %}
@@ -89,37 +90,37 @@ permalink: /write-note/
               {% endif %}
             {% endfor %}
             {% if displayed_count == 0 %}
-              <p class="field-hint">No tag history yet. Publish one note to seed the list.</p>
+              <p class="field-hint">目前没有历史标签，先写一篇随笔试试吧。</p>
             {% endif %}
           </div>
           <div class="custom-tags">
-            <label for="custom-tags" class="field-hint monospace">Custom tags</label>
+            <label for="custom-tags" class="field-hint monospace">自定义标签</label>
             <input
               type="text"
               id="custom-tags"
               name="custom-tags"
-              placeholder="New tags, comma-separated. Example: night-read, quick-note"
+              placeholder="新的标签，用逗号隔开，例如：夜读，随记"
               class="monospace"
             >
-            <p class="field-hint">Tags are split by commas automatically.</p>
+            <p class="field-hint">按逗号自动拆分，无需刻意控制空格。</p>
           </div>
           <span class="field-feedback" id="tags-feedback" role="status" aria-live="polite"></span>
         </fieldset>
 
         <div class="form-field">
           <div class="field-title">
-            <label for="access-key" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Access key</label>
+            <label for="access-key" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>访问密钥</label>
           </div>
           <div class="password-field-wrapper">
             <input
               type="password"
               id="access-key"
               name="access-key"
-              placeholder="Enter the shared access key to publish"
+              placeholder="输入约定好的密钥才能发布"
               autocomplete="current-password"
               required
             >
-            <button type="button" class="password-toggle" aria-label="Show password">
+            <button type="button" class="password-toggle" aria-label="显示密码">
               <svg class="eye-icon" viewBox="0 0 24 24" style="display: none;">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
@@ -135,10 +136,10 @@ permalink: /write-note/
 
         <div class="form-actions">
           <button type="submit" class="submit-btn" id="submit-btn">
-            <span class="btn-text">Publish now</span>
-            <span class="btn-loading">Submitting…</span>
+            <span class="btn-text">直接发布</span>
+            <span class="btn-loading">正在提交…</span>
           </button>
-          <button type="button" class="ghost-button" id="reset-draft-btn">Clear draft</button>
+          <button type="button" class="ghost-button" id="reset-draft-btn">清空草稿</button>
         </div>
       </form>
 
@@ -146,15 +147,15 @@ permalink: /write-note/
     </section>
   </div>
 
-  <section class="manual-section" aria-label="Manual publishing steps">
-    <h3 class="section-title monospace">Manual publishing steps</h3>
+  <section class="manual-section" aria-label="手动发布说明">
+    <h3 class="section-title monospace">手动发布</h3>
     <div class="manual-card">
       <ol class="manual-steps">
-        <li>Copy the preview above and save it as <code id="note-manual-filename">_notes/note-YYYY-MM-DD-HHmm.md</code></li>
-        <li>Confirm tags and language in front matter</li>
-        <li>Run <code>bundle exec jekyll build</code> and deploy</li>
+        <li>复制上方预览内容，保存为 <code id="note-manual-filename">_notes/note-YYYY-MM-DD-HHmm.md</code></li>
+        <li>确认 front matter 中的标签与语言设置正确</li>
+        <li>运行 <code>bundle exec jekyll build</code> 并提交部署</li>
       </ol>
-      <p class="field-hint">Tip: The page auto-generates filename and date, and can publish directly.</p>
+      <p class="field-hint">提示：页面会自动生成文件名与日期，也可以直接使用自动发布。</p>
     </div>
   </section>
 </div>
@@ -241,7 +242,7 @@ permalink: /write-note/
       document.querySelectorAll('.tag-checkbox:checked').forEach(cb => cb.checked = false);
       localStorage.removeItem('note-draft');
       updatePreview();
-      showStatus('Draft cleared.', 'info');
+      showStatus('草稿已清空。', 'info');
     });
 
     const savedKey = localStorage.getItem('note-access-key');
@@ -265,7 +266,7 @@ permalink: /write-note/
 
     if (!isOwnerActivated && directAccess) {
       permissionBanner.hidden = false;
-      permissionBanner.textContent = 'This entry is mainly for site maintainers. Feel free to explore without publishing.';
+      permissionBanner.textContent = '这个入口通常只对站长开放，既然你发现了，就随便看看预览，不必真的提交。';
     }
   }
 
@@ -330,7 +331,7 @@ permalink: /write-note/
       previewContent.innerHTML = '<p>' + htmlContent + '</p>';
       previewContent.classList.remove('placeholder');
     } else {
-      previewContent.innerHTML = '<p class="placeholder-text">Text will appear here as soon as you start typing.</p>';
+      previewContent.innerHTML = '<p class="placeholder-text">文字会在这里出现，像刚写完一样新鲜。</p>';
       previewContent.classList.add('placeholder');
     }
 
@@ -365,7 +366,7 @@ permalink: /write-note/
       const checkedCount = document.querySelectorAll('.tag-checkbox:checked').length;
       if (checkedCount > MAX_TAGS) {
         checkbox.checked = false;
-        showFeedback('tags', `You can select up to  tags.`);
+        showFeedback('tags', `标签最多选择 ${MAX_TAGS} 个。`);
         validateForm();
         return;
       }
@@ -414,7 +415,7 @@ permalink: /write-note/
     }
 
     if (report && overflowed) {
-      showFeedback('tags', `You can select up to  tags. Remove extras.`);
+      showFeedback('tags', `标签最多选择 ${MAX_TAGS} 个，请删掉多余的。`);
     }
 
     return { tags, overflowed };
@@ -425,23 +426,23 @@ permalink: /write-note/
 
     const title = ensureGeneratedTitle();
     if (!NOTE_ID_PATTERN.test(title)) {
-      showStatus('Title generation failed. Refresh and try again.', 'error');
+      showStatus('标题生成出现异常，请刷新页面后再试。', 'error');
       isValid = false;
     }
 
     const content = contentInput.value.trim();
     if (!content) {
-      showFeedback('content', 'Content is still empty. Write a couple of lines first.');
+      showFeedback('content', '正文还是空的，随便写两句试试。');
       isValid = false;
     } else if (content.length < 16) {
-      showFeedback('content', 'Write a little more. Your future self will thank you.', 'soft');
+      showFeedback('content', '再多写一点点，未来的你会感激现在的你。', 'soft');
     } else {
       clearFeedback('content');
     }
 
     const { tags, overflowed } = getSelectedTags({ report: true });
     if (tags.length === 0) {
-      showFeedback('tags', 'Pick at least one tag so it is easier to find later.');
+      showFeedback('tags', '选一个标签方便以后回看。');
       isValid = false;
     } else if (!overflowed) {
       clearFeedback('tags');
@@ -453,7 +454,7 @@ permalink: /write-note/
 
     const accessKey = accessKeyInput.value.trim();
     if (!accessKey) {
-      showFeedback('accessKey', 'No access key provided. Publishing will be rejected.');
+      showFeedback('accessKey', '密钥缺席，系统会礼貌地拒绝。');
       isValid = false;
     } else {
       clearFeedback('accessKey');
@@ -514,22 +515,22 @@ permalink: /write-note/
       const result = await response.json();
 
       if (response.ok) {
-        // Remove draft after successful publish
+        // 自动删除草稿
         localStorage.removeItem('note-draft');
         localStorage.setItem('note-access-key', btoa(accessKey));
 
-        // Show success message and redirect to homepage
-        showStatus(`Published successfully. Redirecting to home...`, 'success');
+        // 显示成功消息并跳转到首页
+        showStatus(`发布成功！正在跳转到首页...`, 'success');
 
         setTimeout(() => {
           window.location.href = '/';
         }, 1500);
       } else {
-        showStatus(result.error || 'Publish failed. Please try again in a moment.', 'error');
+        showStatus(result.error || '发布没有成功，稍后再试一次吧。', 'error');
       }
     } catch (error) {
       console.error('Submission error:', error);
-      showStatus('Network error. Refresh or try again shortly.', 'error');
+      showStatus('网络好像断了，刷新或稍等一会儿再试。', 'error');
     } finally {
       setSubmitting(false);
     }
@@ -587,7 +588,7 @@ permalink: /write-note/
 
       updatePreview();
     } catch (error) {
-      console.warn('Failed to load draft:', error);
+      console.warn('无法加载草稿:', error);
     }
   }
 })();

@@ -1,25 +1,26 @@
 ---
 layout: default
-permalink: /write-post/
+permalink: /zh-CN/write-post/
+lang: zh-CN
 ---
 
 <div class="write-post-container" data-page="write-post">
   <header class="write-post-header">
-    <h2 class="desc">Put your longer thoughts down here.</h2>
+    <h2 class="desc">把最近长长的思绪落在这里。</h2>
     <p class="subtle-banner" id="post-permission-banner" hidden></p>
     <p class="subtle-banner" id="draft-banner" hidden></p>
   </header>
 
-  <section class="preview-section" aria-label="Post preview">
-    <h3 class="section-title monospace">Post preview</h3>
+  <section class="preview-section" aria-label="文章预览区域">
+    <h3 class="section-title monospace">文章预览</h3>
     <div class="preview-card">
       <article class="post-preview">
         <header class="post-preview-header">
           <time class="monospace" id="preview-date" datetime="{{ "now" | date_to_xmlschema }}">{{ "now" | date: "%Y/%m/%d" }}</time>
-          <h1 class="post-preview-title" id="preview-title">Post title will appear here</h1>
+          <h1 class="post-preview-title" id="preview-title">文章标题会显示在这里</h1>
         </header>
         <div class="post-preview-body" id="preview-body">
-          <p class="placeholder-text">The body will appear here as you type.</p>
+          <p class="placeholder-text">文字会在这里出现，像刚写完一样新鲜。</p>
         </div>
         <figure class="post-preview-media" id="preview-media" hidden>
           <img id="preview-image" alt="" loading="lazy" decoding="async">
@@ -32,76 +33,76 @@ permalink: /write-post/
       <summary class="monospace">Front matter</summary>
       <pre class="frontmatter-output" id="frontmatter-output"></pre>
       <div class="copy-row">
-        <button type="button" class="copy-button" id="copy-frontmatter">Copy content</button>
+        <button type="button" class="copy-button" id="copy-frontmatter">复制内容</button>
       </div>
     </details>
   </section>
 
-  <section class="form-section" aria-label="Post settings">
+  <section class="form-section" aria-label="文章内容设置">
     <form class="note-form post-form" id="post-form" novalidate>
       <div class="form-field">
         <div class="field-title">
-          <label for="title" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Title</label>
+          <label for="title" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>标题</label>
         </div>
-        <input type="text" id="title" name="title" placeholder="Give this post a clean title" required>
+        <input type="text" id="title" name="title" placeholder="给这篇文章起个不费力的标题" required>
         <span class="field-feedback" id="title-feedback" role="status" aria-live="polite"></span>
       </div>
 
       <div class="form-field">
         <div class="field-title">
-          <label for="body" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Body</label>
+          <label for="body" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>正文</label>
         </div>
-        <textarea id="body" name="body" placeholder="Write freely. Leave a blank line for new paragraphs. Markdown is supported." required></textarea>
+        <textarea id="body" name="body" placeholder="想写什么就写什么，空一行可以分段，Markdown 也支持" required></textarea>
         <span class="field-feedback" id="body-feedback" role="status" aria-live="polite"></span>
-        <div class="field-hint monospace" id="body-stats">Lines: 0 (0 chars)</div>
+        <div class="field-hint monospace" id="body-stats">行数：0（0 字符）</div>
       </div>
 
       <div class="meta-preview">
-        <p class="field-hint monospace">Publish time will be set to:<span id="auto-date">{{ "now" | date: "%Y/%m/%d %H:%M" }}</span> <button type="button" class="link-button" id="refresh-date">Refresh</button></p>
-        <p class="field-hint monospace">Generated filename:<code id="generated-filename">post.md</code> <button type="button" class="link-button" id="copy-filename">Copy</button></p>
+        <p class="field-hint monospace">发布时间将自动设为：<span id="auto-date">{{ "now" | date: "%Y/%m/%d %H:%M" }}</span> <button type="button" class="link-button" id="refresh-date">刷新</button></p>
+        <p class="field-hint monospace">生成的文件名：<code id="generated-filename">post.md</code> <button type="button" class="link-button" id="copy-filename">复制</button></p>
       </div>
 
       <details class="advanced-settings">
-        <summary class="advanced-summary monospace">Advanced settings</summary>
+        <summary class="advanced-summary monospace">高级设置</summary>
         <div class="advanced-grid">
           <div class="form-field">
             <div class="field-title">
               <label for="slug" class="field-label monospace">Slug</label>
             </div>
-            <input type="text" id="slug" name="slug" placeholder="Auto-generated, editable">
+            <input type="text" id="slug" name="slug" placeholder="自动生成，可自行调整">
             <span class="field-feedback" id="slug-feedback" role="status" aria-live="polite"></span>
           </div>
 
           <div class="form-field checkbox-field">
             <label class="field-label monospace" for="feature">
-              <input type="checkbox" id="feature" name="feature"> Show on homepage (feature: 1)
+              <input type="checkbox" id="feature" name="feature"> 在主页展示（feature: 1）
             </label>
-            <p class="field-hint">When enabled, the post appears on homepage and adds open_heart: true.</p>
+            <p class="field-hint">勾选后文章会出现在首页列表，同时自动加入 open_heart: true。</p>
           </div>
 
           <div class="form-field">
             <div class="field-title">
-              <label for="image" class="field-label monospace">Hero image URL</label>
+              <label for="image" class="field-label monospace">主视觉图片 URL</label>
             </div>
             <input type="text" id="image" name="image" placeholder="https://">
           </div>
 
           <div class="form-field">
             <div class="field-title">
-              <label for="image-text" class="field-label monospace">Image description</label>
+              <label for="image-text" class="field-label monospace">图片说明</label>
             </div>
-            <input type="text" id="image-text" name="image-text" placeholder="Optional: card description or accessibility text.">
+            <input type="text" id="image-text" name="image-text" placeholder="可选：用于卡片描述或无障碍文本。">
           </div>
         </div>
       </details>
 
       <div class="form-field">
         <div class="field-title">
-          <label for="access-key" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Access key</label>
+          <label for="access-key" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>访问密钥</label>
         </div>
         <div class="password-field-wrapper">
-          <input type="password" id="access-key" name="access-key" placeholder="Enter the shared access key to publish" required>
-          <button type="button" class="password-toggle" aria-label="Show password">
+          <input type="password" id="access-key" name="access-key" placeholder="输入约定好的密钥才能发布" required>
+          <button type="button" class="password-toggle" aria-label="显示密码">
             <svg class="eye-icon" viewBox="0 0 24 24" style="display: none;">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
@@ -117,25 +118,25 @@ permalink: /write-post/
 
       <div class="form-actions">
         <button type="submit" class="submit-btn" id="submit-btn">
-          <span class="btn-text">Publish now</span>
-          <span class="btn-loading" hidden>Submitting…</span>
+          <span class="btn-text">直接发布</span>
+          <span class="btn-loading" hidden>正在提交…</span>
         </button>
-        <button type="button" class="ghost-button" id="reset-btn">Clear draft</button>
+        <button type="button" class="ghost-button" id="reset-btn">清空草稿</button>
       </div>
 
       <p class="status-message" id="submit-status" hidden></p>
     </form>
   </section>
 
-  <section class="manual-section" aria-label="Manual publishing steps">
-    <h3 class="section-title monospace">Manual publishing steps</h3>
+  <section class="manual-section" aria-label="手动发布说明">
+    <h3 class="section-title monospace">手动发布</h3>
     <div class="manual-card">
       <ol class="manual-steps">
-        <li>Expand Front matter above, then save it with body as <code id="manual-filename">_posts/YYYY-MM-DD-HHmm-post-slug.md</code></li>
-        <li>Run <code>bundle exec jekyll build</code> to verify</li>
-        <li>commit and push, then wait for deployment</li>
+        <li>展开上方 Front matter，复制内容并连同正文一起保存为 <code id="manual-filename">_posts/YYYY-MM-DD-HHmm-post-slug.md</code></li>
+        <li>运行 <code>bundle exec jekyll build</code> 确认通过</li>
+        <li>提交并推送，等待部署完成</li>
       </ol>
-      <p class="field-hint">Tip: check whether `feature: 1` fits homepage publishing.</p>
+      <p class="field-hint">提示：记得检查 `feature: 1` 是否符合主页展示需求。</p>
     </div>
   </section>
 </div>
@@ -294,7 +295,7 @@ permalink: /write-post/
     const directAccess = !document.referrer || !document.referrer.includes(window.location.origin);
     if (!toggled && directAccess) {
       postPermissionBanner.hidden = false;
-      postPermissionBanner.textContent = 'This entry is primarily for site maintainers. Feel free to preview without publishing.';
+      postPermissionBanner.textContent = '这个入口主要面向站点维护者，既然找到了就随便看看预览，不一定要提交。';
     }
   }
 
@@ -303,7 +304,7 @@ permalink: /write-post/
     if (!rawDraft) return;
 
     draftBanner.hidden = false;
-    draftBanner.innerHTML = 'Unfinished draft detected.<button type="button" class="link-button" data-action="restore-draft">Restore</button><button type="button" class="link-button" data-action="discard-draft">Discard</button>';
+    draftBanner.innerHTML = '检测到未完成的草稿。<button type="button" class="link-button" data-action="restore-draft">恢复</button><button type="button" class="link-button" data-action="discard-draft">忽略</button>';
 
     const handleDraftAction = (event) => {
       const action = event.target?.dataset?.action;
@@ -314,7 +315,7 @@ permalink: /write-post/
           const draft = JSON.parse(rawDraft);
           applyDraft(draft);
         } catch (error) {
-          console.warn('Failed to restore draft:', error);
+          console.warn('无法恢复草稿:', error);
         }
         teardownDraftBanner();
         saveDraft();
@@ -385,20 +386,20 @@ permalink: /write-post/
           localStorage.setItem(ACCESS_KEY_STORAGE, btoa(accessKey));
           clearDraft();
 
-          // Show success message and redirect to homepage
-          showStatus(`Published successfully. Redirecting to home...`, 'success');
+          // 显示成功消息并跳转到首页
+          showStatus(`发布成功！正在跳转到首页...`, 'success');
 
           setTimeout(() => {
             window.location.href = '/';
           }, 1500);
         } else {
-          const message = result.error || 'Publish failed. Please try again in a moment.';
+          const message = result.error || '发布没有成功，稍后再试一次吧。';
           showStatus(message, 'error');
         }
       })
       .catch((error) => {
-        console.error('Publish failed:', error);
-        showStatus('Network issue detected. Please try again shortly.', 'error');
+        console.error('发布失败:', error);
+        showStatus('网络似乎出了点问题，请稍后再试。', 'error');
       })
       .finally(() => {
         setSubmitting(false);
@@ -504,7 +505,7 @@ permalink: /write-post/
 
   function updatePreviewTitle() {
     const title = titleInput.value.trim();
-    previewTitleEl.textContent = title || 'Post title will appear here';
+    previewTitleEl.textContent = title || '文章标题会显示在这里';
   }
 
   function updatePreviewDate() {
@@ -518,7 +519,7 @@ permalink: /write-post/
   function updatePreviewBody() {
     const content = bodyInput.value.trim();
     if (!content) {
-      previewBodyEl.innerHTML = '<p class="placeholder-text">The body will appear here as you type.</p>';
+      previewBodyEl.innerHTML = '<p class="placeholder-text">文字会在这里出现，像刚写完一样新鲜。</p>';
       return;
     }
 
@@ -618,7 +619,7 @@ permalink: /write-post/
     }
 
     previewImageEl.src = image;
-    previewImageEl.alt = imageTextInput.value.trim() || titleInput.value.trim() || 'Post image';
+    previewImageEl.alt = imageTextInput.value.trim() || titleInput.value.trim() || '文章配图';
     const caption = imageTextInput.value.trim();
     if (caption) {
       previewImageTextEl.hidden = false;
@@ -634,7 +635,7 @@ permalink: /write-post/
   function updateFrontMatter() {
     const lines = [
       '---',
-      `title: "${escapeYAML(titleInput.value.trim() || 'Untitled post')}"`,
+      `title: "${escapeYAML(titleInput.value.trim() || '未命名文章')}"`,
       'layout: default',
       'open_heart: true',
       `date: ${state.publish.display}`
@@ -668,7 +669,7 @@ permalink: /write-post/
     const content = bodyInput.value.trim();
     const lines = content ? content.split(/\r?\n/).filter(line => line.trim().length > 0).length : 0;
     const characters = content.length;
-    bodyStats.textContent = `Lines: ${lines}（${characters} chars）`;
+    bodyStats.textContent = `行数：${lines}（${characters} 字符）`;
   }
 
   function showStatus(message, type) {
@@ -715,26 +716,26 @@ permalink: /write-post/
 
     const title = titleInput.value.trim();
     if (!title) {
-      showFeedback('title', 'Title is empty. Add a few words first.');
+      showFeedback('title', '标题还空着，先写几个字吧。');
       isValid = false;
     } else if (title.length < 3) {
-      showFeedback('title', 'Add a bit more so the title stands out.', 'soft');
+      showFeedback('title', '再多写一点，让标题更有辨识度。', 'soft');
     } else {
       clearFeedback('title');
     }
 
     const body = bodyInput.value.trim();
     if (!body) {
-      showFeedback('body', 'Body is empty. Write at least one paragraph.');
+      showFeedback('body', '正文还没有内容，至少写一段试试。');
       isValid = false;
     } else if (body.length < 80) {
-      showFeedback('body', 'A little more length will read like a full post.', 'soft');
+      showFeedback('body', '篇幅再长一点更像一篇文章。', 'soft');
     } else {
       clearFeedback('body');
     }
 
     if (!validateSlugValue(state.slug)) {
-      showFeedback('slug', 'Slug can only contain letters, numbers, CJK characters, and hyphens.');
+      showFeedback('slug', 'Slug 只能包含字母、数字、中文和连字符。');
       isValid = false;
     } else {
       clearFeedback('slug');
@@ -742,7 +743,7 @@ permalink: /write-post/
 
     const accessKey = accessKeyInput.value.trim();
     if (!accessKey) {
-      showFeedback('key', 'Access key is required for direct publishing.');
+      showFeedback('key', '需要访问密钥才能直接发布。');
       isValid = false;
     } else {
       clearFeedback('key');
@@ -801,7 +802,7 @@ permalink: /write-post/
   function flashCopyButton(button) {
     if (!button) return;
     const original = button.textContent;
-    button.textContent = 'Copied';
+    button.textContent = '已复制';
     button.disabled = true;
     setTimeout(() => {
       button.textContent = original;
@@ -825,7 +826,7 @@ permalink: /write-post/
       try {
         localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
       } catch (error) {
-        console.warn('Failed to save draft:', error);
+        console.warn('无法保存草稿:', error);
       }
     } else {
       clearDraft(false);

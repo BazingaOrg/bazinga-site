@@ -6,11 +6,40 @@
     {% assign lang = 'de-DE' %}
   {% endif %}
 {% endunless %}
+{% assign copy = site.data.i18n_copy %}
+{% assign layout_copy = copy.layout[lang] %}
+{% unless layout_copy %}
+  {% assign layout_copy = copy.layout['en-US'] %}
+{% endunless %}
+{% assign current_path = page.url | default: '/' %}
+{% if current_path == '' %}
+  {% assign current_path = '/' %}
+{% endif %}
+{% if current_path == '/zh-CN' %}
+  {% assign english_path = '/' %}
+  {% assign chinese_path = '/zh-CN/' %}
+{% elsif current_path == '/zh-CN/' %}
+  {% assign english_path = '/' %}
+  {% assign chinese_path = '/zh-CN/' %}
+{% elsif current_path contains '/zh-CN/' %}
+  {% assign english_path = current_path | replace_first: '/zh-CN', '' %}
+  {% assign chinese_path = current_path %}
+{% elsif current_path == '/' %}
+  {% assign english_path = '/' %}
+  {% assign chinese_path = '/zh-CN/' %}
+{% else %}
+  {% assign english_path = current_path %}
+  {% assign chinese_path = '/zh-CN' | append: current_path %}
+{% endif %}
 <!doctype html>
 <html lang="{{ lang }}">
   <head>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <link rel="canonical" href="{{ site.url }}{{ current_path }}">
+    <link rel="alternate" hreflang="en-US" href="{{ site.url }}{{ english_path }}">
+    <link rel="alternate" hreflang="zh-CN" href="{{ site.url }}{{ chinese_path }}">
+    <link rel="alternate" hreflang="x-default" href="{{ site.url }}{{ english_path }}">
     <link rel="alternate" type="application/rss+xml" href="/notes.xml">
     <link rel="apple-touch-icon" href="{{ '/assets/apple-touch-icon.png?v1' | absolute_url }}">
     <link rel="icon" href="/assets/apple-touch-icon.png?v1" type="image/png" sizes="180x180">
@@ -132,9 +161,17 @@
         <hr class="hr">
         <div class="smol">
           <div class="monospace">
-            <div id="like-prompt">Like this {% if page.collection == "posts" %}post{% elsif page.collection == "notes" %}note{% else %}page{% endif %}? let me know!</div>
+            <div id="like-prompt">
+              {% if page.collection == "posts" %}
+                {{ layout_copy.like_prompt_post }}
+              {% elsif page.collection == "notes" %}
+                {{ layout_copy.like_prompt_note }}
+              {% else %}
+                {{ layout_copy.like_prompt_page }}
+              {% endif %}
+            </div>
             &gt;<open-heart class="text-open-heart" href="https://site.bazinga.ink/like?id={{ page.url }}" emoji="❤️" aria-labelledby="like-prompt">
-              <span class="on">Liked.<br>(Thanks!)</span><span class="off">Sure. <kbd>⏎</kbd></span>
+              <span class="on">{{ layout_copy.liked_on }}<br>(Thanks!)</span><span class="off">{{ layout_copy.liked_off }} <kbd>⏎</kbd></span>
             </open-heart>
           </div>
         </div>
@@ -158,12 +195,12 @@
            data-umami-event="footer_banner_click"
            data-umami-event-section="footer"
            data-umami-event-type="banner"
-           data-umami-event-lang="{{ lang }}"><img loading="lazy" src="/images/banner.gif" width="88" height="31" alt="Banner assets. An animated banner with one short line, one medium line, one long line, a symbol resembling the tilde, each being drawn in order."></a>
+           data-umami-event-lang="{{ lang }}"><img loading="lazy" src="/images/banner.gif" width="88" height="31" alt="{{ layout_copy.footer_banner_alt }}"></a>
         <a href="http://www.rssboard.org/rss-validator/"
            data-umami-event="footer_validator_click"
            data-umami-event-section="footer"
            data-umami-event-type="rss_validator"
-           data-umami-event-lang="{{ lang }}"><img loading="lazy" src="/images/banners/valid-rss-rogers.png" width="88" height="31" alt="Valid RSS feeds available."></a>
+           data-umami-event-lang="{{ lang }}"><img loading="lazy" src="/images/banners/valid-rss-rogers.png" width="88" height="31" alt="{{ layout_copy.footer_rss_alt }}"></a>
       </p>
     </footer>
     

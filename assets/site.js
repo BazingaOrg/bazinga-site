@@ -1,6 +1,8 @@
 import { trackUmami } from './umami.js'
 import { initSakuraFall } from './sakura-fall.js'
 
+const isChineseInterface = document.documentElement.lang?.startsWith('zh')
+
 if ('share' in navigator) {
   for (const shareButton of document.querySelectorAll('[data-share-url]')) {
     shareButton.hidden = false
@@ -22,7 +24,50 @@ if ('share' in navigator) {
 
 initSakuraFall()
 
-// 密码显示/隐藏切换功能
+function normalizePath(pathname) {
+  if (!pathname || pathname === '') return '/'
+  return pathname.startsWith('/') ? pathname : `/${pathname}`
+}
+
+function toZhPath(pathname) {
+  const path = normalizePath(pathname)
+  if (path === '/zh-CN' || path === '/zh-CN/') return '/zh-CN/'
+  if (path.startsWith('/zh-CN/')) return path
+  if (path === '/') return '/zh-CN/'
+  return `/zh-CN${path}`
+}
+
+function toEnPath(pathname) {
+  const path = normalizePath(pathname)
+  if (path === '/zh-CN' || path === '/zh-CN/') return '/'
+  if (path.startsWith('/zh-CN/')) {
+    const strippedPath = path.replace(/^\/zh-CN/, '')
+    return strippedPath === '' ? '/' : strippedPath
+  }
+  return path
+}
+
+function initLanguageSwitcherLinks() {
+  const languageSwitcher = document.querySelector('.lang')
+  if (!languageSwitcher) return
+
+  const zhLink = languageSwitcher.querySelector('a[srclang="zh-CN"]')
+  const enLink = languageSwitcher.querySelector('a[srclang="en-US"]')
+  if (!zhLink || !enLink) return
+
+  const currentPath = window.location.pathname
+  const zhPath = toZhPath(currentPath)
+  const enPath = toEnPath(currentPath)
+
+  zhLink.setAttribute('href', zhPath)
+  enLink.setAttribute('href', enPath)
+
+  const currentIsZh = currentPath === '/zh-CN' || currentPath.startsWith('/zh-CN/')
+  zhLink.toggleAttribute('aria-current', currentIsZh)
+  enLink.toggleAttribute('aria-current', !currentIsZh)
+}
+
+// Password show/hide toggle
 function initPasswordToggle() {
   const passwordWrappers = document.querySelectorAll('.password-field-wrapper')
 
@@ -47,14 +92,20 @@ function initPasswordToggle() {
         eyeSlashIcon.style.display = 'none'
       }
 
-      toggle.setAttribute('aria-label', isPassword ? '隐藏密码' : '显示密码')
+      toggle.setAttribute('aria-label', isPassword
+        ? (isChineseInterface ? '隐藏密码' : 'Hide password')
+        : (isChineseInterface ? '显示密码' : 'Show password'))
     })
   })
 }
 
-// 初始化密码切换功能
+// Initialize password toggle
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initPasswordToggle)
+  document.addEventListener('DOMContentLoaded', () => {
+    initLanguageSwitcherLinks()
+    initPasswordToggle()
+  })
 } else {
+  initLanguageSwitcherLinks()
   initPasswordToggle()
 }

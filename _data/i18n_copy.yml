@@ -1,0 +1,109 @@
+home:
+  en-US:
+    bio_intro: Just a Chinese Random Guy into AI.
+    bio_location: Lives in Hangzhou, Zhejiang.
+    bio_time: It is currently {time} there.
+    nav_additional: Additional content
+    nav_social: Social
+    section_film: Film photos
+    section_film_all: All film photos
+    section_film_upload: Upload film
+    section_notes: Notes
+    section_notes_all: Recent notes
+    section_notes_write: Write note
+    section_posts: Recent posts
+    section_posts_write: Write post
+    empty_film: No film photos have been uploaded yet.
+    empty_notes: No notes have been written yet.
+    empty_posts: No featured posts yet.
+  zh-CN:
+    bio_intro: 一个中国普通人，迷上了 AI。
+    bio_location: 住在浙江杭州，
+    bio_time: 那边现在是 {time}。
+    nav_additional: 额外内容
+    nav_social: 社交
+    section_film: 胶片照片
+    section_film_all: 全部胶片照片
+    section_film_upload: 上传胶片
+    section_notes: 随笔
+    section_notes_all: 近期随笔
+    section_notes_write: 写随笔
+    section_posts: 文章
+    section_posts_write: 写文章
+    empty_film: 还没有上传任何胶片照片。
+    empty_notes: 还没有写过任何随笔。
+    empty_posts: 还没有发表任何文章。
+
+list_pages:
+  en-US:
+    notes_title: Recent notes
+    notes_filter: Tag filter
+    notes_check_all: Check all
+    notes_share: Share
+    notes_liked: Liked.
+    notes_like: Like?
+    notes_limit_hint: Only the most recent 200 notes are shown.
+    photos_title: Photos
+    film_title: Film
+    caption_expand: Expand
+    camera_details: Camera details
+  zh-CN:
+    notes_title: 近期随笔
+    notes_filter: 标签筛选
+    notes_check_all: 全选
+    notes_share: 分享
+    notes_liked: 已喜欢。
+    notes_like: 喜欢吗？
+    notes_limit_hint: 仅显示最近 200 条随笔。
+    photos_title: 照片
+    film_title: 胶片
+    caption_expand: 展开
+    camera_details: 相机信息
+
+layout:
+  en-US:
+    like_prompt_post: Like this post? Let me know.
+    like_prompt_note: Like this note? Let me know.
+    like_prompt_page: Like this page? Let me know.
+    liked_on: Liked.
+    liked_off: Sure.
+    footer_banner_alt: Banner assets.
+    footer_rss_alt: Valid RSS feeds available.
+  zh-CN:
+    like_prompt_post: 这篇文章合你胃口吗？点个喜欢告诉我。
+    like_prompt_note: 这条随笔合你胃口吗？点个喜欢告诉我。
+    like_prompt_page: 这个页面合你胃口吗？点个喜欢告诉我。
+    liked_on: 收到喜欢。
+    liked_off: 可以。
+    footer_banner_alt: 站点横幅素材。
+    footer_rss_alt: 可用的 RSS 订阅。
+
+terminology:
+  en-US:
+    note_singular: Note
+    note_plural: Notes
+    post_singular: Post
+    post_plural: Posts
+    photo_singular: Photo
+    photo_plural: Photos
+    film_section: Film photos
+    access_key: Access key
+    alt_text: Alt text
+    caption: Caption
+    publish_now: Publish now
+    clear_draft: Clear draft
+    manual_steps: Manual publishing steps
+  zh-CN:
+    note_singular: 随笔
+    note_plural: 随笔
+    post_singular: 文章
+    post_plural: 文章
+    photo_singular: 照片
+    photo_plural: 照片
+    film_section: 胶片照片
+    access_key: 访问密钥
+    alt_text: Alt 文本
+    caption: 图注
+    publish_now: 直接发布
+    clear_draft: 清空草稿
+    manual_steps: 手动发布步骤

@@ -6,6 +6,12 @@ title: Film
 permalink: /film/
 ---
 
+{% assign current_lang = page.lang | default: page.locale | default: site.lang | default: 'en-US' %}
+{% assign copy = site.data.i18n_copy.list_pages[current_lang] %}
+<div class="lang">
+  <a href="/zh-CN/film/" srclang="zh-CN"{% if current_lang == 'zh-CN' %} aria-current="true"{% endif %}>简体中文</a><a href="/film/" srclang="en-US"{% if current_lang != 'zh-CN' %} aria-current="true"{% endif %}>English</a>
+</div>
+
 <div class="photos-wrapper" id="photos">
 {% assign photos = site.data.film | sort: "uploaded" | reverse %}
 {% for photo in photos %}
@@ -30,16 +36,16 @@ permalink: /film/
       <div>{{ photo.uploaded | date: "%Y/%m/%d (%a)" }}</div>
       {% if photo.meta.location  %}<div>@ {{ photo.meta.location }}</div>{% endif %}
       <open-heart class="text-open-heart" href="https://site.bazinga.ink/like?id=film-P{{ photo.id }}" emoji="❤️" aria-labelledby="like-prompt">
-        <span class="on">Liked ♥︎.</span><span class="off">Like?</span>
+        <span class="on">{{ copy.notes_liked }} ♥︎.</span><span class="off">{{ copy.notes_like }}</span>
       </open-heart>
     </div>
     {% if photo.meta.caption %}
     <div class="caption-container">
       <div class="caption-content">{{ photo.meta.caption | markdownify }}</div>
-      <button class="caption-toggle" style="display: none;">展开</button>
+      <button class="caption-toggle" style="display: none;">{{ copy.caption_expand }}</button>
     </div>
     {% endif %}
-    <details class="monospace smol"><summary>Camera details</summary>{{ photo.meta.camera }} + {{ photo.meta.film }}</details>
+    <details class="monospace smol"><summary>{{ copy.camera_details }}</summary>{{ photo.meta.camera }} + {{ photo.meta.film }}</details>
   </figcaption>
 </figure>
 {% endfor %}
