@@ -78,8 +78,8 @@
         <meta content="{{ page.image | prepend: '/images/' | absolute_url }}" property="og:image">
         <meta content="{{ page.image | prepend: '/images/' | absolute_url }}" property="twitter:image">
       {% elsif page.image_text %}
-        <meta content="{{ '/images/banner.gif' | absolute_url }}" property="og:image">
-        <meta content="{{ '/images/banner.gif' | absolute_url }}" property="twitter:image">
+        <meta content="{{ '/images/banners/banner.gif' | absolute_url }}" property="og:image">
+        <meta content="{{ '/images/banners/banner.gif' | absolute_url }}" property="twitter:image">
       {% else %}
         <meta property="og:image:width" content="200">
         <meta property="og:image:height" content="200">
@@ -203,7 +203,7 @@
            data-umami-event="footer_banner_click"
            data-umami-event-section="footer"
            data-umami-event-type="banner"
-           data-umami-event-lang="{{ lang }}"><img loading="lazy" src="/images/banner.gif" width="88" height="31" alt="{{ layout_copy.footer_banner_alt }}"></a>
+           data-umami-event-lang="{{ lang }}"><img loading="lazy" src="/images/banners/banner.gif" width="88" height="31" alt="{{ layout_copy.footer_banner_alt }}"></a>
         <a href="http://www.rssboard.org/rss-validator/"
            data-umami-event="footer_validator_click"
            data-umami-event-section="footer"
@@ -276,6 +276,7 @@
 
     {% if page.root %}
     <script type="module" src="/assets/root.js"></script>
+    <script type="module" src="/assets/vendor/open-stories-element-{{ site.data.vendor_versions.open_stories_element }}.js"></script>
     {% endif %}
     {% if page.feature == 1 or page.open_heart or page.has_open_heart %}
     <script>

@@ -1,6 +1,6 @@
 /* TEAM */
 Owner: Bazinga
-Role: Writer, Designer, Developer
+Role: Developer
 Contact: zhangyouxiu66@gmail.com
 Website: https://site.bazinga.ink
 GitHub: https://github.com/BazingaOrg
