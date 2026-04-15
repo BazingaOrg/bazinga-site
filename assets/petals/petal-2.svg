@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 128">
+  <defs>
+    <linearGradient id="sakura2Fill" x1="0" y1="0.1" x2="1" y2="0.95">
+      <stop offset="0%" stop-color="#fff5f8"/>
+      <stop offset="52%" stop-color="#ffe0ea"/>
+      <stop offset="100%" stop-color="#ffc5d7"/>
+    </linearGradient>
+  </defs>
+  <path d="M48 7C60 12 71 24 78 42C85 61 84 83 74 101C67 113 58 121 48 123C37 121 28 113 21 101C12 83 11 61 18 42C24 24 36 12 48 7Z" fill="url(#sakura2Fill)" stroke="#e49db4" stroke-width="2"/>
+  <path d="M47.5 12C44 20 43 25 45 30C46 32.5 47 34 48 35.5C49 34 50 32.5 51 30C53 25 52 20 48.5 12C48.2 11.1 47.8 11.1 47.5 12Z" fill="#fffafe" opacity="0.88"/>
+  <path d="M34 46C38 42 43 39 48 38C53 39 58 42 62 46" fill="none" stroke="#f8c3d3" stroke-width="1.8" stroke-linecap="round" opacity="0.78"/>
+  <path d="M48 22C53 36 54 54 52 73C50 91 49 105 48 116" fill="none" stroke="#f0a9bf" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+</svg>

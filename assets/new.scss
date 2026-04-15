@@ -65,6 +65,15 @@ body {
   word-wrap: break-word;
 }
 
+.sakura-fall-layer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -2052,128 +2061,10 @@ label:has(input:not(:checked)) ~ label:has(input:not(:checked)) ~ label:has(inpu
   text-align: right;
 }
 
-/* 年度时间轴样式 */
-#year-timeline {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  font-family: var(--monospace);
-}
-
-.year-timeline-grid {
-  display: grid;
-  grid-template-columns: repeat(53, 1fr);
-  gap: 2px;
-  width: 100%;
-}
-
-.year-timeline-week {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.year-timeline-day {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #ebedf0;
-  transition: all 0.2s ease;
-
-  &[data-level="0"] { background: #ebedf0; }
-  &[data-level="1"] { background: #9be9a8; }
-  &[data-level="2"] { background: #40c463; }
-  &[data-level="3"] { background: #30a14e; }
-  &[data-level="4"] { background: #216e39; }
-}
-
-.year-timeline-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.7em;
-  color: var(--mutedTextColor);
-  margin-top: 1rem;
-  font-family: var(--monospace);
-  width: 100%;
-
-  .year {
-    color: var(--textColor);
-    font-weight: normal;
-  }
-
-  .contributions {
-    color: var(--mutedTextColor);
-  }
-
-  .progress {
-    color: var(--mutedTextColor);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .year-timeline-day {
-    &[data-level="0"] { background: #21262d; }
-    &[data-level="1"] { background: #0e4429; }
-    &[data-level="2"] { background: #006d32; }
-    &[data-level="3"] { background: #26a641; }
-    &[data-level="4"] { background: #39d353; }
-  }
-}
-
-@media (max-width: 1280px) {
-  .year-timeline-day { width: 7px; height: 7px; }
-  .year-timeline-grid { gap: 1.5px; }
-  .year-timeline-week { gap: 1.5px; }
-  .year-timeline-info { font-size: 0.7rem; }
-}
-
-@media (max-width: 1024px) {
-  .year-timeline-day { width: 6px; height: 6px; }
-  .year-timeline-grid { gap: 1.5px; }
-  .year-timeline-week { gap: 1.5px; }
-  .year-timeline-info { font-size: 0.7rem; }
-}
-
-@media (max-width: 768px) {
-  .year-timeline-day { width: 5px; height: 5px; }
-  .year-timeline-grid { gap: 1px; }
-  .year-timeline-week { gap: 1px; }
-  .year-timeline-info { font-size: 0.65rem; }
-}
-
-@media (max-width: 540px) {
-  .year-timeline-day { width: 4px; height: 4px; }
-  .year-timeline-grid { gap: 0.75px; }
-  .year-timeline-week { gap: 0.75px; }
-  .year-timeline-info { font-size: 0.6rem; }
-}
-
-@media (max-width: 480px) {
-  .year-timeline-day { width: 3px; height: 3px; }
-  .year-timeline-grid { gap: 0.5px; }
-  .year-timeline-week { gap: 0.5px; }
-  .year-timeline-info { font-size: 0.6rem; }
-}
-
-@media (max-width: 360px) {
-  .year-timeline-day { width: 2.5px; height: 2.5px; }
-  .year-timeline-grid { gap: 0.5px; }
-  .year-timeline-week { gap: 0.5px; }
-  .year-timeline-info { font-size: 0.55rem; }
-}
-
-@media (max-width: 320px) {
-  .year-timeline-day { width: 2px; height: 2px; }
-  .year-timeline-grid { gap: 0.5px; }
-  .year-timeline-week { gap: 0.5px; }
-  .year-timeline-info { font-size: 0.5rem; }
-}
-
 @media (min-width: 1280px) {
   header,
   footer,
-  main:has(#year-timeline) {
+  main {
     max-width: 36em;
   }
 }

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 128">
+  <defs>
+    <linearGradient id="sakura1Fill" x1="0.15" y1="0" x2="0.9" y2="1">
+      <stop offset="0%" stop-color="#fff4f7"/>
+      <stop offset="58%" stop-color="#ffdce7"/>
+      <stop offset="100%" stop-color="#ffc2d4"/>
+    </linearGradient>
+    <radialGradient id="sakura1Glow" cx="46" cy="50" r="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.62"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <path d="M48 8C58 12 70 24 77 41C84 58 83 80 73 98C66 111 57 120 48 122C38 120 29 111 22 98C13 80 12 58 18 41C25 24 37 12 48 8Z" fill="url(#sakura1Fill)" stroke="#e7a2b7" stroke-width="2"/>
+  <path d="M47 12C44 20 42 26 45 31C46 33 47 34 48 36C50 34 51 33 52 31C55 26 53 20 49 12C48.6 11 47.4 11 47 12Z" fill="#fff9fc" opacity="0.86"/>
+  <path d="M48 20C53 34 54 52 52 71C50 89 49 104 48 116C46 104 44 89 42 71C40 52 42 34 48 20Z" fill="#f3b0c3" opacity="0.64"/>
+  <ellipse cx="46" cy="50" rx="22" ry="16" fill="url(#sakura1Glow)"/>
+</svg>
