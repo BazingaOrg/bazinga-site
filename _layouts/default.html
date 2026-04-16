@@ -405,6 +405,7 @@
         let touchStartX = 0
         let touchEndX = 0
         let wheelSwitchLockedUntil = 0
+        let justHandledTouch = false
 
         if (photos && checkedLayoutInput) {
           photos.dataset.layout = checkedLayoutInput.value
@@ -538,6 +539,7 @@
           const scrollbarCompensation = window.innerWidth - document.documentElement.clientWidth
           document.body.style.setProperty('--overlay-scrollbar-compensation', `${Math.max(0, scrollbarCompensation)}px`)
           document.body.classList.add('photo-overlay-open')
+          document.documentElement.classList.add('photo-overlay-open')
           photoOverlay.hidden = false
           photoOverlay.setAttribute('aria-hidden', 'false')
         }
@@ -547,6 +549,7 @@
           photoOverlay.hidden = true
           photoOverlay.setAttribute('aria-hidden', 'true')
           document.body.classList.remove('photo-overlay-open')
+          document.documentElement.classList.remove('photo-overlay-open')
           document.body.style.removeProperty('--overlay-scrollbar-compensation')
         }
 
@@ -566,10 +569,25 @@
         }
 
         photoLinks.forEach((link, index) => {
-          link.addEventListener('click', (event) => {
+          const openFromLinkEvent = (event) => {
             event.preventDefault()
+            event.stopPropagation()
             openOverlay(index)
+          }
+
+          link.addEventListener('click', (event) => {
+            if (justHandledTouch) {
+              justHandledTouch = false
+              event.preventDefault()
+              return
+            }
+            openFromLinkEvent(event)
           })
+
+          link.addEventListener('touchend', (event) => {
+            justHandledTouch = true
+            openFromLinkEvent(event)
+          }, { passive: false })
         })
 
         buildOverlayThumbnails()
@@ -614,6 +632,11 @@
             goToNextPhoto()
           }
         }, { passive: true })
+
+        photoOverlayStage?.addEventListener('touchmove', (event) => {
+          if (!photoOverlay || photoOverlay.hidden) return
+          event.preventDefault()
+        }, { passive: false })
 
         document.addEventListener('keydown', (event) => {
           if (!photoOverlay || photoOverlay.hidden) return

@@ -773,7 +773,12 @@ figcaption {
   overscroll-behavior: none;
 }
 
+html.photo-overlay-open {
+  overflow: hidden;
+}
+
 .photo-overlay {
+  --overlay-side-padding: 1.2rem;
   position: fixed;
   inset: 0;
   width: 100vw;
@@ -783,7 +788,7 @@ figcaption {
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: .6rem;
-  padding: 1rem 1.2rem;
+  padding: 1rem 0;
   box-sizing: border-box;
   overflow: hidden;
   overscroll-behavior: contain;
@@ -795,6 +800,7 @@ figcaption {
   align-items: center;
   justify-content: space-between;
   min-height: 2.2rem;
+  padding: 0 var(--overlay-side-padding);
 }
 
 .photo-overlay-position {
@@ -830,23 +836,28 @@ figcaption {
 }
 
 .photo-overlay-stage {
+  width: 100%;
   min-width: 0;
   min-height: 0;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: none;
 }
 
 .photo-overlay img {
   display: block;
+  width: 100%;
+  height: auto;
   max-width: 100%;
   max-height: 100%;
-  width: auto;
-  height: auto;
   margin: 0;
   object-fit: contain;
-  background: var(--photoBackground);
+  background: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
 }
 
 .photo-overlay img.is-entering {
@@ -854,13 +865,15 @@ figcaption {
 }
 
 .photo-overlay-thumbs {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(56px, 72px);
+  display: flex;
+  align-items: center;
   gap: .4rem;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: .1rem;
+  width: 100%;
+  padding: .1rem var(--overlay-side-padding);
+  box-sizing: border-box;
+  scroll-padding-inline: var(--overlay-side-padding);
   scrollbar-width: thin;
   transition: max-height 220ms ease, opacity 180ms ease, padding 180ms ease;
   max-height: 84px;
@@ -868,6 +881,9 @@ figcaption {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+  pointer-events: auto;
 }
 
 .photo-overlay-thumbs::-webkit-scrollbar {
@@ -875,6 +891,8 @@ figcaption {
 }
 
 .photo-overlay-thumb {
+  flex: 0 0 auto;
+  width: clamp(56px, 7vw, 72px);
   border: 1px solid rgba(255, 255, 255, 0.28);
   background: rgba(0, 0, 0, 0.35);
   border-radius: .35rem;
@@ -905,6 +923,17 @@ figcaption {
   padding-top: 0;
   padding-bottom: 0;
   pointer-events: none;
+}
+
+.photo-overlay-toggle-thumbs {
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.photo-overlay.is-thumbs-collapsed .photo-overlay-toggle-thumbs {
+  background: rgba(255, 255, 255, 0.9);
+  color: #111;
+  border-color: rgba(255, 255, 255, 0.95);
+  transform: scale(0.96);
 }
 
 @keyframes photoOverlayFadeIn {
@@ -958,8 +987,13 @@ figcaption {
       }
     }
     .photo-overlay {
-      padding: .65rem;
+      --overlay-side-padding: 1rem;
+      padding: .65rem 0;
       gap: .45rem;
+    }
+
+    .photo-overlay-top {
+      padding: 0 var(--overlay-side-padding);
     }
 
     .photo-overlay img {
@@ -977,8 +1011,13 @@ figcaption {
     }
 
     .photo-overlay-thumbs {
-      grid-auto-columns: minmax(52px, 64px);
       max-height: 78px;
+      padding-left: var(--overlay-side-padding);
+      padding-right: var(--overlay-side-padding);
+    }
+
+    .photo-overlay-thumb {
+      width: clamp(52px, 18vw, 64px);
     }
 
     .photo-overlay-thumb img {
