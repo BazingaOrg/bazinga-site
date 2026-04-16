@@ -11,7 +11,7 @@ This page is frequently updated. Only websites that are being actively updated a
 ---
 
 {% if site.data.blogroll and site.data.blogroll.size > 0 %}
-{% assign links = site.data.blogroll | sort: "added_at" %}
+{% assign links = site.data.blogroll | sort: "title" %}
 {%- for item in links %}
 ## [{{ item.title }}]({{ item.url }}) <code class="smol">({{ item.lang }})</code>
 {{ item.description }}

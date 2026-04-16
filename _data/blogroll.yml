@@ -45,3 +45,39 @@
   lang: en
   description: Creative web developer and game maker. Creator of interactive web experiences like The Password Game, Infinite Craft, and various fun experiments.
   added_at: Mon, 03 Nov 2025 12:15:00 +08:00
+
+- title: Mark Clennon Diary
+  url: https://www.markclennon.com/diary/diary
+  lang: en
+  description: Diary-style photography blog documenting visual observations, creative work, and personal notes.
+  added_at: Thu, 16 Apr 2026 10:00:00 +08:00
+
+- title: Vincent Chyu Photography
+  url: https://blog-vincent.chyu.org/web/photography/
+  lang: en
+  description: A photography-focused web space featuring image collections and visual storytelling.
+  added_at: Thu, 16 Apr 2026 10:01:00 +08:00
+
+- title: Lusion
+  url: https://lusion.co/
+  lang: en
+  description: Digital creative studio showcasing immersive web experiences and interactive visual design.
+  added_at: Thu, 16 Apr 2026 10:02:00 +08:00
+
+- title: tw93
+  url: https://tw93.fun/
+  lang: zh-CN
+  description: Independent creator sharing products, experiments, and thoughts around web and creative coding.
+  added_at: Thu, 16 Apr 2026 10:03:00 +08:00
+
+- title: Victor42
+  url: https://victor42.eth.limo/
+  lang: en
+  description: Personal site with notes and web-native experiments published through decentralized web identity.
+  added_at: Thu, 16 Apr 2026 10:04:00 +08:00
+
+- title: Lerry
+  url: https://lerry.me/
+  lang: zh-CN
+  description: Personal blog sharing writing, projects, and life updates from an independent creator.
+  added_at: Thu, 16 Apr 2026 10:05:00 +08:00
