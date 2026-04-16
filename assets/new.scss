@@ -2289,7 +2289,7 @@ label:has(input:not(:checked)) ~ label:has(input:not(:checked)) ~ label:has(inpu
 }
 
 // 写照片页面
-.write-photo-container {
+.upload-photo-container {
   max-width: 36em;
   margin: 0 auto;
   padding: 2rem 1.5rem 3rem;
@@ -2298,7 +2298,7 @@ label:has(input:not(:checked)) ~ label:has(input:not(:checked)) ~ label:has(inpu
   gap: 2rem;
 }
 
-.write-photo-header {
+.upload-photo-header {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -2690,7 +2690,7 @@ textarea[data-autofill] {
 }
 
 @media (max-width: 960px) {
-  .write-photo-container {
+  .upload-photo-container {
     padding: 1.5rem 1rem 2.5rem;
   }
 
@@ -2701,7 +2701,7 @@ textarea[data-autofill] {
 }
 
 @media (max-width: 640px) {
-  .write-photo-container {
+  .upload-photo-container {
     padding: 1.25rem 0.85rem 2rem;
   }
 

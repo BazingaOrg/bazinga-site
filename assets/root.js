@@ -292,10 +292,10 @@ function initWriteEntryControl() {
     entryId: 'write-entry',
     storageKey: 'show-write-entry',
     headingTexts: ['Notes', '随笔'],
-    activeTitle: isChineseInterface ? '隐藏写作入口' : 'hide writing entry',
-    inactiveTitle: isChineseInterface ? '激活写作模式' : 'activate writing mode',
-    activeMessage: isChineseInterface ? '写作模式已激活' : 'Write mode enabled',
-    inactiveMessage: isChineseInterface ? '写作模式已隐藏' : 'Write mode hidden',
+    activeTitle: isChineseInterface ? '隐藏随笔入口' : 'hide note entry',
+    inactiveTitle: isChineseInterface ? '激活随笔入口' : 'activate note entry',
+    activeMessage: isChineseInterface ? '随笔入口已激活' : 'Note entry enabled',
+    inactiveMessage: isChineseInterface ? '随笔入口已隐藏' : 'Note entry hidden',
     trackingEntry: 'notes'
   })
 

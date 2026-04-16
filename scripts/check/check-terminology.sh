@@ -12,7 +12,7 @@ TARGET_FILES=(
   "photos.html"
   "write-note.html"
   "write-post.html"
-  "write-photo.html"
+  "upload-photo.html"
   "_layouts/default.html"
   "assets/root.js"
   "assets/site.js"
