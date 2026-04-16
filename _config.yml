@@ -45,7 +45,7 @@ i18n:
     Books: 书籍
     Cook: 厨房
     Plants: 植物
-    24h: 今天
+    24h: 24h
     Mails: 邮件
     Friends: 朋友
     Oven: 烤箱
@@ -54,7 +54,7 @@ i18n:
     Chat: 对话
     Meow: 喵咪
     Hobby: 兴趣
-    accessibility: 无障碍声明
+    accessibility: 无障碍说明
     source: 查看源码
 include: [".well-known"]
 markdown: CommonMarkGhPages

@@ -14,7 +14,7 @@ This file defines the canonical wording for user-facing UI copy.
 - `Access key` -> `访问密钥`
 - `Alt text` -> `Alt 文本`
 - `Caption` -> `图注`
-- `Publish now` -> `直接发布`
+- `Publish now` -> `立即发布`
 - `Clear draft` -> `清空草稿`
 - `Manual publishing steps` -> `手动发布步骤`
 
