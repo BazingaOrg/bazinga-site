@@ -563,15 +563,23 @@ figure {
     cursor: pointer;
     display: inline-flex;
     gap: .25em;
-    margin: .25rem 0 .5rem;
-    float: right;
+    margin: .5rem 0 0;
+    float: none;
     white-space: nowrap;
-    margin-left: .25em;
+    vertical-align: middle;
   }
 
   label path {
     fill: var(--logoColor);
   }
+}
+
+[data-page-type="photos"] .photo-layout-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 0 0 .5rem;
 }
 
 /* 照片页：header 内的布局切换容器 */
@@ -588,6 +596,22 @@ figure {
   text-align: center;
 }
 
+.photos-wrapper.is-layout-switching {
+  animation: photosLayoutFade 220ms ease;
+}
+
+@keyframes photosLayoutFade {
+  from {
+    opacity: 0.35;
+    transform: translateY(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .back-link {
   text-decoration: none;
   color: var(--textColor);
@@ -600,7 +624,7 @@ figure {
   border-radius:  4em;
 }
 
-[value*="grid"]:checked ~ .photos-wrapper {
+.photos-wrapper[data-layout="grid2fr"] {
   display: grid;
   column-gap: 2.5em;
   grid-template-columns: repeat(2, 1fr);
@@ -617,60 +641,6 @@ figure {
     width: 100%;
     object-fit: cover;
     aspect-ratio: 4/3;
-  }
-}
-
-[value="grid3fr"]:checked ~ .photos-wrapper {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-[value="x-scroll"]:checked ~ .photos-wrapper {
-  display: flex;
-  overflow: auto;
-  gap: 1.5em;
-  scroll-snap-type: x mandatory;
-  scroll-snap-align: center;
-
-  figure {
-    scroll-snap-align: center;
-    margin-bottom: 0;
-    flex-shrink: 0;
-    width: min-content;
-    &.figure-portrait figcaption,
-    &.figure-landscape figcaption {
-      margin: auto;
-
-      @media (max-width: 1280px) {
-        max-width: calc(100vw - 3em);
-      }
-
-      @media (max-width: 540px) {
-        max-width: calc(100vw - 2em);
-      }
-
-      @media (max-width: 360px) {
-        max-width: calc(100vw - 1.5em);
-      }
-
-      @media (max-width: 320px) {
-        max-width: calc(100vw - 1em);
-      }
-    }
-
-    &.figure-portrait figcaption {
-      max-width: calc(100vh * 0.667 - 6em);
-    }
-
-    &.figure-landscape figcaption {
-      max-width: calc(100vw * 0.667 - 2em);
-    }
-  }
-
-
-  img {
-    max-height: calc(100vh - 10em);
-    max-width: calc(100vw - 5em);
-    flex-shrink: 0;
   }
 }
 
@@ -797,6 +767,168 @@ figcaption {
   }
 }
 
+.photo-overlay-open {
+  overflow: hidden;
+  padding-right: var(--overlay-scrollbar-compensation, 0);
+  overscroll-behavior: none;
+}
+
+.photo-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.88);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: .6rem;
+  padding: 1rem 1.2rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  animation: photoOverlayFadeIn 180ms ease-out;
+}
+
+.photo-overlay-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 2.2rem;
+}
+
+.photo-overlay-position {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--monospace);
+  font-size: .82rem;
+}
+
+.photo-overlay-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.photo-overlay-actions button {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border-radius: .45rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.photo-overlay-actions button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.75);
+  outline-offset: 2px;
+}
+
+.photo-overlay-stage {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-overlay img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  margin: 0;
+  object-fit: contain;
+  background: var(--photoBackground);
+}
+
+.photo-overlay img.is-entering {
+  animation: photoOverlayImageEnter 180ms ease;
+}
+
+.photo-overlay-thumbs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(56px, 72px);
+  gap: .4rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: .1rem;
+  scrollbar-width: thin;
+  transition: max-height 220ms ease, opacity 180ms ease, padding 180ms ease;
+  max-height: 84px;
+  opacity: 1;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.photo-overlay-thumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.photo-overlay-thumb {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: .35rem;
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, opacity 160ms ease;
+  opacity: .66;
+}
+
+.photo-overlay-thumb img {
+  width: 100%;
+  height: 56px;
+  object-fit: cover;
+  max-width: none;
+  max-height: none;
+}
+
+.photo-overlay-thumb.is-active {
+  border-color: rgba(255, 255, 255, 0.85);
+  transform: translateY(-1px);
+  opacity: 1;
+}
+
+.photo-overlay.is-thumbs-collapsed .photo-overlay-thumbs {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  pointer-events: none;
+}
+
+@keyframes photoOverlayFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes photoOverlayImageEnter {
+  from {
+    opacity: .45;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 // This ensures that
 // 1. screens that are too short
 // 2. screens that are not tall enough to display the full width of a 3:2 image
@@ -825,14 +957,32 @@ figcaption {
         width: 100%;
       }
     }
-    
-    // 在移动端完全隐藏不适合的布局选项
-    [name="layout"][value="x-scroll"] {
-      &, + label { display: none; }
+    .photo-overlay {
+      padding: .65rem;
+      gap: .45rem;
     }
-    
-    [name="layout"][value="grid3fr"] {
-      &, + label { display: none; }
+
+    .photo-overlay img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .photo-overlay-position {
+      font-size: .75rem;
+    }
+
+    .photo-overlay-actions button {
+      width: 1.85rem;
+      height: 1.85rem;
+    }
+
+    .photo-overlay-thumbs {
+      grid-auto-columns: minmax(52px, 64px);
+      max-height: 78px;
+    }
+
+    .photo-overlay-thumb img {
+      height: 52px;
     }
 }
 
@@ -932,8 +1082,9 @@ open-stories {
       width: 150%;
       height: 150%;
       transform-origin: top left;
+      }
     }
-  }
+
 }
 
 @keyframes loading {

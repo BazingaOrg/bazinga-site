@@ -1,1 +1,101 @@
-[]
+[
+  {
+    "id": "photo-20260416-01",
+    "uploaded": "2026-03-14T13:30:17+0800",
+    "variants": [
+      "/images/photos/import-20260416-01.jpg"
+    ],
+    "meta": {
+      "ratio": 1.777778,
+      "alt": "53355908-C970-42BB-A4C3-064031FFA906-33156-0000028324AB1DCE.JPG"
+    }
+  },
+  {
+    "id": "photo-20260416-02",
+    "uploaded": "2026-03-15T13:43:23+0800",
+    "variants": [
+      "/images/photos/import-20260416-02.jpg"
+    ],
+    "meta": {
+      "ratio": 1.777778,
+      "alt": "739C793A-B624-42BA-8EB7-A14A8E6D6447-2272-0000001C3DF4D153.JPG"
+    }
+  },
+  {
+    "id": "photo-20260416-03",
+    "uploaded": "2026-03-14T11:59:03+0800",
+    "variants": [
+      "/images/photos/import-20260416-03.jpg"
+    ],
+    "meta": {
+      "ratio": 1.777778,
+      "alt": "7AE96C7D-20FD-4E2B-9A2F-A40827F6C89A-33156-00000282E9C1F757.JPG"
+    }
+  },
+  {
+    "id": "photo-20260416-04",
+    "uploaded": "2026-03-29T11:30:42+0800",
+    "variants": [
+      "/images/photos/import-20260416-04.jpg"
+    ],
+    "meta": {
+      "ratio": 1.777778,
+      "alt": "C4C020A5-F879-4928-A966-0869F6CE9CE2-84926-00000A47ED4B60BA.JPG"
+    }
+  },
+  {
+    "id": "photo-20260416-05",
+    "uploaded": "2026-03-14T13:11:51+0800",
+    "variants": [
+      "/images/photos/import-20260416-05.jpg"
+    ],
+    "meta": {
+      "ratio": 1.777989,
+      "alt": "D14E65EF-D010-41E9-BF3F-3D2B0D20C619-33156-000002831065686B.jpg"
+    }
+  },
+  {
+    "id": "photo-20260416-06",
+    "uploaded": "2026-03-14T17:01:14+0800",
+    "variants": [
+      "/images/photos/import-20260416-06.jpg"
+    ],
+    "meta": {
+      "ratio": 1.777778,
+      "alt": "D27C16BD-B786-4470-B609-B8244FFF0702-33156-000002839ECC5C17.JPG"
+    }
+  },
+  {
+    "id": "photo-20260416-07",
+    "uploaded": "2026-03-14T16:50:37+0800",
+    "variants": [
+      "/images/photos/import-20260416-07.jpg"
+    ],
+    "meta": {
+      "ratio": 1.777555,
+      "alt": "D3C893E9-4AFB-4A9E-9515-C2B7A11E75E5-33156-00000283936FD3C6.jpg"
+    }
+  },
+  {
+    "id": "photo-20260416-08",
+    "uploaded": "2026-03-15T13:47:43+0800",
+    "variants": [
+      "/images/photos/import-20260416-08.jpg"
+    ],
+    "meta": {
+      "ratio": 1.777778,
+      "alt": "F7DB51D2-EB74-4B78-AD61-9C0F12E86A58-2272-0000001C44889EBC.JPG"
+    }
+  },
+  {
+    "id": "photo-20260416-09",
+    "uploaded": "2026-03-15T07:31:08+0800",
+    "variants": [
+      "/images/photos/import-20260416-09.jpg"
+    ],
+    "meta": {
+      "ratio": 1.500000,
+      "alt": "e4905b92b2d2a4334643388d214542bb.JPG"
+    }
+  }
+]

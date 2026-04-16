@@ -8,15 +8,12 @@ permalink: /photos/
 
 {% assign current_lang = page.lang | default: page.locale | default: site.lang | default: 'en-US' %}
 {% assign copy = site.data.i18n_copy.list_pages[current_lang] %}
-<div class="lang">
-  <a href="/zh-CN/photos/" srclang="zh-CN"{% if current_lang == 'zh-CN' %} aria-current="true"{% endif %}>简体中文</a><a href="/photos/" srclang="en-US"{% if current_lang != 'zh-CN' %} aria-current="true"{% endif %}>English</a>
-</div>
 
 <div class="photos-wrapper" id="photos">
 {% assign photos = site.data.photos | sort: "uploaded" | reverse %}
 {% if photos.size > 0 %}
 {% for photo in photos %}
-<figure id="P{{ photo.id }}" class="figure-{% if photo.meta.ratio > 1 %}landscape{% else %}portrait{% endif %}">
+<figure id="{{ photo.id }}" class="figure-{% if photo.meta.ratio > 1 %}landscape{% else %}portrait{% endif %}">
   {% assign image_url = photo.variants[0] %}
   <a href="{{ image_url }}" class="image-link"
      data-umami-event="photo_full_view"

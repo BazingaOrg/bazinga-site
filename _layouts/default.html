@@ -121,9 +121,11 @@
           </svg>
             <span class="font">Bazinga</span>
         </div>
-        <h1 class="h1">
-          <span lang="{{lang}}">{{ page.title }}</span>
-        </h1>
+        {% unless page.type == "photos" %}
+          <h1 class="h1">
+            <span lang="{{lang}}">{{ page.title }}</span>
+          </h1>
+        {% endunless %}
       {% endif %}
       {% if page.root == true %}
         {% include signature.html %}
@@ -136,24 +138,49 @@
     <main>
       {% capture content_and_then_some do %}
         {% if page.type == "photos" %}
-          <input type="radio" name="layout" value="y-scroll" id="y-scroll">
-          <label for="y-scroll">
-            <svg width="15" height="15" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><title>vertical scroll</title><path d="M55 0a5 5 0 0 1 5 5v31a5 5 0 0 1-5 5H5a5 5 0 0 1-5-5V5a5 5 0 0 1 5-5h50ZM55 47a5 5 0 0 1 5 5v8H0v-8a5 5 0 0 1 5-5h50Z" fill="#D9D9D9"/></svg>
-          </label>
-          <input type="radio" name="layout" value="x-scroll" id="x-scroll">
-          <label for="x-scroll">
-            <svg width="15" height="15" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><title>horizontal scroll</title><path d="M0 5a5 5 0 0 1 5-5h30a5 5 0 0 1 5 5v50a5 5 0 0 1-5 5H5a5 5 0 0 1-5-5V5ZM47 5a5 5 0 0 1 5-5h8v60h-8a5 5 0 0 1-5-5V5Z" fill="#D9D9D9"/></svg>
-          </label>
-          <input type="radio" name="layout" value="grid2fr" id="grid2fr" checked>
-          <label for="grid2fr">
-            <svg width="15" height="15" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><title>grid 2 columns</title><path d="M0 37c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H4c-2 0-4-2-4-4V37zM0 4c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H4c-2 0-4-2-4-4V4zM33 37c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H37c-2 0-4-2-4-4V37zM33 4c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H37c-2 0-4-2-4-4V4z" fill="#D9D9D9"/></svg>
-          </label>
-          <input type="radio" name="layout" value="grid3fr" id="grid3fr">
-          <label for="grid3fr">
-            <svg width="15" height="15" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><title>grid 3 columns</title><path d="M22 4c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4h-8c-2 0-4-2-4-4V4zM0 26c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4H4c-2 0-4-2-4-4v-8zM22 26c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4h-8c-2 0-4-2-4-4v-8zM0 48c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4H4c-2 0-4-2-4-4v-8zM44 26c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4h-8c-2 0-4-2-4-4v-8zM22 48c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4h-8c-2 0-4-2-4-4v-8zM44 48c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4h-8c-2 0-4-2-4-4v-8zM0 4c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4H4c-2 0-4-2-4-4V4zM44 4c0-2 2-4 4-4h8c2 0 4 2 4 4v8c0 2-2 4-4 4h-8c-2 0-4-2-4-4V4z" fill="#D9D9D9"/></svg>
-          </label>
+          <div class="photo-layout-controls" role="group" aria-label="Photo layout switcher">
+            <input type="radio" name="layout" value="y-scroll" id="y-scroll" checked>
+            <label for="y-scroll">
+              <svg width="15" height="15" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><title>vertical scroll</title><path d="M55 0a5 5 0 0 1 5 5v31a5 5 0 0 1-5 5H5a5 5 0 0 1-5-5V5a5 5 0 0 1 5-5h50ZM55 47a5 5 0 0 1 5 5v8H0v-8a5 5 0 0 1 5-5h50Z" fill="#D9D9D9"/></svg>
+            </label>
+            <input type="radio" name="layout" value="grid2fr" id="grid2fr">
+            <label for="grid2fr">
+              <svg width="15" height="15" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><title>grid 2 columns</title><path d="M0 37c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H4c-2 0-4-2-4-4V37zM0 4c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H4c-2 0-4-2-4-4V4zM33 37c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H37c-2 0-4-2-4-4V37zM33 4c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H37c-2 0-4-2-4-4V4z" fill="#D9D9D9"/></svg>
+            </label>
+          </div>
         {% endif %}
         {{ content }}
+        {% if page.type == "photos" %}
+          <div id="photo-overlay" class="photo-overlay" hidden aria-hidden="true">
+            <div class="photo-overlay-top">
+              <p id="photo-overlay-position" class="photo-overlay-position">1 / 1</p>
+              <div class="photo-overlay-actions">
+                <button type="button" class="photo-overlay-toggle-thumbs" aria-label="Toggle thumbnails" aria-pressed="false">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                    <circle cx="5" cy="5" r="1.8" fill="currentColor"></circle>
+                    <circle cx="12" cy="5" r="1.8" fill="currentColor"></circle>
+                    <circle cx="19" cy="5" r="1.8" fill="currentColor"></circle>
+                    <circle cx="5" cy="12" r="1.8" fill="currentColor"></circle>
+                    <circle cx="12" cy="12" r="1.8" fill="currentColor"></circle>
+                    <circle cx="19" cy="12" r="1.8" fill="currentColor"></circle>
+                    <circle cx="5" cy="19" r="1.8" fill="currentColor"></circle>
+                    <circle cx="12" cy="19" r="1.8" fill="currentColor"></circle>
+                    <circle cx="19" cy="19" r="1.8" fill="currentColor"></circle>
+                  </svg>
+                </button>
+                <button type="button" class="photo-overlay-close" aria-label="Close photo viewer">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                    <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="photo-overlay-stage">
+              <img id="photo-overlay-image" alt="" loading="lazy" decoding="async">
+            </div>
+            <div id="photo-overlay-thumbs" class="photo-overlay-thumbs" aria-label="Photo thumbnails"></div>
+          </div>
+        {% endif %}
       {% endcapture %}
       {% if page.collection == "posts" or page.collection == "pages" %}
         <article>
@@ -364,7 +391,24 @@
     {% if page.type == "photos" %}
       <script>
         const photos = document.querySelector('#photos')
-        const xScroll = document.querySelector('#x-scroll')
+        let layoutTransitionTimer = null
+        const checkedLayoutInput = document.querySelector('input[name="layout"]:checked')
+        const photoLinks = Array.from(document.querySelectorAll('#photos .image-link'))
+        const photoOverlay = document.querySelector('#photo-overlay')
+        const photoOverlayImage = document.querySelector('#photo-overlay-image')
+        const photoOverlayPosition = document.querySelector('#photo-overlay-position')
+        const photoOverlayClose = document.querySelector('.photo-overlay-close')
+        const photoOverlayToggleThumbs = document.querySelector('.photo-overlay-toggle-thumbs')
+        const photoOverlayStage = document.querySelector('.photo-overlay-stage')
+        const photoOverlayThumbs = document.querySelector('#photo-overlay-thumbs')
+        let currentPhotoIndex = -1
+        let touchStartX = 0
+        let touchEndX = 0
+        let wheelSwitchLockedUntil = 0
+
+        if (photos && checkedLayoutInput) {
+          photos.dataset.layout = checkedLayoutInput.value
+        }
 
         // 照片描述折叠功能
         document.querySelectorAll('.caption-container').forEach(container => {
@@ -384,11 +428,22 @@
           }
         });
 
-        // move scroll area into viewport and user focus (only for x-scroll)
+        // Track layout switch and animate visual transition
         document.addEventListener('change', function(event) {
           const target = event.target
 
           if (target && target.matches('input[name="layout"]')) {
+            if (photos) {
+              photos.dataset.layout = target.value
+              photos.classList.add('is-layout-switching')
+              if (layoutTransitionTimer) {
+                clearTimeout(layoutTransitionTimer)
+              }
+              layoutTransitionTimer = window.setTimeout(() => {
+                photos.classList.remove('is-layout-switching')
+              }, 220)
+            }
+
             try {
               if (typeof window.umami === 'function') {
                 window.umami('photos_layout_change', {
@@ -410,25 +465,168 @@
             }
           }
 
-          if (xScroll && xScroll.checked) {
-            photos.setAttribute('tabindex', '-1')
-            photos.focus({ preventScroll: true })
+        })
 
-            photos.addEventListener('blur', function() {
-              photos.blur()
-            }, {once: true})
+        const buildOverlayThumbnails = () => {
+          if (!photoOverlayThumbs) return
+
+          const fragment = document.createDocumentFragment()
+          photoLinks.forEach((link, index) => {
+            const sourceImage = link.querySelector('img')
+            const thumbnailButton = document.createElement('button')
+            thumbnailButton.type = 'button'
+            thumbnailButton.className = 'photo-overlay-thumb'
+            thumbnailButton.setAttribute('aria-label', `View photo ${index + 1}`)
+            thumbnailButton.dataset.photoIndex = `${index}`
+
+            const thumbnailImage = document.createElement('img')
+            thumbnailImage.src = sourceImage?.currentSrc || sourceImage?.src || link.href
+            thumbnailImage.alt = sourceImage?.alt || `Photo ${index + 1}`
+            thumbnailImage.loading = 'lazy'
+            thumbnailImage.decoding = 'async'
+            thumbnailButton.appendChild(thumbnailImage)
+
+            thumbnailButton.addEventListener('click', () => {
+              updateOverlay(index)
+            })
+
+            fragment.appendChild(thumbnailButton)
+          })
+
+          photoOverlayThumbs.innerHTML = ''
+          photoOverlayThumbs.appendChild(fragment)
+        }
+
+        const updateThumbnailActiveState = (photoIndex) => {
+          if (!photoOverlayThumbs) return
+
+          photoOverlayThumbs.querySelectorAll('.photo-overlay-thumb').forEach((thumbnail, index) => {
+            const isActive = index === photoIndex
+            thumbnail.classList.toggle('is-active', isActive)
+            thumbnail.setAttribute('aria-current', isActive ? 'true' : 'false')
+          })
+
+          const activeThumbnail = photoOverlayThumbs.querySelector('.photo-overlay-thumb.is-active')
+          activeThumbnail?.scrollIntoView({ block: 'nearest', inline: 'center' })
+        }
+
+        const setOverlayImage = (source, altText) => {
+          if (!photoOverlayImage) return
+          photoOverlayImage.classList.remove('is-entering')
+          // restart animation for each photo switch
+          void photoOverlayImage.offsetWidth
+          photoOverlayImage.src = source
+          photoOverlayImage.alt = altText
+          photoOverlayImage.classList.add('is-entering')
+        }
+
+        const updateOverlay = (photoIndex) => {
+          const link = photoLinks[photoIndex]
+          if (!link || !photoOverlayImage || !photoOverlayPosition) return
+
+          const image = link.querySelector('img')
+
+          setOverlayImage(link.href, image?.alt || 'Photo')
+          photoOverlayPosition.textContent = `${photoIndex + 1} / ${photoLinks.length}`
+          currentPhotoIndex = photoIndex
+          updateThumbnailActiveState(photoIndex)
+        }
+
+        const openOverlay = (photoIndex) => {
+          if (!photoOverlay) return
+          updateOverlay(photoIndex)
+          const scrollbarCompensation = window.innerWidth - document.documentElement.clientWidth
+          document.body.style.setProperty('--overlay-scrollbar-compensation', `${Math.max(0, scrollbarCompensation)}px`)
+          document.body.classList.add('photo-overlay-open')
+          photoOverlay.hidden = false
+          photoOverlay.setAttribute('aria-hidden', 'false')
+        }
+
+        const closeOverlay = () => {
+          if (!photoOverlay || photoOverlay.hidden) return
+          photoOverlay.hidden = true
+          photoOverlay.setAttribute('aria-hidden', 'true')
+          document.body.classList.remove('photo-overlay-open')
+          document.body.style.removeProperty('--overlay-scrollbar-compensation')
+        }
+
+        const goToPreviousPhoto = () => {
+          if (currentPhotoIndex > 0) updateOverlay(currentPhotoIndex - 1)
+        }
+
+        const goToNextPhoto = () => {
+          if (currentPhotoIndex < photoLinks.length - 1) updateOverlay(currentPhotoIndex + 1)
+        }
+
+        const toggleOverlayThumbnails = () => {
+          if (!photoOverlay || !photoOverlayToggleThumbs) return
+          const willCollapse = !photoOverlay.classList.contains('is-thumbs-collapsed')
+          photoOverlay.classList.toggle('is-thumbs-collapsed', willCollapse)
+          photoOverlayToggleThumbs.setAttribute('aria-pressed', willCollapse ? 'true' : 'false')
+        }
+
+        photoLinks.forEach((link, index) => {
+          link.addEventListener('click', (event) => {
+            event.preventDefault()
+            openOverlay(index)
+          })
+        })
+
+        buildOverlayThumbnails()
+
+        photoOverlayClose?.addEventListener('click', closeOverlay)
+        photoOverlayToggleThumbs?.addEventListener('click', toggleOverlayThumbnails)
+
+        photoOverlay?.addEventListener('click', (event) => {
+          if (event.target === photoOverlay || event.target === photoOverlayStage) {
+            closeOverlay()
           }
         })
 
-        if (xScroll) {
-          // return focus
-          document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && xScroll.checked && photos.contains(event.target)) {
-              xScroll.focus()
-              window.scrollTo(0, 0)
-            }
-          })
-        }
+        photoOverlayStage?.addEventListener('wheel', (event) => {
+          if (!photoOverlay || photoOverlay.hidden) return
+          event.preventDefault()
+
+          const now = Date.now()
+          if (now < wheelSwitchLockedUntil) return
+          if (Math.abs(event.deltaY) < 8) return
+
+          wheelSwitchLockedUntil = now + 220
+          if (event.deltaY > 0) {
+            goToNextPhoto()
+          } else {
+            goToPreviousPhoto()
+          }
+        }, { passive: false })
+
+        photoOverlayStage?.addEventListener('touchstart', (event) => {
+          touchStartX = event.changedTouches[0].clientX
+        }, { passive: true })
+
+        photoOverlayStage?.addEventListener('touchend', (event) => {
+          touchEndX = event.changedTouches[0].clientX
+          const touchDistance = touchEndX - touchStartX
+          const swipeThreshold = 40
+
+          if (touchDistance > swipeThreshold) {
+            goToPreviousPhoto()
+          } else if (touchDistance < -swipeThreshold) {
+            goToNextPhoto()
+          }
+        }, { passive: true })
+
+        document.addEventListener('keydown', (event) => {
+          if (!photoOverlay || photoOverlay.hidden) return
+
+          if (event.key === 'Escape') {
+            closeOverlay()
+          } else if (event.key === 'ArrowLeft') {
+            goToPreviousPhoto()
+          } else if (event.key === 'ArrowRight') {
+            goToNextPhoto()
+          }
+        })
+
       </script>
     {% endif %}
     

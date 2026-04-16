@@ -80,7 +80,7 @@ root: true
   {% capture image_url %}{% for url in photo.variants %}{% if url contains "/thumbnail" %}{{ url }}{% endif %}{% endfor %}{% endcapture %}
   {% assign image_url = image_url | strip %}
   {% if image_url == '' %}{% assign image_url = photo.variants[0] %}{% endif %}
-  <a href="/photos#P{{ photo.id }}" class="image-link"
+  <a href="/photos#{{ photo.id }}" class="image-link"
      data-umami-event="photo_click"
      data-umami-event-location="homepage"
      data-umami-event-photo-id="{{ photo.id }}">
