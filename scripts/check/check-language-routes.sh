@@ -25,11 +25,6 @@ extract_frontmatter_value() {
 
 declare -a ROUTE_PAIRS=(
   "index.html:index-zh-CN.html:/:/zh-CN/"
-  "notes.html:notes-zh-CN.html:/notes/:/zh-CN/notes/"
-  "photos.html:photos-zh-CN.html:/photos/:/zh-CN/photos/"
-  "write-note.html:write-note-zh-CN.html:/write-note/:/zh-CN/write-note/"
-  "write-post.html:write-post-zh-CN.html:/write-post/:/zh-CN/write-post/"
-  "write-photo.html:write-photo-zh-CN.html:/write-photo/:/zh-CN/write-photo/"
 )
 
 has_errors=0

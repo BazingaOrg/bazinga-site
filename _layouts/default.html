@@ -29,7 +29,7 @@
   {% assign chinese_path = '/zh-CN/' %}
 {% else %}
   {% assign english_path = current_path %}
-  {% assign chinese_path = '/zh-CN' | append: current_path %}
+  {% assign chinese_path = current_path %}
 {% endif %}
 <!doctype html>
 <html lang="{{ lang }}">
@@ -141,11 +141,22 @@
           <div class="photo-layout-controls" role="group" aria-label="Photo layout switcher">
             <input type="radio" name="layout" value="y-scroll" id="y-scroll" checked>
             <label for="y-scroll">
-              <svg width="15" height="15" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><title>vertical scroll</title><path d="M55 0a5 5 0 0 1 5 5v31a5 5 0 0 1-5 5H5a5 5 0 0 1-5-5V5a5 5 0 0 1 5-5h50ZM55 47a5 5 0 0 1 5 5v8H0v-8a5 5 0 0 1 5-5h50Z" fill="#D9D9D9"/></svg>
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <title>vertical scroll</title>
+                <rect x="1.5" y="1.5" width="12" height="8.2" rx="1.2"></rect>
+                <line x1="1.5" y1="11.8" x2="13.5" y2="11.8"></line>
+                <line x1="1.5" y1="13.5" x2="13.5" y2="13.5"></line>
+              </svg>
             </label>
             <input type="radio" name="layout" value="grid2fr" id="grid2fr">
             <label for="grid2fr">
-              <svg width="15" height="15" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><title>grid 2 columns</title><path d="M0 37c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H4c-2 0-4-2-4-4V37zM0 4c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H4c-2 0-4-2-4-4V4zM33 37c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H37c-2 0-4-2-4-4V37zM33 4c0-2 2-4 4-4h19c2 0 4 2 4 4v19c0 2-2 4-4 4H37c-2 0-4-2-4-4V4z" fill="#D9D9D9"/></svg>
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <title>grid 2 columns</title>
+                <rect x="1.5" y="1.5" width="5.4" height="5.4" rx="0.9"></rect>
+                <rect x="8.1" y="1.5" width="5.4" height="5.4" rx="0.9"></rect>
+                <rect x="1.5" y="8.1" width="5.4" height="5.4" rx="0.9"></rect>
+                <rect x="8.1" y="8.1" width="5.4" height="5.4" rx="0.9"></rect>
+              </svg>
             </label>
           </div>
         {% endif %}
@@ -339,6 +350,11 @@
       };
 
       if (openHeartElements.length > 0) {
+        {% if page.type == "photos" %}
+        // Photo pages rely on visible reaction controls in the first viewport.
+        // Load the element eagerly so labels do not appear only after the first interaction.
+        loadOpenHeartElement();
+        {% else %}
         if ('IntersectionObserver' in window) {
           const preloadObserver = new IntersectionObserver((entries, observer) => {
             if (entries.some(entry => entry.isIntersecting)) {
@@ -354,6 +370,7 @@
 
         window.addEventListener('pointerdown', loadOpenHeartElement, { once: true, passive: true });
         window.addEventListener('keydown', loadOpenHeartElement, { once: true });
+        {% endif %}
       }
 
       // Track open-heart interactions with umami

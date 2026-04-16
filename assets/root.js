@@ -35,8 +35,9 @@ settime()
 function initLanguageMemory() {
   const STORAGE_KEY = 'site-language-preference'
   const currentPath = window.location.pathname
-  const isChinesePage = currentPath.startsWith('/zh-CN/')
-  const isEnglishPage = currentPath === '/' || (!currentPath.startsWith('/zh-CN/') && !currentPath.includes('zh-CN'))
+  const isHomepage = currentPath === '/' || currentPath === '/zh-CN/'
+  const isChineseHomepage = currentPath === '/zh-CN/'
+  const isEnglishHomepage = currentPath === '/'
   
   // Enhanced function to detect browser preferred language with better accuracy
   function getBrowserPreferredLanguage() {
@@ -82,7 +83,7 @@ function initLanguageMemory() {
   const hasBeenRedirected = sessionStorage.getItem('language-redirected')
   
   // Enhanced auto-redirect logic for first-time visitors
-  if (!hasBeenRedirected && (currentPath === '/' || currentPath === '/zh-CN/')) {
+  if (!hasBeenRedirected && isHomepage) {
     const savedLanguage = localStorage.getItem(STORAGE_KEY)
     
     if (isFirstTimeVisitor()) {
@@ -146,9 +147,9 @@ function initLanguageMemory() {
   }
   
   // Save current language preference based on current page
-  if (isChinesePage) {
+  if (isChineseHomepage) {
     localStorage.setItem(STORAGE_KEY, 'zh-CN')
-  } else if (isEnglishPage) {
+  } else if (isEnglishHomepage) {
     localStorage.setItem(STORAGE_KEY, 'en-US')
   }
   

@@ -26,10 +26,6 @@ permalink: /notes/
   </form>
 </details>
 
-<div class="lang">
-  <a href="/zh-CN/notes/" srclang="zh-CN"{% if current_lang == 'zh-CN' %} aria-current="true"{% endif %}>简体中文</a><a href="/notes/" srclang="en-US"{% if current_lang != 'zh-CN' %} aria-current="true"{% endif %}>English</a>
-</div>
-
 <ul class="notes">
 {% for note in notes limit: 200 %}
   <li class="note">

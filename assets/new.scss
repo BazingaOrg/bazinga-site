@@ -548,8 +548,11 @@ figure {
     position: absolute;
     left: -100px;
 
-    &:checked + label path {
-      fill: var(--activeColor);
+    &:checked + label {
+      color: var(--activeColor);
+      border-color: var(--activeColor);
+      background-color: var(--subtleBackgroundColor);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--activeColor) 24%, transparent);
     }
 
     &:focus + label {
@@ -559,18 +562,43 @@ figure {
   }
 
   label {
-    padding: .5em;
+    padding: .35em;
     cursor: pointer;
     display: inline-flex;
-    gap: .25em;
+    align-items: center;
+    justify-content: center;
     margin: .5rem 0 0;
     float: none;
     white-space: nowrap;
     vertical-align: middle;
+    color: var(--logoAccentColor);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease, transform 120ms ease, box-shadow 180ms ease;
+
+    &:hover {
+      color: var(--textColor);
+      border-color: color-mix(in srgb, var(--borderColor) 85%, transparent);
+      background-color: color-mix(in srgb, var(--subtleBackgroundColor) 70%, transparent);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
   }
 
+  label svg {
+    display: block;
+  }
+
+  label rect,
+  label line,
   label path {
-    fill: var(--logoColor);
+    stroke: currentColor;
+    stroke-width: 1.25;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
   }
 }
 
