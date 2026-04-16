@@ -43,7 +43,7 @@ Build command includes vendor synchronization before Jekyll build.
 
 ## Documentation
 
-Contributor-facing guides are kept in the repository root (for example, `AGENTS.md` and `DEPLOYMENT.md`).
+Contributor-facing guides are kept in the repository root (for example, `AGENTS.md`).
 
 ## License
 

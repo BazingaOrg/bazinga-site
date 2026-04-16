@@ -489,11 +489,6 @@ time.monospace {
   }
 }
 
-.offsetthis {
-  vertical-align: super;
-  font-size: .6em;
-}
-
 .photos {
   display: flex;
   gap: 1em;
@@ -608,13 +603,6 @@ figure {
   justify-content: center;
   gap: 0;
   margin: 0 0 .5rem;
-}
-
-/* 照片页：header 内的布局切换容器 */
-[data-page-type="photos"] .layout-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: .4em;
 }
 
 .photos-wrapper {

@@ -159,7 +159,7 @@ function initLanguageMemory() {
     const langLinks = langSwitcher.querySelectorAll('a')
     
     langLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
+      link.addEventListener('click', function() {
         // Clear the redirect flag so next visit respects the new choice
         sessionStorage.removeItem('language-redirected')
         
