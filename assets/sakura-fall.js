@@ -1,8 +1,8 @@
 const LAYERS = [
   {
     name: 'far',
-    desktopCount: 7,
-    mobileCount: 3,
+    desktopCount: 9,
+    mobileCount: 4,
     size: [7, 12],
     fallSpeed: [15, 24],
     opacity: [0.34, 0.52],
@@ -11,8 +11,8 @@ const LAYERS = [
   },
   {
     name: 'mid',
-    desktopCount: 10,
-    mobileCount: 4,
+    desktopCount: 13,
+    mobileCount: 6,
     size: [10, 16],
     fallSpeed: [22, 36],
     opacity: [0.46, 0.74],
@@ -21,8 +21,8 @@ const LAYERS = [
   },
   {
     name: 'near',
-    desktopCount: 6,
-    mobileCount: 3,
+    desktopCount: 8,
+    mobileCount: 4,
     size: [14, 22],
     fallSpeed: [30, 48],
     opacity: [0.58, 0.9],
@@ -76,9 +76,9 @@ const LAYER_SPRITE_WEIGHTS = {
 }
 
 const FALLBACK_COLORS = [
-  { fill: 'rgba(255, 220, 228, 0.72)', stroke: 'rgba(255, 188, 203, 0.72)' },
-  { fill: 'rgba(255, 214, 224, 0.68)', stroke: 'rgba(255, 180, 196, 0.7)' },
-  { fill: 'rgba(255, 228, 234, 0.74)', stroke: 'rgba(255, 194, 207, 0.7)' }
+  { fill: 'rgba(255, 178, 215, 0.8)', stroke: 'rgba(237, 92, 154, 0.84)' },
+  { fill: 'rgba(255, 170, 210, 0.76)', stroke: 'rgba(240, 110, 164, 0.82)' },
+  { fill: 'rgba(255, 188, 221, 0.82)', stroke: 'rgba(245, 126, 174, 0.84)' }
 ]
 
 function randomBetween(min, max) {

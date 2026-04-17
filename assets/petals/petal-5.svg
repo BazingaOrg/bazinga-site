@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 128">
   <defs>
     <linearGradient id="sakura5Fill" x1="0.05" y1="0" x2="0.9" y2="1">
-      <stop offset="0%" stop-color="#fff7fa"/>
-      <stop offset="56%" stop-color="#ffe4ed"/>
-      <stop offset="100%" stop-color="#ffcddc"/>
+      <stop offset="0%" stop-color="#ffecf4"/>
+      <stop offset="56%" stop-color="#ffbed9"/>
+      <stop offset="100%" stop-color="#ff8dbc"/>
     </linearGradient>
   </defs>
-  <path d="M48 8C60 12 72 27 79 46C86 64 84 86 73 103C66 115 57 122 48 123C38 122 30 115 23 103C12 86 10 64 17 46C24 27 36 12 48 8Z" fill="url(#sakura5Fill)" stroke="#e4a0b8" stroke-width="2"/>
-  <path d="M47.4 12C44.5 18.8 43 24.2 44.9 28.9C46.1 31.8 47 33.4 48 35C49 33.4 49.9 31.8 51.1 28.9C53 24.2 51.5 18.8 48.6 12C48.3 11.3 47.7 11.3 47.4 12Z" fill="#ffffff" opacity="0.85"/>
-  <path d="M48 22C52.8 36.5 53.2 55 51 74C49.2 90.5 48.4 103.5 48 115" fill="none" stroke="#efaec3" stroke-width="2" stroke-linecap="round" opacity="0.72"/>
-  <path d="M33 50C38 46 43 43.5 48 43C53 43.5 58 46 63 50" fill="none" stroke="#f7c7d8" stroke-width="1.7" stroke-linecap="round" opacity="0.74"/>
+  <path d="M48 8C60 12 72 27 79 46C86 64 84 86 73 103C66 115 57 122 48 123C38 122 30 115 23 103C12 86 10 64 17 46C24 27 36 12 48 8Z" fill="url(#sakura5Fill)" stroke="#ea5f9a" stroke-width="2"/>
+  <path d="M47.4 12C44.5 18.8 43 24.2 44.9 28.9C46.1 31.8 47 33.4 48 35C49 33.4 49.9 31.8 51.1 28.9C53 24.2 51.5 18.8 48.6 12C48.3 11.3 47.7 11.3 47.4 12Z" fill="#fff4f8" opacity="0.85"/>
+  <path d="M48 22C52.8 36.5 53.2 55 51 74C49.2 90.5 48.4 103.5 48 115" fill="none" stroke="#f06ea4" stroke-width="2" stroke-linecap="round" opacity="0.72"/>
+  <path d="M33 50C38 46 43 43.5 48 43C53 43.5 58 46 63 50" fill="none" stroke="#ffb8d3" stroke-width="1.7" stroke-linecap="round" opacity="0.74"/>
 </svg>

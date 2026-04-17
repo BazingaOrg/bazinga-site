@@ -22,7 +22,29 @@ if ('share' in navigator) {
   }
 }
 
-initSakuraFall()
+function shouldEnableSakura() {
+  const enabledToken = getComputedStyle(document.documentElement)
+    .getPropertyValue('--sakuraEnabled')
+    .trim()
+
+  return enabledToken === '1'
+}
+
+function syncSakuraByTheme() {
+  if (shouldEnableSakura()) {
+    initSakuraFall()
+    return
+  }
+
+  window.__sakuraFallMounted?.destroy()
+  window.__sakuraFallMounted = null
+}
+
+syncSakuraByTheme()
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+  syncSakuraByTheme()
+})
 
 function normalizePath(pathname) {
   if (!pathname || pathname === '') return '/'

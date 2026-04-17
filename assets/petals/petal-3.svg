@@ -1,17 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 128">
   <defs>
     <linearGradient id="sakura3Fill" x1="0.1" y1="0" x2="0.9" y2="1">
-      <stop offset="0%" stop-color="#fff3f7"/>
-      <stop offset="60%" stop-color="#ffdde8"/>
-      <stop offset="100%" stop-color="#ffc0d3"/>
+      <stop offset="0%" stop-color="#ffe9f1"/>
+      <stop offset="60%" stop-color="#ffb4d2"/>
+      <stop offset="100%" stop-color="#ff7daf"/>
     </linearGradient>
     <radialGradient id="sakura3Shine" cx="50" cy="48" r="28" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.58"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#fff4f8" stop-opacity="0.58"/>
+      <stop offset="100%" stop-color="#fff4f8" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  <path d="M48 8C59 12 70 25 77 43C84 61 82 83 72 100C65 113 57 121 48 123C38 121 30 113 23 100C13 83 12 61 19 43C25 25 36 12 48 8Z" fill="url(#sakura3Fill)" stroke="#e8a6bb" stroke-width="2"/>
-  <path d="M47 13C44 19 42 24 44 29C45.5 32 46.8 33.7 48 35.2C49.2 33.7 50.5 32 52 29C54 24 52 19 49 13C48.6 12 47.4 12 47 13Z" fill="#fff9fc" opacity="0.84"/>
-  <path d="M48 21C52 34 53 51 51 69C49 88 49 102 48 114C47 102 47 88 45 69C43 51 44 34 48 21Z" fill="#f2afc2" opacity="0.63"/>
+  <path d="M48 8C59 12 70 25 77 43C84 61 82 83 72 100C65 113 57 121 48 123C38 121 30 113 23 100C13 83 12 61 19 43C25 25 36 12 48 8Z" fill="url(#sakura3Fill)" stroke="#ea5f9a" stroke-width="2"/>
+  <path d="M47 13C44 19 42 24 44 29C45.5 32 46.8 33.7 48 35.2C49.2 33.7 50.5 32 52 29C54 24 52 19 49 13C48.6 12 47.4 12 47 13Z" fill="#ffe9f2" opacity="0.84"/>
+  <path d="M48 21C52 34 53 51 51 69C49 88 49 102 48 114C47 102 47 88 45 69C43 51 44 34 48 21Z" fill="#f47eae" opacity="0.63"/>
   <ellipse cx="50" cy="48" rx="22" ry="16" fill="url(#sakura3Shine)"/>
 </svg>

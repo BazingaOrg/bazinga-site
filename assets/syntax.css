@@ -218,8 +218,8 @@ pre code {
 .s1 { color: var(--s1) } /* Literal.String.Single */
 .ss { color: var(--ss) } /* Literal.String.Symbol */
 .bp { color: var(--bp) } /* Name.Builtin.Pseudo */
+
 .vc { color: var(--vc) } /* Name.Variable.Class */
 .vg { color: var(--vg) } /* Name.Variable.Global */
 .vi { color: var(--vi) } /* Name.Variable.Instance */
 .il { color: var(--il) } /* Literal.Number.Integer.Long */
-

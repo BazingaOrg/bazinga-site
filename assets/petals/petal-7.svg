@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 128">
   <defs>
     <linearGradient id="sakura7Fill" x1="0" y1="0" x2="1" y2="0.95">
-      <stop offset="0%" stop-color="#fff8fb"/>
-      <stop offset="58%" stop-color="#ffe6ef"/>
-      <stop offset="100%" stop-color="#ffd0de"/>
+      <stop offset="0%" stop-color="#ffedf4"/>
+      <stop offset="58%" stop-color="#ffc1db"/>
+      <stop offset="100%" stop-color="#ff93c0"/>
     </linearGradient>
   </defs>
-  <path d="M48 8C59 12 72 29 79 48C86 67 84 89 72 105C65 115 56 122 48 123C39 122 31 115 24 105C12 89 10 67 17 48C24 29 37 12 48 8Z" fill="url(#sakura7Fill)" stroke="#e2a3b8" stroke-width="2"/>
-  <path d="M47.5 12C44.8 18.6 43.3 24 45 28.8C46.2 31.9 47 33.3 48 34.9C49 33.3 49.8 31.9 51 28.8C52.7 24 51.2 18.6 48.5 12C48.2 11.2 47.8 11.2 47.5 12Z" fill="#fffbff" opacity="0.87"/>
-  <path d="M48 24C52.7 38 52.9 56.5 50.5 75.5C48.9 89.2 48.2 102 48 114" fill="none" stroke="#eeacc1" stroke-width="2" stroke-linecap="round" opacity="0.76"/>
-  <path d="M31 56C35.5 52 41 49 48 48.4C54.5 49 60 52 65 56" fill="none" stroke="#f8cadb" stroke-width="1.7" stroke-linecap="round" opacity="0.7"/>
+  <path d="M48 8C59 12 72 29 79 48C86 67 84 89 72 105C65 115 56 122 48 123C39 122 31 115 24 105C12 89 10 67 17 48C24 29 37 12 48 8Z" fill="url(#sakura7Fill)" stroke="#ea5f9a" stroke-width="2"/>
+  <path d="M47.5 12C44.8 18.6 43.3 24 45 28.8C46.2 31.9 47 33.3 48 34.9C49 33.3 49.8 31.9 51 28.8C52.7 24 51.2 18.6 48.5 12C48.2 11.2 47.8 11.2 47.5 12Z" fill="#ffe9f2" opacity="0.87"/>
+  <path d="M48 24C52.7 38 52.9 56.5 50.5 75.5C48.9 89.2 48.2 102 48 114" fill="none" stroke="#f06ea4" stroke-width="2" stroke-linecap="round" opacity="0.76"/>
+  <path d="M31 56C35.5 52 41 49 48 48.4C54.5 49 60 52 65 56" fill="none" stroke="#ffb8d3" stroke-width="1.7" stroke-linecap="round" opacity="0.7"/>
 </svg>
