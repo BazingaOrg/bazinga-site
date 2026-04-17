@@ -367,11 +367,12 @@ function integrateWithExistingTrackers() {
     // 与表单追踪器集成
     if (window.FormTracker && serverTracker) {
       // 监听表单追踪事件
-      document.addEventListener('form_submit_success', (e) => {
+      window.addEventListener('form_submit_success', (e) => {
         serverTracker.track('form_success_server', {
-          form_type: e.detail.formType,
-          session_id: e.detail.sessionId,
-          completion_time: e.detail.completionTime,
+          form_type: e?.detail?.formType || e?.detail?.form_type || 'unknown',
+          session_id: serverTracker.sessionId,
+          completion_time: null,
+          content_url: e?.detail?.url || null,
           source: 'form_tracker'
         })
       })

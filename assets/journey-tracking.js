@@ -126,13 +126,19 @@ class JourneyTracker {
    */
   trackPageEntry() {
     const pageInfo = {
-      ...this.currentPage,
-      sessionId: this.sessionId,
-      userId: this.userId,
-      entryType: this.determineEntryType(),
-      deviceInfo: this.getDeviceInfo(),
+      url: this.currentPage.url,
+      title: this.currentPage.title,
+      referrer: this.currentPage.referrer,
+      language: this.currentPage.language,
+      page_type: this.currentPage.pageType,
+      timestamp: this.currentPage.timestamp,
+      viewport_size: this.currentPage.viewportSize,
+      session_id: this.sessionId,
+      user_id: this.userId,
+      entry_type: this.determineEntryType(),
+      device_info: this.getDeviceInfo(),
       geolocation: this.getGeolocationInfo(),
-      previousPage: this.getPreviousPageFromHistory()
+      previous_page: this.getPreviousPageFromHistory()
     }
 
     this.pageViews.push(pageInfo)
@@ -274,10 +280,10 @@ class JourneyTracker {
     this.userSegments = segments
 
     trackUmami('journey_user_segmentation', {
-      sessionId: this.sessionId,
-      userId: this.userId,
+      session_id: this.sessionId,
+      user_id: this.userId,
       segments: segments,
-      segmentCount: segments.length,
+      segment_count: segments.length,
       timestamp: new Date().toISOString()
     })
   }
@@ -306,13 +312,13 @@ class JourneyTracker {
         this.journeyState.funnelStep = currentStep
 
         trackUmami('journey_funnel_entry', {
-          sessionId: this.sessionId,
-          userId: this.userId,
-          funnelName: funnelName,
-          currentStep: currentStep,
-          stepName: steps[currentStep],
-          totalSteps: steps.length,
-          pageUrl: currentPage,
+          session_id: this.sessionId,
+          user_id: this.userId,
+          funnel_name: funnelName,
+          current_step: currentStep,
+          step_name: steps[currentStep],
+          total_steps: steps.length,
+          page_url: currentPage,
           timestamp: new Date().toISOString()
         })
 
@@ -401,9 +407,9 @@ class JourneyTracker {
     // 表单提交追踪
     document.addEventListener('submit', (e) => {
       this.trackConversionGoal('form_submission', {
-        formId: e.target.id,
-        formAction: e.target.action,
-        formMethod: e.target.method
+        form_id: e.target.id,
+        form_action: e.target.action,
+        form_method: e.target.method
       })
     })
 
@@ -411,8 +417,8 @@ class JourneyTracker {
     document.addEventListener('play', (e) => {
       if (e.target.tagName === 'VIDEO' || e.target.tagName === 'AUDIO') {
         this.trackConversionGoal('media_play', {
-          mediaType: e.target.tagName.toLowerCase(),
-          mediaSrc: e.target.src
+          media_type: e.target.tagName.toLowerCase(),
+          media_src: e.target.src
         })
       }
     })
@@ -423,9 +429,9 @@ class JourneyTracker {
       type,
       data,
       timestamp: Date.now(),
-      pageUrl: window.location.pathname,
-      sessionId: this.sessionId,
-      userId: this.userId
+      page_url: window.location.pathname,
+      session_id: this.sessionId,
+      user_id: this.userId
     }
 
     this.interactions.push(interaction)
@@ -441,10 +447,10 @@ class JourneyTracker {
     if (this.interactions.length === 0) return
 
     trackUmami('journey_interactions_batch', {
-      sessionId: this.sessionId,
-      userId: this.userId,
+      session_id: this.sessionId,
+      user_id: this.userId,
       interactions: this.interactions.slice(),
-      pageUrl: window.location.pathname,
+      page_url: window.location.pathname,
       timestamp: new Date().toISOString()
     })
 
@@ -464,12 +470,12 @@ class JourneyTracker {
         this.scrollMilestones[milestone] = true
 
         trackUmami('journey_scroll_milestone', {
-          sessionId: this.sessionId,
-          userId: this.userId,
+          session_id: this.sessionId,
+          user_id: this.userId,
           milestone: milestone,
-          scrollDepth: Math.round(scrollDepth),
-          timeToReach: Date.now() - this.pageStartTime,
-          pageUrl: window.location.pathname,
+          scroll_depth: Math.round(scrollDepth),
+          time_to_reach: Date.now() - this.pageStartTime,
+          page_url: window.location.pathname,
           timestamp: new Date().toISOString()
         })
 
@@ -542,16 +548,16 @@ class JourneyTracker {
     this.conversionGoals.add(goalName)
 
     trackUmami('journey_conversion_goal', {
-      sessionId: this.sessionId,
-      userId: this.userId,
-      goalName: goalName,
-      goalData: data,
-      timeToConversion: Date.now() - this.sessionStart,
-      pageUrl: window.location.pathname,
-      funnelName: this.journeyState.currentFunnel,
-      funnelStep: this.journeyState.funnelStep,
-      engagementScore: this.engagementScore,
-      userSegments: this.userSegments,
+      session_id: this.sessionId,
+      user_id: this.userId,
+      goal_name: goalName,
+      goal_data: data,
+      time_to_conversion: Date.now() - this.sessionStart,
+      page_url: window.location.pathname,
+      funnel_name: this.journeyState.currentFunnel,
+      funnel_step: this.journeyState.funnelStep,
+      engagement_score: this.engagementScore,
+      user_segments: this.userSegments,
       timestamp: new Date().toISOString()
     })
   }
@@ -603,15 +609,15 @@ class JourneyTracker {
 
   trackExitIntent(reason) {
     trackUmami('journey_exit_intent', {
-      sessionId: this.sessionId,
-      userId: this.userId,
+      session_id: this.sessionId,
+      user_id: this.userId,
       reason: reason,
-      timeOnPage: Date.now() - this.pageStartTime,
-      scrollDepth: this.journeyState.maxScrollDepth,
-      engagementScore: this.engagementScore,
-      engagementLevel: this.getEngagementLevel(),
-      interactionCount: this.interactions.length,
-      pageUrl: window.location.pathname,
+      time_on_page: Date.now() - this.pageStartTime,
+      scroll_depth: this.journeyState.maxScrollDepth,
+      engagement_score: this.engagementScore,
+      engagement_level: this.getEngagementLevel(),
+      interaction_count: this.interactions.length,
+      page_url: window.location.pathname,
       timestamp: new Date().toISOString()
     })
   }
@@ -629,12 +635,12 @@ class JourneyTracker {
       const searchParams = referrerUrl.searchParams
 
       const referrerData = {
-        sessionId: this.sessionId,
-        userId: this.userId,
-        referrerDomain: referrerDomain,
-        referrerPath: referrerUrl.pathname,
-        referrerFullUrl: referrer,
-        landingPage: window.location.pathname,
+        session_id: this.sessionId,
+        user_id: this.userId,
+        referrer_domain: referrerDomain,
+        referrer_path: referrerUrl.pathname,
+        referrer_full_url: referrer,
+        landing_page: window.location.pathname,
         utm_source: searchParams.get('utm_source'),
         utm_medium: searchParams.get('utm_medium'),
         utm_campaign: searchParams.get('utm_campaign'),
@@ -654,19 +660,19 @@ class JourneyTracker {
    */
   trackPageExit() {
     const exitData = {
-      sessionId: this.sessionId,
-      userId: this.userId,
-      pageUrl: window.location.pathname,
-      timeOnPage: Date.now() - this.pageStartTime,
-      maxScrollDepth: this.journeyState.maxScrollDepth,
-      totalScrollDepth: this.journeyState.totalScrollDepth,
-      interactionCount: this.interactions.length,
-      engagementScore: this.engagementScore,
-      engagementLevel: this.getEngagementLevel(),
-      exitType: document.hidden ? 'tab_hidden' : 'page_unload',
-      conversionGoalsReached: Array.from(this.conversionGoals),
-      activeTime: this.journeyState.activeTime,
-      idleTime: this.journeyState.idleTime,
+      session_id: this.sessionId,
+      user_id: this.userId,
+      page_url: window.location.pathname,
+      time_on_page: Date.now() - this.pageStartTime,
+      max_scroll_depth: this.journeyState.maxScrollDepth,
+      total_scroll_depth: this.journeyState.totalScrollDepth,
+      interaction_count: this.interactions.length,
+      engagement_score: this.engagementScore,
+      engagement_level: this.getEngagementLevel(),
+      exit_type: document.hidden ? 'tab_hidden' : 'page_unload',
+      conversion_goals_reached: Array.from(this.conversionGoals),
+      active_time: this.journeyState.activeTime,
+      idle_time: this.journeyState.idleTime,
       timestamp: new Date().toISOString()
     }
 
@@ -683,10 +689,10 @@ class JourneyTracker {
 
   trackPageResume() {
     trackUmami('journey_page_resume', {
-      sessionId: this.sessionId,
-      userId: this.userId,
-      pageUrl: window.location.pathname,
-      totalTimeAway: Date.now() - this.lastActivityTime,
+      session_id: this.sessionId,
+      user_id: this.userId,
+      page_url: window.location.pathname,
+      total_time_away: Date.now() - this.lastActivityTime,
       timestamp: new Date().toISOString()
     })
 
@@ -699,16 +705,16 @@ class JourneyTracker {
    */
   syncJourneyData() {
     const journeySnapshot = {
-      sessionId: this.sessionId,
-      userId: this.userId,
-      currentPage: this.currentPage,
-      journeyState: this.journeyState,
-      engagementScore: this.engagementScore,
-      engagementLevel: this.getEngagementLevel(),
-      userSegments: this.userSegments,
-      conversionGoalsReached: Array.from(this.conversionGoals),
-      totalInteractions: this.interactions.length,
-      sessionDuration: Date.now() - this.sessionStart,
+      session_id: this.sessionId,
+      user_id: this.userId,
+      current_page: this.currentPage,
+      journey_state: this.journeyState,
+      engagement_score: this.engagementScore,
+      engagement_level: this.getEngagementLevel(),
+      user_segments: this.userSegments,
+      conversion_goals_reached: Array.from(this.conversionGoals),
+      total_interactions: this.interactions.length,
+      session_duration: Date.now() - this.sessionStart,
       timestamp: new Date().toISOString()
     }
 
@@ -751,17 +757,17 @@ class JourneyTracker {
   // 获取旅程摘要数据（供其他模块使用）
   getJourneySummary() {
     return {
-      sessionId: this.sessionId,
-      userId: this.userId,
-      sessionDuration: Date.now() - this.sessionStart,
-      pageViews: this.pageViews.length,
-      totalInteractions: this.interactions.length,
-      engagementScore: this.engagementScore,
-      engagementLevel: this.getEngagementLevel(),
-      userSegments: this.userSegments,
-      currentFunnel: this.journeyState.currentFunnel,
-      conversionGoals: Array.from(this.conversionGoals),
-      maxScrollDepth: this.journeyState.maxScrollDepth
+      session_id: this.sessionId,
+      user_id: this.userId,
+      session_duration: Date.now() - this.sessionStart,
+      page_views: this.pageViews.length,
+      total_interactions: this.interactions.length,
+      engagement_score: this.engagementScore,
+      engagement_level: this.getEngagementLevel(),
+      user_segments: this.userSegments,
+      current_funnel: this.journeyState.currentFunnel,
+      conversion_goals: Array.from(this.conversionGoals),
+      max_scroll_depth: this.journeyState.maxScrollDepth
     }
   }
 }
@@ -778,10 +784,10 @@ document.addEventListener('DOMContentLoaded', () => {
   window.trackJourneyEvent = trackUmami
 
   trackUmami('journey_tracker_initialized', {
-    sessionId: journeyTracker.sessionId,
-    userId: journeyTracker.userId,
-    pageUrl: window.location.pathname,
-    userSegments: journeyTracker.userSegments,
+    session_id: journeyTracker.sessionId,
+    user_id: journeyTracker.userId,
+    page_url: window.location.pathname,
+    user_segments: journeyTracker.userSegments,
     timestamp: new Date().toISOString()
   })
 })

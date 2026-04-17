@@ -474,6 +474,13 @@ permalink: /write-note/
         localStorage.removeItem('note-draft');
         localStorage.setItem('note-access-key', btoa(accessKey));
 
+        window.dispatchEvent(new CustomEvent('form_submit_success', {
+          detail: {
+            formType: 'write-note',
+            url: result?.url || null
+          }
+        }));
+
         // Show success message and redirect to homepage
         showStatus(`Published successfully. Redirecting to home...`, 'success');
 
@@ -481,10 +488,22 @@ permalink: /write-note/
           window.location.href = '/';
         }, 1500);
       } else {
+        window.dispatchEvent(new CustomEvent('form_submit_error', {
+          detail: {
+            formType: 'write-note',
+            error: result?.error || 'Publish failed'
+          }
+        }));
         showStatus(result.error || 'Publish failed. Please try again in a moment.', 'error');
       }
     } catch (error) {
       console.error('Submission error:', error);
+      window.dispatchEvent(new CustomEvent('form_submit_error', {
+        detail: {
+          formType: 'write-note',
+          error: error?.message || 'Network error'
+        }
+      }));
       showStatus('Network error. Refresh or try again shortly.', 'error');
     } finally {
       setSubmitting(false);

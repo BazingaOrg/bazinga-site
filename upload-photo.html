@@ -289,6 +289,12 @@ permalink: /upload-photo/
       const result = await response.json();
       if (result?.success) {
         localStorage.setItem('photo-access-key', btoa(accessKey));
+        window.dispatchEvent(new CustomEvent('form_submit_success', {
+          detail: {
+            formType: 'upload-photo',
+            url: '/'
+          }
+        }));
         showPublishStatus('Published successfully. Redirecting to home...', 'success');
 
         setTimeout(() => {
@@ -299,6 +305,12 @@ permalink: /upload-photo/
       }
     } catch (error) {
       console.error('Upload failed:', error);
+      window.dispatchEvent(new CustomEvent('form_submit_error', {
+        detail: {
+          formType: 'upload-photo',
+          error: error?.message || 'Upload failed'
+        }
+      }));
       showPublishStatus(`Upload failed: ${error.message}`, 'error');
     } finally {
       setPublishLoading(false);

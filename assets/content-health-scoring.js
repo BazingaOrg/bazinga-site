@@ -757,15 +757,15 @@ class ContentHealthScorer {
     // 与旅程追踪器集成
     if (window.journeyTracker) {
       const journeySummary = window.journeyTracker.getJourneySummary()
-      if (journeySummary.engagementLevel === 'high') {
+      if (journeySummary.engagement_level === 'high') {
         engagementScore += 15
-      } else if (journeySummary.engagementLevel === 'medium') {
+      } else if (journeySummary.engagement_level === 'medium') {
         engagementScore += 8
       }
 
       // 转化目标达成加分
-      if (journeySummary.conversionGoals.length > 0) {
-        engagementScore += journeySummary.conversionGoals.length * 5
+      if (journeySummary.conversion_goals.length > 0) {
+        engagementScore += journeySummary.conversion_goals.length * 5
       }
     }
 

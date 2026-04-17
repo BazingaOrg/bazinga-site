@@ -372,6 +372,13 @@ permalink: /write-post/
           localStorage.setItem(ACCESS_KEY_STORAGE, btoa(accessKey));
           clearDraft();
 
+          window.dispatchEvent(new CustomEvent('form_submit_success', {
+            detail: {
+              formType: 'write-post',
+              url: result?.url || null
+            }
+          }));
+
           // Show success message and redirect to homepage
           showStatus(`Published successfully. Redirecting to home...`, 'success');
 
@@ -380,11 +387,23 @@ permalink: /write-post/
           }, 1500);
         } else {
           const message = result.error || 'Publish failed. Please try again in a moment.';
+          window.dispatchEvent(new CustomEvent('form_submit_error', {
+            detail: {
+              formType: 'write-post',
+              error: message
+            }
+          }));
           showStatus(message, 'error');
         }
       })
       .catch((error) => {
         console.error('Publish failed:', error);
+        window.dispatchEvent(new CustomEvent('form_submit_error', {
+          detail: {
+            formType: 'write-post',
+            error: error?.message || 'Network issue'
+          }
+        }));
         showStatus('Network issue detected. Please try again shortly.', 'error');
       })
       .finally(() => {

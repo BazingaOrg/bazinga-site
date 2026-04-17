@@ -10,9 +10,10 @@ import { createPrefixedId } from './id.js'
 class FormTracker {
   constructor(formSelector) {
     this.form = document.querySelector(formSelector)
-    this.formType = document.body.getAttribute('data-page') || 'unknown'
+    this.formType = document.body.getAttribute('data-page') || this.form?.closest('[data-page]')?.getAttribute('data-page') || 'unknown'
     this.sessionId = this.generateSessionId()
     this.startTime = Date.now()
+    this.isSubmitted = false
     this.fieldFocusTime = {}
     this.fieldChanges = {}
     this.validationErrors = {}
@@ -283,39 +284,43 @@ class FormTracker {
       // 与旅程追踪器集成 - 追踪表单提交转化目标
       if (window.journeyTracker) {
         window.journeyTracker.trackConversionGoal('form_submission', {
-          formType: this.formType,
-          completionTime: completionTime,
-          fieldChanges: Object.values(this.fieldChanges).reduce((a, b) => a + b, 0),
-          previewViews: this.previewViews
+          form_type: this.formType,
+          completion_time: completionTime,
+          field_changes: Object.values(this.fieldChanges).reduce((a, b) => a + b, 0),
+          preview_views: this.previewViews
         })
       }
     })
 
     // 监听提交成功/失败 (需要与后端配合)
     window.addEventListener('form_submit_success', (e) => {
-      if (e.detail && e.detail.sessionId === this.sessionId) {
+      const eventFormType = e?.detail?.formType
+      if (!eventFormType || eventFormType === this.formType) {
+        this.isSubmitted = true
         trackUmami('form_submit_success', {
           form_type: this.formType,
           session_id: this.sessionId,
+          content_url: e?.detail?.url || null,
           timestamp: new Date().toISOString()
         })
 
         // 与旅程追踪器集成 - 追踪成功提交转化目标
         if (window.journeyTracker) {
           window.journeyTracker.trackConversionGoal('write_submit_success', {
-            formType: this.formType,
-            totalTime: Date.now() - this.startTime,
-            contentUrl: e.detail.url || null
+            form_type: this.formType,
+            total_time: Date.now() - this.startTime,
+            content_url: e?.detail?.url || null
           })
         }
       }
     })
 
     window.addEventListener('form_submit_error', (e) => {
-      if (e.detail && e.detail.sessionId === this.sessionId) {
+      const eventFormType = e?.detail?.formType
+      if (!eventFormType || eventFormType === this.formType) {
         trackUmami('form_submit_error', {
           form_type: this.formType,
-          error_message: e.detail.error || 'unknown',
+          error_message: e?.detail?.error || 'unknown',
           session_id: this.sessionId,
           timestamp: new Date().toISOString()
         })
@@ -438,7 +443,9 @@ class FormTracker {
 document.addEventListener('DOMContentLoaded', () => {
   // 检测是否在写作页面
   const writePages = ['write-note', 'upload-photo', 'write-post']
-  const currentPage = document.body.getAttribute('data-page')
+  const currentPage =
+    document.body.getAttribute('data-page') ||
+    document.querySelector('[data-page]')?.getAttribute('data-page')
 
   if (writePages.includes(currentPage)) {
     // 为每种表单类型初始化追踪器
