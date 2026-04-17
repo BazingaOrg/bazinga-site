@@ -14,42 +14,15 @@ Code for https://site.bazinga.ink/.
 
 Requires a Ruby environment.
 
-```
+```bash
 $ ./start
 ```
-
-### Verification
-
-```bash
-# Quick local gate (checks + production build)
-npm run test:quick
-
-# Full gate (quick gate + performance snapshot)
-npm run test:full
-```
-
-### Optional local git hook
-
-```bash
-# Install pre-push hook that runs test:quick
-npm run hooks:install
-```
-
-## Deployment
-
-This site is configured for deployment on Vercel. The Jekyll build process is handled automatically.
-
-Build command includes vendor synchronization before Jekyll build.
-
-## Documentation
-
-Contributor-facing guides are kept in the repository root (for example, `AGENTS.md`).
 
 ## License
 
 The following directories and their contents are Copyright Bazinga. You may not reuse anything therein without permission:
 
-```
+```text
 _data/
 _posts/
 _stories/
