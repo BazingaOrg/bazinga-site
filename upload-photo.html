@@ -5,7 +5,7 @@ permalink: /upload-photo/
 
 <div class="upload-photo-container" data-page="upload-photo">
   <header class="upload-photo-header">
-    <h2 class="desc">Pick one frame worth keeping.</h2>
+    <h2 class="normal-heading">Pick one frame worth keeping.</h2>
     <p class="subtle-banner" id="photo-permission-banner" hidden></p>
   </header>
 
@@ -94,7 +94,7 @@ permalink: /upload-photo/
         </div>
       </div>
       <div class="publish-actions">
-        <button type="button" id="publish-btn" class="publish-button" disabled>
+        <button type="button" id="publish-btn" class="submit-btn" disabled>
           <span class="btn-text">Publish now</span>
           <span class="btn-loading" hidden>Submitting…</span>
         </button>
@@ -107,17 +107,6 @@ permalink: /upload-photo/
     <div class="json-output-card">
       <pre id="json-output" class="json-output"></pre>
       <button type="button" id="copy-json" class="copy-button">Copy JSON</button>
-    </div>
-
-    <div class="instructions">
-      <h4 class="monospace">Manual publishing steps</h4>
-      <ol>
-        <li>Copy the JSON above and insert it at the top of <code>_data/photos.json</code></li>
-        <li>Rename the image as:<code id="suggested-filename">filename.jpg</code></li>
-        <li>Move the image into <code>images/photos/</code></li>
-        <li>Commit and push changes, then wait for deployment</li>
-      </ol>
-      <p class="field-hint">Tip: with a valid key, the script can skip these manual steps.</p>
     </div>
   </section>
 </div>
@@ -148,7 +137,6 @@ permalink: /upload-photo/
 
   const jsonOutput = document.getElementById('json-output');
   const copyButton = document.getElementById('copy-json');
-  const suggestedFilename = document.getElementById('suggested-filename');
 
   const accessKeyInput = document.getElementById('access-key');
   const publishBtn = document.getElementById('publish-btn');
@@ -171,7 +159,7 @@ permalink: /upload-photo/
 
     if (!isOwnerActivated && directAccess) {
       permissionBanner.hidden = false;
-      permissionBanner.textContent = 'This entry is usually for site maintainers; preview is open, publishing still requires a key.';
+      permissionBanner.textContent = 'This entry is for site maintainers. You can preview it, but publishing still requires an access key.';
     }
   }
 
@@ -250,7 +238,6 @@ permalink: /upload-photo/
       };
 
       renderPreviewCard(file, imageData, uuid, filename);
-      suggestedFilename.textContent = filename;
       updatePreview();
       toggleSections(true);
     } catch (error) {

@@ -1959,13 +1959,13 @@ label:has(input:not(:checked)) ~ label:has(input:not(:checked)) ~ label:has(inpu
 }
 
 .frontmatter-details > summary::after {
-  content: '展开';
+  content: 'Expand';
   font-size: 0.75rem;
   color: var(--mutedTextColor);
 }
 
 .frontmatter-details[open] > summary::after {
-  content: '收起';
+  content: 'Collapse';
 }
 
 .frontmatter-details .frontmatter-output {
@@ -2020,7 +2020,7 @@ label:has(input:not(:checked)) ~ label:has(input:not(:checked)) ~ label:has(inpu
 
   &:not([open]) {
     summary::after {
-      content: '展开';
+      content: 'Expand';
       margin-left: 0.5rem;
       font-size: 0.75rem;
       color: var(--mutedTextColor);
@@ -2028,7 +2028,7 @@ label:has(input:not(:checked)) ~ label:has(input:not(:checked)) ~ label:has(inpu
   }
 
   &[open] summary::after {
-    content: '收起';
+    content: 'Collapse';
     margin-left: 0.5rem;
     font-size: 0.75rem;
     color: var(--mutedTextColor);

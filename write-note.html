@@ -27,8 +27,6 @@ permalink: /write-note/
 
     <section class="form-section" aria-label="Note settings">
       <form id="note-form" class="note-form" novalidate>
-        <input type="hidden" id="title" name="title">
-
         <div class="form-field">
           <div class="field-title">
             <label for="content" class="field-label monospace"><span class="field-required" aria-hidden="true">*</span>Content</label>
@@ -145,25 +143,12 @@ permalink: /write-note/
       <div class="status-message" id="status-message" role="status" aria-live="polite"></div>
     </section>
   </div>
-
-  <section class="manual-section" aria-label="Manual publishing steps">
-    <h3 class="section-title monospace">Manual publishing steps</h3>
-    <div class="manual-card">
-      <ol class="manual-steps">
-        <li>Copy the preview above and save it as <code id="note-manual-filename">_notes/note-YYYY-MM-DD-HHmm.md</code></li>
-        <li>Confirm tags and language in front matter</li>
-        <li>Run <code>bundle exec jekyll build</code> and deploy</li>
-      </ol>
-      <p class="field-hint">Tip: The page auto-generates filename and date, and can publish directly.</p>
-    </div>
-  </section>
 </div>
 
 <script>
 (function() {
   'use strict';
 
-  const NOTE_ID_PATTERN = /^\d{12}$/;
   const NOTE_TIME_ZONE = 'Asia/Shanghai';
   const MAX_TAGS = 3;
   const NOTE_IDENTIFIER_FORMATTER = new Intl.DateTimeFormat('en-CA', {
@@ -183,7 +168,6 @@ permalink: /write-note/
   });
 
   const form = document.getElementById('note-form');
-  const titleInput = document.getElementById('title');
   const contentInput = document.getElementById('content');
   const customTagsInput = document.getElementById('custom-tags');
   const accessKeyInput = document.getElementById('access-key');
@@ -191,8 +175,6 @@ permalink: /write-note/
   const resetDraftBtn = document.getElementById('reset-draft-btn');
   const statusMessage = document.getElementById('status-message');
   const permissionBanner = document.getElementById('permission-banner');
-  const manualFilenameEl = document.getElementById('note-manual-filename');
-
   const previewContent = document.getElementById('preview-content');
   const previewTags = document.getElementById('preview-tags');
   const previewTime = document.getElementById('preview-time');
@@ -209,7 +191,6 @@ permalink: /write-note/
   init();
 
   function init() {
-    ensureGeneratedTitle({ force: true });
     checkUserPermission();
     updatePreviewTime();
 
@@ -265,7 +246,7 @@ permalink: /write-note/
 
     if (!isOwnerActivated && directAccess) {
       permissionBanner.hidden = false;
-      permissionBanner.textContent = 'This entry is mainly for site maintainers. Feel free to explore without publishing.';
+      permissionBanner.textContent = 'This entry is for site maintainers. You can preview it, but publishing still requires an access key.';
     }
   }
 
@@ -273,9 +254,6 @@ permalink: /write-note/
     const identifiers = generateNoteIdentifiers();
     previewTime.textContent = identifiers.dateDisplay;
     previewTime.setAttribute('datetime', identifiers.isoLocal);
-    if (manualFilenameEl) {
-      manualFilenameEl.textContent = `_notes/${identifiers.filename}.md`;
-    }
   }
 
   function generateNoteIdentifiers(baseDate = new Date()) {
@@ -301,18 +279,6 @@ permalink: /write-note/
       isoLocal: `${year}-${month}-${day}T${hour}:${minute}:00+08:00`,
       dateDisplay: NOTE_PREVIEW_FORMATTER.format(baseDate)
     };
-  }
-
-  function ensureGeneratedTitle({ force } = {}) {
-    const currentValue = titleInput.value.trim();
-
-    if (!force && NOTE_ID_PATTERN.test(currentValue)) {
-      return currentValue;
-    }
-
-    const { title } = generateNoteIdentifiers();
-    titleInput.value = title;
-    return title;
   }
 
   function updatePreview() {
@@ -423,12 +389,6 @@ permalink: /write-note/
   function validateForm() {
     let isValid = true;
 
-    const title = ensureGeneratedTitle();
-    if (!NOTE_ID_PATTERN.test(title)) {
-      showStatus('Title generation failed. Refresh and try again.', 'error');
-      isValid = false;
-    }
-
     const content = contentInput.value.trim();
     if (!content) {
       showFeedback('content', 'Content is still empty. Write a couple of lines first.');
@@ -484,17 +444,13 @@ permalink: /write-note/
     if (isSubmitting) return;
     if (!validateForm()) return;
 
-    const identifiers = generateNoteIdentifiers();
-    titleInput.value = identifiers.title;
-
     const { tags } = getSelectedTags({ report: true });
 
     const formData = {
-      title: identifiers.title,
       content: contentInput.value.trim(),
       tags,
       lang: 'zh-CN',
-      filenameHint: identifiers.filename
+      filenameHint: generateNoteIdentifiers().filename
     };
 
     const accessKey = accessKeyInput.value.trim();

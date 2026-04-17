@@ -5,7 +5,7 @@ permalink: /write-post/
 
 <div class="write-post-container" data-page="write-post">
   <header class="write-post-header">
-    <h2 class="desc">Put your longer thoughts down here.</h2>
+    <h2 class="normal-heading">Put your longer thoughts down here.</h2>
     <p class="subtle-banner" id="post-permission-banner" hidden></p>
     <p class="subtle-banner" id="draft-banner" hidden></p>
   </header>
@@ -126,18 +126,6 @@ permalink: /write-post/
       <p class="status-message" id="submit-status" hidden></p>
     </form>
   </section>
-
-  <section class="manual-section" aria-label="Manual publishing steps">
-    <h3 class="section-title monospace">Manual publishing steps</h3>
-    <div class="manual-card">
-      <ol class="manual-steps">
-        <li>Expand Front matter above, then save it with body as <code id="manual-filename">_posts/YYYY-MM-DD-HHmm-post-slug.md</code></li>
-        <li>Run <code>bundle exec jekyll build</code> to verify</li>
-        <li>commit and push, then wait for deployment</li>
-      </ol>
-      <p class="field-hint">Tip: check whether `feature: 1` fits homepage publishing.</p>
-    </div>
-  </section>
 </div>
 
 <script>
@@ -158,7 +146,6 @@ permalink: /write-post/
   const submitStatus = document.getElementById('submit-status');
   const autoDateEl = document.getElementById('auto-date');
   const generatedFilenameEl = document.getElementById('generated-filename');
-  const manualFilenameEl = document.getElementById('manual-filename');
   const previewTitleEl = document.getElementById('preview-title');
   const previewBodyEl = document.getElementById('preview-body');
   const previewDateEl = document.getElementById('preview-date');
@@ -294,7 +281,7 @@ permalink: /write-post/
     const directAccess = !document.referrer || !document.referrer.includes(window.location.origin);
     if (!toggled && directAccess) {
       postPermissionBanner.hidden = false;
-      postPermissionBanner.textContent = 'This entry is primarily for site maintainers. Feel free to preview without publishing.';
+      postPermissionBanner.textContent = 'This entry is for site maintainers. You can preview it, but publishing still requires an access key.';
     }
   }
 
@@ -499,7 +486,6 @@ permalink: /write-post/
   function updateFilenameDisplay() {
     const filename = `${state.publish.filenameBase}-${state.slug}.md`;
     generatedFilenameEl.textContent = filename;
-    manualFilenameEl.textContent = `_posts/${filename}`;
   }
 
   function updatePreviewTitle() {
@@ -668,7 +654,7 @@ permalink: /write-post/
     const content = bodyInput.value.trim();
     const lines = content ? content.split(/\r?\n/).filter(line => line.trim().length > 0).length : 0;
     const characters = content.length;
-    bodyStats.textContent = `Lines: ${lines}（${characters} chars）`;
+    bodyStats.textContent = `Lines: ${lines} (${characters} chars)`;
   }
 
   function showStatus(message, type) {

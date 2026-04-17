@@ -32,11 +32,7 @@ export default async function handler(req, res) {
   }
 
   // 验证请求数据
-  const { title, content, tags, lang = 'zh-CN' } = req.body;
-  
-  if (!title || !title.trim()) {
-    return res.status(400).json({ error: '标题不能为空' });
-  }
+  const { content, tags, lang = 'zh-CN' } = req.body;
   
   if (!content || !content.trim()) {
     return res.status(400).json({ error: '笔记内容不能为空' });
